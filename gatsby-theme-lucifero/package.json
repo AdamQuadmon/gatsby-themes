@@ -1,17 +1,21 @@
 {
-  "name": "example",
+  "name": "gatsby-theme-lucifero",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
   "license": "MIT",
   "scripts": {
-    "develop": "gatsby develop",
     "build": "gatsby build",
-    "clean": "gatsby clean"
+    "clean": "gastby clean",
+    "develop": "gatsby develop"
   },
-  "dependencies": {
+  "peerDependencies": {
     "gatsby": "^3.14.5",
-    "gatsby-theme-lucifero": "*",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "gatsby": "^3.14.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }

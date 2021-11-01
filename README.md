@@ -1,58 +1,45 @@
 <h1 align="center">
-  Gatsby Starter Theme Lucifero
+  Free & Open Source Gatsby Themes by AdamQuadmon
 </h1>
 
-```shell
-gatsby new my-theme https://github.com/adamquadmon/gatsby-starter-theme-lucifero
-cd my-theme
-yarn workspace example develop
+<p align="center">
+  <a href="https://github.com/AdamQuadmon/gatsby-themes/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="@adamquadmon/gatsby-themes is released under the MIT license." />
+  </a>
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
+</p>
+
+Gatsby themes to quickly bootstrap your website!
+
+## Contents
+
+This repository is a collection of my Gatsby themes, managed as a [monorepo](https://trunkbaseddevelopment.com/monorepos/) with [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/).
+
+- `examples`: Contains the corresponding example sites for the `themes`.
+- `themes`: Contains the themes themselves.
+
+## How to Contribute
+
+Make sure that you have `yarn` installed on your machine (as it's mandatory for `yarn workspaces`). Fork this repository, clone it and run `yarn` in the root directory.
+
+To launch the development server of an example site, use:
+
+```sh
+yarn workspace [examples/name] develop
 ```
 
-## Layout
+Or for a build:
 
-```text
-.
-├── README.md
-├── gatsby-theme-lucifero
-│   ├── README.md
-│   ├── gatsby-config.js
-│   ├── index.js
-│   └── package.json
-├── example
-│   ├── README.md
-│   ├── gatsby-config.js
-│   ├── package.json
-│   └── src
-├── package.json
-└── yarn.lock
-
+```sh
+yarn workspace [examples/name] build
 ```
 
-### `gatsby-theme-lucifero`
+In the case of `examples/lucifero` this command would be `yarn workspace lucifero develop`. Now you can make changes to the respective theme and see them via Hot-Reloading.
 
-This directory is the theme package itself.
+Commit your changes to a feature branch of your fork and open up a PR against this repository.
 
-- `gatsby-theme-lucifero/`
-  - `gatsby-config.js`: An empty gatsby-config that you can use as a starting point for building functionality into your theme.
-  - `index.js`: Since themes also function as plugins, this is an empty file that gatsby needs to use this theme as a plugin.
-  - `package.json`: The dependencies that your theme will pull in when people install it. `gatsby` should be a `peerDependency`.
+### Official resources
 
-### `example`
-
-This is an example usage of your theme. It should look the same as the site of someone who installed and used your theme from npm.
-
-- `example/`
-  - `gatsby-config.js`: Specifies which theme to use and any other one-off config a site might need.
-  - `src/`: Source code such as one-off pages or components that might live in a user's site.
-
-You can run the example with:
-
-```shell
-yarn workspace example develop
-```
-
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/adamquadmon/gatsby-starter-theme-lucifero)
+- [Gatsbyjs.com - Gatsby Themes](https://www.gatsbyjs.com/docs/themes/)
+- [Building a Theme](https://www.gatsbyjs.com/tutorial/building-a-theme/)
+- [Free egghead.io "Gatsby Theme Authoring" course](https://egghead.io/courses/gatsby-theme-authoring)

@@ -1,14 +1,27 @@
 {
-  "name": "gatsby-starter-theme-lucifero",
   "private": true,
-  "version": "0.0.1",
-  "main": "index.js",
-  "license": "0BSD",
-  "scripts": {
-    "build": "yarn workspace example build"
-  },
+  "name": "@adamquadmon/gatsby-themes",
+  "description": "My open-source collection of free Gatsby themes",
+  "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
   "workspaces": [
-    "example",
-    "gatsby-theme-lucifero"
-  ]
+    "examples/*",
+    "themes/*"
+  ],
+  "scripts": {
+    "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .js",
+    "lint:fix": "yarn lint --fix",
+    "lint:ci": "yarn lint --format junit -o results/eslint/result.xml",
+    "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.4.1"
+  }
 }

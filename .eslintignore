@@ -1,0 +1,4 @@
+# https://javascript.plainenglish.io/setting-eslint-and-prettier-on-a-react-typescript-project-2021-22993565edf9
+*.css
+*.svg
+*.md

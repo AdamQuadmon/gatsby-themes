@@ -1,6 +1,6 @@
 import { useTranslation } from 'gatsby-plugin-react-i18next'
 
-export const useNavItems = () => {
+export const useNavItems = (language) => {
   const { t } = useTranslation()
   return [
     {

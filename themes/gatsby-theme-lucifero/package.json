@@ -1,6 +1,6 @@
 {
   "name": "@adamquadmon/gatsby-theme-lucifero",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
   "description": "Dark/Light Chakra UI theme with MDX and other suff",
   "license": "MIT",

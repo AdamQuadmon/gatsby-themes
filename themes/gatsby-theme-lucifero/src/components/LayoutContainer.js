@@ -2,6 +2,7 @@ import React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import { Box, Container, Flex } from '@chakra-ui/react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { I18nextContext } from 'gatsby-plugin-react-i18next'
 
 import NavBar from '../components/NavBar/NavBar'
 import Footer from '../components/Footer'
@@ -21,7 +22,8 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
 }
 
 const LayoutComponent = (props) => {
-  const navItems = useNavItems()
+  const { language } = React.useContext(I18nextContext)
+  const navItems = useNavItems(language)
   const { site } = useStaticQuery(
     graphql`
       query {

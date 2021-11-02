@@ -37,14 +37,14 @@ const onPreBootstrap = ({ reporter }, userConfig) => {
 const onCreateNode = ({ node, actions, getNode }, userConfig) => {
   const options = withDefaults(userConfig)
   const { createNodeField } = actions
-  const languages = options.languages
-  const defaultLanguage = options.languages.defaultLanguage
+  const { languages, defaultLanguage } = options
 
   // If using remote CMS check also `File` node here
   if (node.internal.type === 'Mdx' /* && node.parent*/) {
-    const slug = createFilePath({ node, getNode })
-    const slugLang = slug.split('.').pop().replace('/', '')
-    const lang = (languages.includes(slugLang) && slugLang) || defaultLanguage
+    const { slug } = node.frontmatter
+    const filePath = createFilePath({ node, getNode })
+    const pathLang = filePath.split('.').pop().replace('/', '')
+    const lang = (languages.includes(pathLang) && pathLang) || defaultLanguage
 
     // Route is the pathName without the pathPrefix, used for creating pages
     const route = withBasePath(options, slug)

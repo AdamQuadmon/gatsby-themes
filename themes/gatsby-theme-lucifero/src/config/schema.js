@@ -106,7 +106,7 @@ module.exports = `#graphql
     title: String
     description: String
     order: Int
-    category: [String]
+    category: String
     tags: [String]
     noCover: Boolean
     coverAlt: String

@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.0.3
+
+### Patch Changes
+
+- Fix onCreateNode defaultLanguage langKey
+- Pass language to useNavItems
+- Fix warning in NavItemSub with no cover image
+- Add `config/fragments.js`
+- Fix Schema category field
+
 ## 1.0.2
 
 ### Patch Changes

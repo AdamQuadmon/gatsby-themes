@@ -4,9 +4,8 @@
  */
 function getNodeRelativePath({ fileAbsolutePath }, omitFileExt, basePath) {
   const relativePath = (fileAbsolutePath || ``).split(basePath)?.[1]
-  // console.log(relativePath.split(`.`)?.[0])
-  // console.log(fileAbsolutePath)
   if (!relativePath || !omitFileExt) return relativePath
+
   return relativePath.split(`.`)?.[0]
 }
 
@@ -31,8 +30,7 @@ function getTranslatedUrlPath(
 ) {
   const baseUrlPathRegex = new RegExp(`(?:/${sourceLang})?(/.*)`)
   const baseUrlPath = slug.match(baseUrlPathRegex)?.[1] || `/`
-  // console.log(slug)
-  // console.log(baseUrlPath)
+
   return omitDefaultLang && destLang === defaultLang
     ? `${baseUrlPath}`
     : `/${destLang}${baseUrlPath}`

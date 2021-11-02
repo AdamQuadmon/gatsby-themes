@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "giano",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
   "description": "Lucifero example using two languages",

@@ -2,29 +2,28 @@ const { merge } = require('lodash')
 
 const baseConfig = require('./defaultConfig')
 
-const withDefaults = (userConfig) => merge(baseConfig, userConfig)
+const withDefaults = (config) => merge(baseConfig, config)
 
-const withBasePath = (userConfig, url) =>
-  userConfig.basePath ? urlJoin(userConfig.basePath, url) : url
+const withBasePath = (config, url) =>
+  config.basePath ? urlJoin(config.basePath, url) : url
 
-const getLanguages = (userConfig) => {
-  const languages = userConfig.languages
-  const defaultLanguage = userConfig.defaultLanguage
+const getLanguages = (config) => {
+  const languages = config.languages
+  const defaultLanguage = config.defaultLanguage
   const otherLanguages = languages.filter((lang) => lang !== defaultLanguage)
   const localizeData = otherLanguages.map((lang) => {
-    const data = userConfig.localizeData.find(locale.lang === lang)
+    const data = config.localizeData.find((locale) => locale.lang === lang)
     return {
       start_url: `/${lang}/`,
       lang,
-      name: (data && data.name) || userConfig.website.title,
+      name: (data && data.name) || config.website.title,
       short_name:
-        (data && (data.shortName || data.name)) ||
-        userConfig.website.shortTitle,
-      description: (data && data.description) || userConfig.website.description,
+        (data && (data.shortName || data.name)) || config.website.shortTitle,
+      description: (data && data.description) || config.website.description,
     }
   })
 
-  return { languages, localizeData }
+  return { languages, defaultLanguage, localizeData }
 }
 
 module.exports = {

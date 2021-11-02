@@ -28,7 +28,7 @@ const Footer = ({ data, navItems, variant }) => {
           <Logo title={name} w="full" />
           <Spacer />
           <Stack direction={['column', 'row']} alignItems="end">
-            <LangSelector />
+            <LangSelector showLabel />
             <Text as="span">
               <Trans>socials</Trans>
             </Text>

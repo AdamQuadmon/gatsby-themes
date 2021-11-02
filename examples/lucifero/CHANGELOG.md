@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-Fix peer dependencies
+Fix namespaced shadowed folder
 
 ## 1.0.0
 

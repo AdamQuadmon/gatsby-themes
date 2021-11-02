@@ -74,9 +74,7 @@ const createSchemaCustomization = ({ actions }) => {
 const createPages = async ({ graphql, actions, reporter }, userConfig) => {
   const options = withDefaults(userConfig)
   const { createPage } = actions
-  const basePath = options.pagesPath
-  const defaultLanguage = options.defaultLanguage
-  const languages = options.languages
+  const { basePath, defaultLanguage, languages } = options
   const hasLanguages = languages.length > 1
 
   const result = await graphql(`

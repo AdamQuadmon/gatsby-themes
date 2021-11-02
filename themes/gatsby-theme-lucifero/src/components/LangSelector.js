@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Stack } from '@chakra-ui/react'
+import { Box, Button, Stack, Text } from '@chakra-ui/react'
 import {
   Link as GatsbyLink,
   I18nextContext,
@@ -8,13 +8,14 @@ import {
 } from 'gatsby-plugin-react-i18next'
 import ReactCountryFlag from 'react-country-flag'
 
-const LangSelector = ({ props }) => {
+const LangSelector = ({ showLabel, ...props }) => {
   const { t } = useTranslation()
   const { languages, originalPath } = useI18next()
   const { language } = React.useContext(I18nextContext)
 
   return (
     <Stack className="lang_selector" direction={'row'} spacing={3} {...props}>
+      {showLabel && languages.length && <Text as="span">{t('languages')}</Text>}
       {languages.map(
         (lng) =>
           lng !== language && (

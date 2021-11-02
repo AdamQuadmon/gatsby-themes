@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Button, Container, useStyleConfig } from '@chakra-ui/react'
 
-import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
+import { Link as GatsbyLink } from 'gatsby'
 import { IoIosArrowDown } from 'react-icons/io'
 
 import NavItemSub from './NavItemSub'

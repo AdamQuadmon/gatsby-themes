@@ -32,7 +32,7 @@ const NavBar = ({ variant, navItems, data, ...rest }) => {
           >
             <HStack spacing={1}>
               {navItems.map((navItem) => (
-                <NavItem key={navItem.label} {...navItem} />
+                <NavItem key={navItem.href} {...navItem} />
               ))}
             </HStack>
           </Box>

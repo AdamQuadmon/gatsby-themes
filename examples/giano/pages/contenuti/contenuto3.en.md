@@ -1,5 +1,5 @@
 ---
-slug: /en/content/content3
+slug: /en/contents/content3
 title: Content 3
 order: 3
 noCover: true

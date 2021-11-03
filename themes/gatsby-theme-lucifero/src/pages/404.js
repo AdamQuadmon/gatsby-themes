@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { graphql } from 'gatsby'
 import { Heading, Link, Text } from '@chakra-ui/react'
 import {
@@ -7,13 +7,11 @@ import {
   useTranslation,
 } from 'gatsby-plugin-react-i18next'
 import Layout from '../components/LayoutContainer'
-import Seo from '../components/Seo'
 
 const NotFoundPage = () => {
   const { t } = useTranslation()
   return (
-    <Layout>
-      <Seo title={t('404notFound')} pathname="404" />
+    <Layout title={t('404notFound')} pathname="404">
       <Heading>
         <Trans>404notFound</Trans>
       </Heading>

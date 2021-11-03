@@ -11,6 +11,7 @@ import {
 
 import Logo from '../Logo'
 import NavItem from './NavItem'
+import ActionButtons from '../ActionButtons'
 import ThemeSwitcher from './ThemeSwitcher'
 import NavMobile from './NavMobile'
 import NavBarTop from './NavBarTop'
@@ -24,21 +25,25 @@ const NavBar = ({ variant, navItems, data, ...rest }) => {
     <>
       <NavBarTop data={data} mobileNav={mobileNav} />
       <chakra.header __css={styles} {...rest}>
-        <Flex justifyContent="space-between" mx="auto">
-          <Logo title={name} />
-          <Box
+        <Flex
+          className="nav-container"
+          justifyContent="space-between"
+          mx="auto"
+        >
+          <Logo title={name} variant="navbar" />
+          <HStack
+            className="nav-items"
             display={{ base: 'none', md: 'inline-flex' }}
-            alignItems="center"
+            spacing={1}
           >
-            <HStack spacing={1}>
-              {navItems.map((navItem) => (
-                <NavItem key={navItem.href} {...navItem} />
-              ))}
-            </HStack>
-          </Box>
+            {navItems.map((navItem) => (
+              <NavItem key={navItem.href} {...navItem} />
+            ))}
+          </HStack>
           <Spacer />
           <Box display="flex" alignItems="center">
             <ThemeSwitcher d={{ base: 'none', md: 'flex' }} />
+            <ActionButtons />
           </Box>
         </Flex>
         <NavMobile mobileNav={mobileNav} btnRef={btnRef} navItems={navItems} />

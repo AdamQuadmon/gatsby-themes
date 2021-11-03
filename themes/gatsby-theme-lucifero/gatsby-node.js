@@ -6,7 +6,10 @@ const schema = require('./src/config/schema')
 
 const { withDefaults, withBasePath } = require('./src/config/index.js')
 
-const createMultilingualRedirects = require(`./src/utils/i18n-redirects`)
+const {
+  createMultilingualRedirects,
+  prepareMulilangualNodes,
+} = require(`./src/utils/i18n-redirects`)
 const { createFilePath } = require('gatsby-source-filesystem')
 
 const withThemePath = (relativePath) => {
@@ -99,11 +102,17 @@ const createPages = async ({ graphql, actions, reporter }, userConfig) => {
 
   const posts = result.data.allMdx.edges
 
+  const multilangualPosts = prepareMulilangualNodes(
+    posts,
+    defaultLanguage,
+    basePath
+  )
+
   posts.forEach(({ node }, index) => {
     if (hasLanguages) {
       createMultilingualRedirects(
         actions,
-        posts,
+        multilangualPosts,
         node,
         defaultLanguage,
         basePath
@@ -112,7 +121,7 @@ const createPages = async ({ graphql, actions, reporter }, userConfig) => {
 
     createPage({
       path: node.frontmatter.slug,
-      component: withThemePath(`./src/components/LayoutPage.js`),
+      component: withThemePath(`./src/templates/Page.js`),
       context: {
         id: node.id,
         prev: index === 0 ? null : posts[index - 1].node,

@@ -69,6 +69,7 @@ module.exports = (userConfig) => {
       {
         resolve: `gatsby-plugin-mdx`,
         options: {
+          commonmark: true,
           extensions: [`.mdx`, `.md`],
           gatsbyRemarkPlugins: [
             'gatsby-remark-unwrap-images',

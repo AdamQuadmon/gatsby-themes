@@ -2,14 +2,12 @@ import React from 'react'
 import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
-import Seo from '../components/Seo'
-import Hero from '../components/Hero'
+import Home from '../components/Home'
 
 const IndexPage = () => {
   return (
-    <Layout>
-      <Seo isHome />
-      <Hero />
+    <Layout isHome>
+      <Home />
     </Layout>
   )
 }

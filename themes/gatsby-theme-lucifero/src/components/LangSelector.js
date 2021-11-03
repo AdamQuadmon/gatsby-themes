@@ -15,7 +15,9 @@ const LangSelector = ({ showLabel, ...props }) => {
 
   return (
     <Stack className="lang_selector" direction={'row'} spacing={3} {...props}>
-      {showLabel && languages.length && <Text as="span">{t('languages')}</Text>}
+      {showLabel && languages.length > 1 && (
+        <Text as="span">{t('languages')}</Text>
+      )}
       {languages.map(
         (lng) =>
           lng !== language && (

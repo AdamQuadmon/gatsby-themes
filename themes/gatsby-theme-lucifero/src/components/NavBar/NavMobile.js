@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 
 import NavMobileItem from './NavMobileItem'
+import ActionButtons from '../ActionButtons'
 
 const NavMobile = ({ variant, mobileNav, navItems, btnRef }) => {
   const styles = useStyleConfig('NavMobile', { variant })
@@ -35,7 +36,9 @@ const NavMobile = ({ variant, mobileNav, navItems, btnRef }) => {
           ))}
         </DrawerBody>
 
-        <DrawerFooter></DrawerFooter>
+        <DrawerFooter>
+          <ActionButtons />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )

@@ -1,16 +1,18 @@
 import React from 'react'
-import { Button } from '@chakra-ui/react'
+import { Button, useStyleConfig } from '@chakra-ui/react'
 import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
-import { ReactComponent as LogoImage } from '../images/lucifero-logo.svg'
 
-const Logo = ({ title }) => {
+import LogoImage from './LogoImage'
+
+const Logo = ({ title, variant }) => {
+  const styles = useStyleConfig('Logo', { variant })
   return (
     <Button
+      __css={styles}
       as={GatsbyLink}
       alt={title}
       h={'100%'}
       variant="ghost"
-      className="logo"
       to="/"
     >
       <LogoImage />

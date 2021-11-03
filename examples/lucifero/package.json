@@ -13,7 +13,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@adamquadmon/gatsby-theme-lucifero": "^1.0.1",
+    "@adamquadmon/gatsby-theme-lucifero": "*",
     "@fontsource/im-fell-english": "^4.5.0",
     "@fontsource/sorts-mill-goudy": "^4.5.0",
     "gatsby": "^3.14.5",

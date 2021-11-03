@@ -7,6 +7,14 @@ module.exports = {
         defaultLanguage: 'it',
         i18nPages: [
           {
+            matchPath: '/contenuti/:uid',
+            getLanguageFromPath: true,
+          },
+          {
+            matchPath: '/:lang?/contents/:uid',
+            getLanguageFromPath: true,
+          },
+          {
             matchPath: '/:lang?/:uid',
             getLanguageFromPath: true,
           },

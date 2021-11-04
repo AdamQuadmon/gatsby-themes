@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.1
+
+### Patch Changes
+
+- Fix Logo vertical align
+
 ## 1.1.0
 
 ### Features

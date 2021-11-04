@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "lucifero",
+  "starter-name": "gatsby-starter-lucifero",
   "version": "1.0.1",
   "main": "index.js",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",

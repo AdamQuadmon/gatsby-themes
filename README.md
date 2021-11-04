@@ -11,9 +11,14 @@
 
 Gatsby themes to quickly bootstrap your website!
 
+It is ispired by:
+
+- [LekoArts/gatsby-themes][]
+- [Ehowey/gatsby-theme-catalyst][]
+
 ## Contents
 
-This repository is a collection of my Gatsby themes, managed as a [monorepo](https://trunkbaseddevelopment.com/monorepos/) with [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/).
+This repository uses [Yarn Workspaces][] and [changesets][] to develop multiple packages together as a monorepo and [renovate][] to keep deps updated. Be sure to install [Yarn][] before setting up the development environment.
 
 - `examples`: Contains the corresponding example sites for the `themes`.
 - `themes`: Contains the themes themselves.
@@ -36,10 +41,29 @@ yarn workspace [examples/name] build
 
 In the case of `examples/lucifero` this command would be `yarn workspace lucifero develop`. Now you can make changes to the respective theme and see them via Hot-Reloading.
 
-Commit your changes to a feature branch of your fork and open up a PR against this repository.
+Commit your changes to a feature branch of your fork and open up a PR against this repository. The PR will have checks in place which you can also run on your machine in preparation for the PR.
+
+Have a look at the [contributing guide](CONTRIBUTING.md) to learn more.
+
+## 🎓 Learning Gatsby Themes
+
+### Articles from lekoarts.de
+
+- [How I used Theme UI to build my Gatsby Themes library](https://www.lekoarts.de/javascript/how-i-used-theme-ui-to-seamlessly-convert-design-to-code?utm_source=gatsby-themes&utm_medium=README)
+- [Setting up a Gatsby Themes workspace with TypeScript, ESLint & Cypress](https://www.lekoarts.de/javascript/setting-up-a-yarn-workspace-with-typescript-eslint-and-cypress?utm_source=gatsby-themes&utm_medium=README)
+- [Specimens for Gatsby powered Design Systems](https://www.lekoarts.de/garden/specimens-for-gatsby-powered-design-systems?utm_source=gatsby-themes&utm_medium=README)
+- [Creating your own Status Dashboard with Gatsby](https://www.lekoarts.de/garden/creating-your-own-status-dashboard-with-gatsby?utm_source=gatsby-themes&utm_medium=README)
 
 ### Official resources
 
 - [Gatsbyjs.com - Gatsby Themes](https://www.gatsbyjs.com/docs/themes/)
 - [Building a Theme](https://www.gatsbyjs.com/tutorial/building-a-theme/)
 - [Free egghead.io "Gatsby Theme Authoring" course](https://egghead.io/courses/gatsby-theme-authoring)
+
+
+[LekoArts/gatsby-themes]: https://github.com/LekoArts/gatsby-themes
+[Ehowey/gatsby-theme-catalyst]: https://github.com/ehowey/gatsby-theme-catalyst
+[yarn]: https://yarnpkg.com
+[yarn workspaces]: https://yarnpkg.com/en/docs/workspaces
+[changesets]: https://github.com/atlassian/changesets
+[renovate]: https://github.com/renovatebot/renovate

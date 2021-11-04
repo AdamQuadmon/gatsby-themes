@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "giano",
+  "starter-name": "gatsby-starter-giano",
   "version": "1.0.2",
   "main": "index.js",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",

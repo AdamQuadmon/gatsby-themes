@@ -13,6 +13,7 @@ const Logo = ({ title, variant }) => {
       alt={title}
       h={'100%'}
       variant="ghost"
+      alignSelf="flex-end"
       to="/"
     >
       <LogoImage />

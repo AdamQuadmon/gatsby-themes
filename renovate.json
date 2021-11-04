@@ -1,0 +1,77 @@
+{
+  "extends": [
+    "config:base",
+    ":disablePeerDependencies",
+    ":ignoreModulesAndTests",
+    ":separateMajorReleases",
+    ":combinePatchMinorReleases"
+  ],
+  "includePaths": ["package.json", "examples/**", "themes/**", "www"],
+  "dependencyDashboard": true,
+  "labels": ["renovate"],
+  "prHourlyLimit": 4,
+  "prConcurrentLimit": 15,
+  "rangeStrategy": "bump",
+  "bumpVersion": null,
+  "semanticCommits": true,
+  "timezone": "GMT",
+  "schedule": ["before 10am on the first day of the month"],
+  "automerge": false,
+  "ignoreDeps": ["react", "react-dom"],
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "packageRules": [
+    {
+      "groupName": "starters",
+      "commitMessageTopic": "starters",
+      "groupSlug": "starters-minor",
+      "matchPaths": ["examples/**"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "matchDepTypes": ["dependencies", "devDependencies"]
+    },
+    {
+      "groupName": "starters",
+      "commitMessageTopic": "starters",
+      "groupSlug": "starters-major",
+      "matchPaths": ["examples/**"],
+      "matchUpdateTypes": ["major"],
+      "matchDepTypes": ["dependencies", "devDependencies"]
+    },
+    {
+      "groupName": "monorepo",
+      "commitMessageTopic": "monorepo",
+      "groupSlug": "monorepo",
+      "matchPaths": ["+(package.json)"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "matchDepTypes": ["devDependencies"]
+    },
+    {
+      "groupName": "formatting & linting",
+      "commitMessageTopic": "Formatting & linting",
+      "matchPaths": ["+(package.json)"],
+      "matchPackageNames": ["eslint", "prettier"],
+      "matchPackagePatterns": ["^eslint-"],
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "matchDepTypes": ["dependencies", "devDependencies"]
+    },
+    {
+      "matchPaths": ["themes/gatsby-theme-lucifero/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "minor and patch dependencies for gatsby-theme-lucifero",
+      "groupSlug": "gatsby-theme-lucifero-prod-minor",
+      "excludePackageNames": ["eslint", "prettier", "typescript"],
+      "excludePackagePatterns": ["^eslint-", "^@typescript-eslint/"],
+      "commitMessageSuffix": "{{#unless groupName}} for gatsby-theme-lucifero{{/unless}}"
+    },
+    {
+      "matchPaths": ["themes/gatsby-theme-lucifero/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "major dependencies for gatsby-theme-lucifero",
+      "groupSlug": "gatsby-theme-lucifero-prod-major",
+      "excludePackageNames": ["eslint", "prettier", "typescript"],
+      "excludePackagePatterns": ["^eslint-", "^@typescript-eslint/"],
+      "commitMessageSuffix": "{{#unless groupName}} for gatsby-theme-lucifero{{/unless}}"
+    }
+  ]
+}

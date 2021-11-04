@@ -11,7 +11,10 @@
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .js",
     "lint:fix": "yarn lint --fix",
     "lint:ci": "yarn lint --format junit -o results/eslint/result.xml",
-    "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write"
+    "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
@@ -23,5 +26,9 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "@changesets/changelog-github": "^0.4.1",
+    "@changesets/cli": "^2.17.0"
   }
 }

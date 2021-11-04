@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.4
+
+### Patch Changes
+
+- Improve README.md
+
 ## 1.0.3
 
 ### Patch Changes

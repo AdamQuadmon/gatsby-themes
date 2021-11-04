@@ -2,10 +2,10 @@
   "private": true,
   "name": "lucifero",
   "starter-name": "gatsby-starter-lucifero",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.js",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
-  "description": "Dark/Light Chakra UI theme with MDX and other suff",
+  "description": "Gatsby Theme Lucifero example, a Dark/Light Chakra UI theme with MDX and other suff",
   "license": "0BSD",
   "scripts": {
     "build": "gatsby build",

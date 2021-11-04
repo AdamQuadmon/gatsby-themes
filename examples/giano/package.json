@@ -2,10 +2,10 @@
   "private": true,
   "name": "giano",
   "starter-name": "gatsby-starter-giano",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "index.js",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
-  "description": "Lucifero example using two languages",
+  "description": "Gatsby Theme Lucifero example using two languages",
   "license": "0BSD",
   "scripts": {
     "build": "gatsby build",

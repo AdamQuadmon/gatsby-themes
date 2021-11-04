@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: '14'
       - name: Publish Starters
+        # https://github.com/LekoArts/actions-push-subdirectories
         uses: LekoArts/actions-push-subdirectories@master
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}

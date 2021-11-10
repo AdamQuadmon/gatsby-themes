@@ -1,5 +1,45 @@
 # Change Log
 
+## 2.0.0
+
+### Higlights
+
+- add /areas/topic blog posts support and components
+- huge redesign of gatsby-node.js also inspired by [gatsby-theme-nicky-blog](https://github.com/NickyMeuleman/gatsby-theme-nicky-blog)
+
+### Breaking Change
+
+- remove manifest and offline plugins from theme as these only works on root projects
+
+### Features
+
+- add dep: gatsby-plugin-breadcrumb, mdx-yaml-full, react-wordcloud, rehype-slug and rehype-sanitize
+- add components: Breadcrumbs, Blog/*
+  - Card, FuturePost, Latest, PostCount, PublishedPost,
+  Tags, Toc, Topic, Wordcloud
+- add seo prop to Layout/Seo components
+- add useSeoValues and useSeoDefault hooks
+- add use-navPages, use-areas  and use-homeAreas
+- add use-intersectionObserver for ToC
+- add defaultTrue fieldExtension
+- add MdxBlogPost model
+- explicitly export some hooks and components
+
+### Changes
+
+- add Sections in Home component
+- generate navItems from useAreas and useNavPages
+
+### Bug Fixes
+
+- fix primsjs theme import
+- fix manifest not working in theme
+- fix mdx render in yaml
+- fix Map error for missing maps info
+- fix favicon in manifest and seo component
+- fix absolute Links
+- fix NavBar links bottom align
+
 ## 1.1.1
 
 ### Patch Changes

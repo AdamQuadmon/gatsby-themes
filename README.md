@@ -13,8 +13,9 @@ Gatsby themes to quickly bootstrap your website!
 
 It is ispired by:
 
-- [LekoArts/gatsby-themes][]
-- [Ehowey/gatsby-theme-catalyst][]
+- [@LekoArts/gatsby-themes](https://github.com/LekoArts/gatsby-themes)
+- [gatsby-theme-catalyst](https://github.com/ehowey/gatsby-theme-catalyst)
+- [gatsby-theme-nicky-blog](https://github.com/NickyMeuleman/gatsby-theme-nicky-blog)
 
 ## Contents
 
@@ -22,6 +23,18 @@ This repository uses [Yarn Workspaces][] and [changesets][] to develop multiple 
 
 - `examples`: Contains the corresponding example sites for the `themes`.
 - `themes`: Contains the themes themselves.
+- `scripts`: Contains utils to handle stuff.
+
+## Scripts
+
+in the `scripts` folder:
+
+- `mdx` - create in `csv/` folder `posts.csv`, `areas.csv`, `cagegories.csv` and `tags.csv` with mdx content from `basePath` following **area** and **topic** sections renaming topics to categories
+
+## Tools
+
+- [fast-csv](https://github.com/C2FO/fast-csv) - CSV parser and formatter
+- [front-matter](https://github.com/jxson/front-matter) - extract YAML front matter from strings
 
 ## How to Contribute
 
@@ -60,10 +73,20 @@ Have a look at the [contributing guide](CONTRIBUTING.md) to learn more.
 - [Building a Theme](https://www.gatsbyjs.com/tutorial/building-a-theme/)
 - [Free egghead.io "Gatsby Theme Authoring" course](https://egghead.io/courses/gatsby-theme-authoring)
 
-
 [LekoArts/gatsby-themes]: https://github.com/LekoArts/gatsby-themes
 [Ehowey/gatsby-theme-catalyst]: https://github.com/ehowey/gatsby-theme-catalyst
 [yarn]: https://yarnpkg.com
 [yarn workspaces]: https://yarnpkg.com/en/docs/workspaces
 [changesets]: https://github.com/atlassian/changesets
 [renovate]: https://github.com/renovatebot/renovate
+
+## TODO
+
+- [] fix MDX Blog
+  - [] fix favicon and ogImage
+  - [] use MdxBlog model
+- [] use Strapi
+- [] add theme translations
+- [] add sub pages to navPage items
+- [] document components (maybe using [storybook](https://storybook.js.org/))
+- [] upgrade rehype-slug and rehype-sanitize once gatsby move to esm

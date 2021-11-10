@@ -12,7 +12,7 @@ const NavItemSub = ({ variant, item, ...rest }) => {
   const coverImage = cover && getImage(cover)
   return (
     <Box __css={styles} {...rest}>
-      <Link to={slug}>
+      <Link to={`/${slug}`}>
         <Heading as="h4" size="md" className="item_header">
           {title}
         </Heading>

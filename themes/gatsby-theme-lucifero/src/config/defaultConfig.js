@@ -11,8 +11,7 @@ module.exports = {
     bgColor: '#A8A29E', // Used for setting manifest background color.
     themeColor: '#44403C', // Used for setting manifest and progress theme colors.
     author: 'Luciano Amodio',
-    ogImage: `lucifero.jpg`,
-    iconPath: '',
+    ogImage: '/astarte.jpg',
     url: 'http://localhost:8000',
   },
   // Organization information used for SEO
@@ -48,6 +47,7 @@ module.exports = {
   // Gatsby Configuration
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-starter-lucifero/.
 
+  // imagesPath: path.resolve('images'), // Directory for MDX posts
   pagesPath: path.resolve('pages'), // Directory for MDX posts
   dataPath: path.resolve('data'), // Directory for other data
   localesPath: path.resolve('locales'), // Directory for locales
@@ -55,10 +55,6 @@ module.exports = {
   embeddedImageWidth: 896, // MDX embedded image width. Used by gatsby-plugin-image for optimization
   embeddedVideoWidth: 920, // MDX embedded video width in pixels
 
-  iconPath: undefined, // Icon used for manifest icon creation.
-  iconList: [], // Icons used for the web manifest. Can be used to override iconPath for a more pixel perfect control.
-  iconCachePaths: ['**/*'], // Glob pattern path for the icons to be cached by the gatsby-plugin-offline
-
-  basePath: undefined, // Base path for mounting pages. Allows for multiple themes to be used in a single website
+  // basePath: undefined, // Base path for mounting pages. Allows for multiple themes to be used in a single website
   i18nPages: [],
 }

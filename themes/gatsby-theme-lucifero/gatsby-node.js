@@ -1,33 +1,26 @@
+// Based on
+// https://github.com/NickyMeuleman/gatsby-theme-nicky-blog/blob/master/theme/gatsby-node.js
 const fs = require('fs')
-const path = require('path')
-const urlJoin = require('url-join')
-
-const schema = require('./src/config/schema')
-
-const { withDefaults, withBasePath } = require('./src/config/index.js')
-
-const {
-  createMultilingualRedirects,
-  prepareMulilangualNodes,
-} = require(`./src/utils/i18n-redirects`)
 const { createFilePath } = require('gatsby-source-filesystem')
 
-const withThemePath = (relativePath) => {
-  let pathResolvedPath = path.resolve(relativePath)
-  let finalPath = pathResolvedPath
-  try {
-    // check if the user's site has the file
-    require.resolve(pathResolvedPath)
-  } catch (e) {
-    // if the user hasn't implemented the file,
-    finalPath = require.resolve(relativePath)
-  }
-  return finalPath
-}
+const typeDefinitions = require('./src/config/typeDefinitions')
+const MdxBlogPost = require('./src/config/models/MdxBlogPost')
+const { defaultTrueConfig } = require('./src/config/fieldExtensions')
+
+const {
+  getLanguageFromPath,
+  splitPath,
+  getSlug,
+  slugify,
+  getThemePaths,
+  withDefaults,
+  withBasePath,
+} = require('./src/config/index.js')
+
+const { createMlPages } = require('./src/utils/i18n-redirects')
 
 const onPreBootstrap = ({ reporter }, userConfig) => {
-  const options = withDefaults(userConfig)
-  const themePaths = [options.dataPath, options.pagesPath, options.localesPath]
+  const themePaths = getThemePaths(userConfig)
 
   themePaths.forEach((themePath) => {
     if (!fs.existsSync(themePath)) {
@@ -37,58 +30,203 @@ const onPreBootstrap = ({ reporter }, userConfig) => {
   })
 }
 
-const onCreateNode = ({ node, actions, getNode }, userConfig) => {
+const onCreateNode = (
+  { node, actions, getNode, createNodeId, createContentDigest },
+  userConfig
+) => {
   const options = withDefaults(userConfig)
-  const { createNodeField } = actions
-  const { languages, defaultLanguage } = options
+  const { createNode, createNodeField, createParentChildLink } = actions
 
-  // If using remote CMS check also `File` node here
-  if (node.internal.type === 'Mdx' /* && node.parent*/) {
-    const { slug } = node.frontmatter
-    const filePath = createFilePath({ node, getNode })
-    const pathLang = filePath.split('.').pop().replace('/', '')
-    const lang = (languages.includes(pathLang) && pathLang) || defaultLanguage
+  if (node.internal.type === 'Mdx') {
+    let slug = ''
+    const path = createFilePath({ node, getNode, trailingSlash: false })
+    const lang = getLanguageFromPath(path, options)
+    let pathParts = splitPath(path)
+    const pagesBasePath = pathParts[0]
 
-    // Route is the pathName without the pathPrefix, used for creating pages
-    const route = withBasePath(options, slug)
+    createNodeField({ node, name: 'langKey', value: lang })
+
+    // nodes in the areas/ folder will create {area}/{topic}/{posts}
+    if (pagesBasePath === 'areas') {
+      pathParts.shift()
+
+      if (!pathParts.length) {
+        // this is the root blog node, no page to create
+        createNodeField({ node, name: `type`, value: `blog` })
+        return
+      } else {
+        // the rest of pathParts create the real post slug
+        slug = withBasePath(options, pathParts.join('/'))
+        createNodeField({ node, name: 'slug', value: slug })
+        const area = pathParts.shift()
+        createNodeField({ node, name: `area`, value: area })
+
+        if (!pathParts.length) {
+          createNodeField({ node, name: `type`, value: `area` })
+        } else {
+          const topic = pathParts.shift()
+          createNodeField({ node, name: `topic`, value: topic })
+
+          if (!pathParts.length) {
+            createNodeField({ node, name: `type`, value: `topic` })
+          } else {
+            createNodeField({ node, name: `type`, value: `post` })
+            const fieldData = {
+              slug,
+              // here to transform entries into Tag nodes
+              tags: node.frontmatter.tags || [],
+              // here because the creation of Tag nodes needs this info.
+              published: node.frontmatter.published,
+            }
+
+            const proxyNode = {
+              ...fieldData,
+              id: createNodeId(`${node.id} >>> MdxBlogPost`),
+              parent: node.id,
+              children: [],
+              internal: {
+                type: `MdxBlogPost`,
+                contentDigest: node.internal.contentDigest,
+                content: JSON.stringify(fieldData),
+                description: `MdxBlogPost node`,
+              },
+            }
+            createNode(proxyNode)
+            createParentChildLink({ parent: node, child: proxyNode })
+          }
+        }
+      }
+    } else {
+      if (['ui'].includes(pagesBasePath)) {
+        createNodeField({ node, name: `type`, value: pagesBasePath })
+      } else {
+        if (node.frontmatter.slug) {
+          createNodeField({ node, name: `type`, value: `page` })
+        }
+      }
+      slug = withBasePath(options, getSlug(node, path))
+      createNodeField({ node, name: 'slug', value: slug })
+    }
+
+    // TODO: make this work or remove the options
+    // slug is the pathName without the pathPrefix, used for creating pages
+    // const pathName = urlJoin(options.pathPrefix, slug)
+    // const url = urlJoin(options.website.url, pathName)
 
     // Pathname is used for internal linking
-    const pathName = urlJoin(options.pathPrefix, route)
-
+    // createNodeField({ node, name: 'pathName', value: pathName })
     // URL is the absolute website url to the post
-    const url = urlJoin(options.website.url, pathName)
+    // createNodeField({ node, name: 'url', value: url })
+  }
 
-    // Set route/url/pathName/langKey fields
-    createNodeField({ node, name: 'route', value: route })
-    createNodeField({ node, name: 'pathName', value: pathName })
-    createNodeField({ node, name: 'url', value: url })
-    createNodeField({ node, name: 'langKey', value: lang })
+  // TODO: check this
+  if (node.internal.type === `MdxBlogPost`) {
+    // creating a Tag node for every entry in an MdxBlogPost tag array
+    node.tags.forEach((tag, i) => {
+      const fieldData = {
+        name: tag,
+        slug: slugify(tag),
+        // TODO: How to filter tags based on parents published field
+        // field on a tagnode to be able to filter nodes belonging to unpublished posts
+        // duplicate logic from blogpost published resolver.
+        postPublished: node.published === undefined ? true : node.published,
+      }
+
+      const proxyNode = {
+        ...fieldData,
+        id: createNodeId(`${node.id}${i} >>> Tag`),
+        parent: node.id,
+        children: [],
+        internal: {
+          type: `Tag`,
+          contentDigest: createContentDigest(fieldData),
+          content: JSON.stringify(fieldData),
+          description: `Tag node`,
+        },
+      }
+
+      createNode(proxyNode)
+      createParentChildLink({ parent: node, child: proxyNode })
+    })
   }
 }
 
-// Customize Gatsby schema
-const createSchemaCustomization = ({ actions }) => {
-  const { createTypes } = actions
-  createTypes(`#graphql
-     ${schema}
-  `)
+const createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes, createFieldExtension } = actions
+  const { buildObjectType } = schema
+
+  // Create custom directive that defaults a field to true if not specified
+  createFieldExtension(defaultTrueConfig)
+
+  createTypes(typeDefinitions, buildObjectType(MdxBlogPost))
 }
 
 const createPages = async ({ graphql, actions, reporter }, userConfig) => {
-  const options = withDefaults(userConfig)
-  const { createPage } = actions
-  const { basePath, defaultLanguage, languages } = options
-  const hasLanguages = languages.length > 1
-
   const result = await graphql(`
     query {
-      allMdx {
+      posts: allMdx(
+        filter: {
+          fields: { type: { eq: "post" } }
+          frontmatter: { published: { eq: true } }
+        }
+        sort: { fields: frontmatter___date, order: DESC }
+      ) {
         edges {
           node {
             id
             fileAbsolutePath
-            frontmatter {
+            fields {
               slug
+            }
+          }
+        }
+      }
+      pages: allMdx(filter: { fields: { type: { eq: "page" } } }) {
+        edges {
+          node {
+            id
+            fileAbsolutePath
+            fields {
+              slug
+            }
+          }
+        }
+      }
+      areas: allMdx(
+        filter: {
+          fields: { type: { eq: "area" } }
+          frontmatter: { published: { eq: true } }
+        }
+        sort: { fields: frontmatter___date, order: DESC }
+      ) {
+        edges {
+          node {
+            fields {
+              slug
+              area
+            }
+            frontmatter {
+              title
+            }
+          }
+        }
+      }
+      topics: allMdx(
+        filter: {
+          fields: { type: { eq: "topic" } }
+          frontmatter: { published: { eq: true } }
+        }
+        sort: { fields: frontmatter___date, order: DESC }
+      ) {
+        edges {
+          node {
+            fields {
+              slug
+              area
+              topic
+            }
+            frontmatter {
+              title
             }
           }
         }
@@ -100,34 +238,41 @@ const createPages = async ({ graphql, actions, reporter }, userConfig) => {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  const posts = result.data.allMdx.edges
+  createMlPages({
+    nodes: result.data.posts.edges,
+    template: `../templates/Post.js`,
+    userConfig,
+    actions,
+  })
 
-  const multilangualPosts = prepareMulilangualNodes(
-    posts,
-    defaultLanguage,
-    basePath
-  )
+  createMlPages({
+    nodes: result.data.pages.edges,
+    template: `../templates/Page.js`,
+    userConfig,
+    actions,
+  })
 
-  posts.forEach(({ node }, index) => {
-    if (hasLanguages) {
-      createMultilingualRedirects(
-        actions,
-        multilangualPosts,
-        node,
-        defaultLanguage,
-        basePath
-      )
-    }
+  createMlPages({
+    nodes: result.data.areas.edges,
+    template: `../templates/Area.js`,
+    context: (node) => ({
+      slug: node.fields.slug,
+      area: node.fields.area,
+    }),
+    userConfig,
+    actions,
+  })
 
-    createPage({
-      path: node.frontmatter.slug,
-      component: withThemePath(`./src/templates/Page.js`),
-      context: {
-        id: node.id,
-        prev: index === 0 ? null : posts[index - 1].node,
-        next: index === posts.length - 1 ? null : posts[index + 1].node,
-      },
-    })
+  createMlPages({
+    nodes: result.data.topics.edges,
+    template: `../templates/Topic.js`,
+    context: (node) => ({
+      slug: node.fields.slug,
+      area: node.fields.area,
+      topic: node.fields.topic,
+    }),
+    userConfig,
+    actions,
   })
 }
 

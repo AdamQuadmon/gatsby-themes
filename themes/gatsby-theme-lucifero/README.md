@@ -13,6 +13,13 @@
 
 A Satanic Gatsby theme featuring Chakra UI Dark/Light theme with MDX and other suff
 
+inspired by:
+
+- [@LekoArts/gatsby-themes](https://github.com/LekoArts/gatsby-themes)
+- [gatsby-theme-catalyst](https://github.com/ehowey/gatsby-theme-catalyst)
+- [gatsby-theme-nicky-blog](https://github.com/NickyMeuleman/gatsby-theme-nicky-blog)
+- [emgoto.com](https://github.com/emgoto/emgoto.com)
+
 ## Features
 
 - Chakra UI-based theming
@@ -71,6 +78,7 @@ This is a list of included plugins, the ones ending in***** are community plugin
 - [gatsby-plugin-image](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-image) - responsive images
 - [gatsby-plugin-sharp](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-sharp) - image processing functions built on the [Sharp image processing library](https://github.com/lovell/sharp)
 - [gatsby-transformer-sharp](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-transformer-sharp) - creates ImageSharp nodes
+- [react-wordcloud](https://github.com/chrisrzhou/react-wordcloud) react D3 wordcloud component
 
 ### Data
 
@@ -78,6 +86,7 @@ This is a list of included plugins, the ones ending in***** are community plugin
 - [gatsby-plugin-react-i18next](https://github.com/microapps/gatsby-plugin-react-i18next)* - translate your website using [react-i18next](https://react.i18next.com/)
 - [gatsby-transformer-yaml-full](https://github.com/stldo/gatsby-transformer-yaml-full)* - YAML parser for data content
 - [gatsby-plugin-mdx](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-mdx) - use [MDX](https://mdxjs.com/) for page content
+  - [mdx-yaml-full](https://github.com/kpfromer/mdx-yaml-full) - convert !mdx yaml tags to mdx
   - [gatsby-remark-images](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-images) - processes images in markdown so they can be used in the production build
   - [gatsby-remark-responsive-iframe](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-responsive-iframe) - wraps iframes or objects within markdown files in a responsive elastic container with a fixed aspect ratio.
   - [gatsby-remark-prismjs](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-prismjs) - adds syntax highlighting to code blocks in markdown files using [PrismJS](https://prismjs.com/)
@@ -88,16 +97,17 @@ This is a list of included plugins, the ones ending in***** are community plugin
   - [gatsby-remark-normalize-paths](https://github.com/cedricdelpoux/gatsby-remark-normalize-paths) - normalize paths in frontmatter and body of markdown files to be gatsby compliant
   - [gatsby-remark-external-links](https://github.com/JLongley/gatsby-remark-external-links) - adds the target and rel attributes to external links in markdown
   - [remark-codesandbox](https://github.com/kevin940726/remark-codesandbox) - create CodeSandbox directly from code blocks
+  - [rehype-slug](https://github.com/rehypejs/rehype-slug) - add `id` attributes to headings
+  - [rehype-sanitize](https://github.com/rehypejs/rehype-sanitize) - sanitize HTML
 
 ### SEO & Performances
 
 - [gatsby-plugin-robots-txt](https://github.com/mdreizin/gatsby-plugin-robots-txt)* -  creates `robots.txt` for your site
 - [gatsby-plugin-react-helmet](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-react-helmet) - implement [React Helmet](https://github.com/nfl/react-helmet) for SEO stuff
-- [gatsby-plugin-manifest](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-manifest) - allows users to add your site to their home screen on mobile browsers
+- [gatsby-plugin-breadcrumb](https://github.com/sbardian/gatsby-plugin-breadcrumb) - add breadcrumbs
 - [gatsby-plugin-sitemap](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-sitemap) - create a sitemap for your website
 - [gatsby-plugin-gdpr-cookies](https://github.com/andrezimpel/gatsby-plugin-gdpr-cookies)* - add Google Analytics (V4 is supported), Google Tag Manager, Facebook Pixel, TikTok Pixel and Hotjar in a GDPR form to your site
 - [gatsby-plugin-nprogress](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-nprogress) - shows the [nprogress](https://ricostacruz.com/nprogress/) indicator when a page is delayed
-- [gatsby-plugin-offline](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-offline) - support for making a Gatsby site work offline and more resistant to bad network connections
 - [gatsby-plugin-lodash](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-lodash) - Lodash webpack & Babel plugins
 
 ## Design

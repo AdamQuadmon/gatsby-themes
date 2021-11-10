@@ -22,6 +22,11 @@ const Map = () => {
   )
 
   const { src, address, lat, lng, zoom } = site.siteMetadata.maps
+
+  if (!src) {
+    return
+  }
+
   const defaultProps = {
     src,
     location: {

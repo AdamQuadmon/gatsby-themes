@@ -35,6 +35,7 @@ const NavBar = ({ variant, navItems, data, ...rest }) => {
             className="nav-items"
             display={{ base: 'none', md: 'inline-flex' }}
             spacing={1}
+            alignSelf="flex-end"
           >
             {navItems.map((navItem) => (
               <NavItem key={navItem.href} {...navItem} />

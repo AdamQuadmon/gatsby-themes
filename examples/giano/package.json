@@ -17,6 +17,8 @@
     "@adamquadmon/gatsby-theme-lucifero": "*",
     "@fontsource/im-fell-english": "^4.5.0",
     "@fontsource/sorts-mill-goudy": "^4.5.0",
+    "gatsby-plugin-manifest": "^3.14.0",
+    "gatsby-plugin-offline": "^4.14.0",
     "gatsby": "^3.14.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"

@@ -1,6 +1,10 @@
+//github.com/gatsbyjs/gatsby/discussions/31599#discussioncomment-1239988
 const urljoin = require('url-join')
 const { withDefaults, getLanguages } = require('./src/config/index.js')
 const remarkA11yEmoji = require('@fec/remark-a11y-emoji')
+// import rehypeSlug from 'rehype-slug'
+const rehypeSlug = require('rehype-slug')
+const rehypeSanitize = require('rehype-sanitize')
 
 const { NODE_ENV, CONTEXT: NETLIFY_ENV = NODE_ENV } = process.env
 
@@ -14,6 +18,7 @@ module.exports = (userConfig) => {
   // Make sure that pathPrefix is not empty
   const validatedPathPrefix = config.pathPrefix === '' ? '/' : config.pathPrefix
 
+  // TODO: Manifest seems to not work inside themes
   const { languages, defaultLanguage, localizeData } = getLanguages(config)
 
   const siteUrl = urljoin(config.website.url, config.pathPrefix)
@@ -31,6 +36,7 @@ module.exports = (userConfig) => {
       themeColor: config.website.themeColor,
       author: config.website.author,
       ogImage: config.website.ogImage,
+      iconPath: config.website.iconPath,
       siteUrl,
       keywords: config.keywords,
       organization: config.organization,
@@ -66,6 +72,13 @@ module.exports = (userConfig) => {
           name: 'locale',
         },
       },
+      // {
+      //   resolve: 'gatsby-source-filesystem',
+      //   options: {
+      //     path: config.imagesPath,
+      //     name: 'images',
+      //   },
+      // },
       {
         resolve: `gatsby-plugin-mdx`,
         options: {
@@ -79,15 +92,27 @@ module.exports = (userConfig) => {
                 width: config.embeddedVideoWidth,
               },
             },
-            {
-              resolve: 'gatsby-remark-relative-images',
-            },
-            {
-              resolve: 'gatsby-remark-normalize-paths',
-              options: {
-                pathFields: ['image', 'cover'],
-              },
-            },
+            // {
+            //   resolve: `gatsby-remark-relative-images`,
+            //   options: {
+            //     // [Optional] The root of "media_folder" in your config.yml
+            //     // Defaults to "static"
+            //     staticFolderName: config.imagesPath,
+            //     // staticFolderName: 'images',
+            //     // [Optional] Include the following fields, use dot notation for nested fields
+            //     // All fields are included by default
+            //     include: ['cover'],
+            //     // [Optional] Exclude the following fields, use dot notation for nested fields
+            //     // No fields are excluded by default
+            //     // exclude: ['cover.skip'],
+            //   },
+            // },
+            // {
+            //   resolve: 'gatsby-remark-normalize-paths',
+            //   options: {
+            //     pathFields: ['image', 'cover'],
+            //   },
+            // },
             {
               resolve: 'gatsby-remark-responsive-iframe',
             },
@@ -131,6 +156,7 @@ module.exports = (userConfig) => {
             },
           ],
           remarkPlugins: [remarkA11yEmoji],
+          rehypePlugins: [rehypeSlug, rehypeSanitize],
         },
       },
       {
@@ -172,31 +198,6 @@ module.exports = (userConfig) => {
       },
       'gatsby-plugin-react-helmet',
       {
-        resolve: 'gatsby-plugin-manifest',
-        options: {
-          name: config.website.title,
-          short_name: config.website.shortTitle,
-          description: config.website.description,
-          start_url: validatedPathPrefix,
-          background_color: config.website.bgColor,
-          theme_color: config.website.themeColor,
-          display: 'minimal-ui',
-          cache_busting_mode: 'none',
-          icon: config.iconPath,
-          icons: config.iconList,
-          lang: config.defaultLanguage,
-          localize: localizeData,
-        },
-      },
-      {
-        resolve: 'gatsby-plugin-offline',
-        options: {
-          workboxConfig: {
-            globPatterns: config.iconCachePaths,
-          },
-        },
-      },
-      {
         resolve: '@chakra-ui/gatsby-plugin',
         options: {
           resetCSS: true,
@@ -233,14 +234,7 @@ module.exports = (userConfig) => {
       {
         resolve: 'gatsby-transformer-yaml-full',
         options: {
-          plugins: [
-            // {
-            //   resolve: 'gatsby-yaml-full-markdown',
-            //   options: {
-            //     unwrapSingleLine: true
-            //   }
-            // }
-          ],
+          plugins: [`mdx-yaml-full`],
         },
       },
       {
@@ -287,6 +281,23 @@ module.exports = (userConfig) => {
               host: null,
             },
           },
+        },
+      },
+      {
+        resolve: `gatsby-plugin-breadcrumb`,
+        options: {
+          useAutoGen: true,
+          autoGenHomeLabel: `start`,
+          exclude: [
+            `**/dev-404-page/**`,
+            `**/404/**`,
+            `**/404.html`,
+            `**/offline-plugin-app-shell-fallback/**`,
+          ],
+          excludeOptions: {
+            separator: '.',
+          },
+          trailingSlashes: true,
         },
       },
       {

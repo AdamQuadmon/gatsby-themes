@@ -7,6 +7,12 @@ export const useSiteMetadata = () => {
         site {
           siteMetadata {
             title
+            titleTemplate
+            description
+            author
+            keywords
+            siteUrl
+            ogImage
             organization {
               name
               subTitle
@@ -16,6 +22,8 @@ export const useSiteMetadata = () => {
               iva
               copyright
               cellNumber
+              url
+              logo
             }
             socials {
               facebook

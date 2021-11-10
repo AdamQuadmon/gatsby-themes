@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.5 (Upcoming)
+
+- change defaultLanguage to `en`
+- change pages name
+- remove unused hooks
+- add logo
+
 ## 1.0.4
 
 ### Patch Changes

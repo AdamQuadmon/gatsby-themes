@@ -37,9 +37,15 @@ If you use npm 7 or above use the `--legacy-peer-deps` flag. If you use npm 6 yo
 npm install --legacy-peer-deps
 ```
 
+or with yarn
+
+```sh
+yarn install
+```
+
 ### 3. **Open the code and start customizing!**
 
-Start the site by running `npm run develop`.
+Start the site by running `npm run develop` or `yarn develop`.
 
 Your site is now running at `http://localhost:8000`!
 
@@ -52,6 +58,13 @@ If you want to learn more about how you can use a Gatsby starter that is configu
 This starter creates a new Gatsby site that installs and configures the theme [`@adamquadmon/gatsby-theme-lucifero`](https://github.com/AdamQuadmon/gatsby-themes/tree/main/themes/gatsby-theme-lucifero).
 
 Have a look at the theme's README and files to see what options are available and how you can shadow the various components including Chakra UI. Generally speaking you will want to place your files into `src/@adamquadmon/gatsby-theme-lucifero/` to shadow/override files. The Chakra UI config can be configured by creating a theme in `src/@chakra-ui/gatsby-plugin/` or shadowing files in `src/@adamquadmon/gatsby-theme-lucifero/@chakra-ui/gatsby-plugin/`.
+
+## Included in the starter
+
+`gatsby-plugin-manifest` and `gatsby-plugin-offline` does not works from themes, that's why are included in the starters
+
+- [gatsby-plugin-manifest](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-manifest) - allows users to add your site to their home screen on mobile browsers
+- [gatsby-plugin-offline](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-offline) - support for making a Gatsby site work offline and more resistant to bad network connections
 
 ## 🤔 Questions or problems?
 

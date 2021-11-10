@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  Heading,
-  Image,
-  Link,
-  Stack,
-  useStyleConfig,
-} from '@chakra-ui/react'
+import { Box, Heading, Image, Link, useStyleConfig } from '@chakra-ui/react'
 import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
@@ -24,8 +17,8 @@ const PageContent = ({ node, variant, ...rest }) => {
   return (
     <Box __css={styles} {...rest}>
       <Heading as="h1">{title}</Heading>
-      <Stack className={boxClass} direction={['column', '', 'row']}>
-        {!noCover && (
+      <Box className={boxClass}>
+        {!noCover && image && (
           <Image
             className="page_image"
             as={GatsbyImage}
@@ -40,7 +33,7 @@ const PageContent = ({ node, variant, ...rest }) => {
             body={body}
           />
         </Box>
-      </Stack>
+      </Box>
     </Box>
   )
 }

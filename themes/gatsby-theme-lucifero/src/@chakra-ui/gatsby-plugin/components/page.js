@@ -15,17 +15,35 @@ export const page = {
         },
       },
       '.has_cover': {
-        '.page_content': {
-          w: { base: 'full', md: '50%' },
-        },
+        w: '100%',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+
         '.page_image': {
+          w: { base: '100%', md: '50%' },
+        },
+        '.page_content': {
           w: { base: '100%', md: '50%' },
         },
       },
       '.no_cover': {
         '.page_content': {
-          w: 'full',
+          w: '100%',
           ml: 0,
+        },
+      },
+    },
+    variants: {
+      blog: {
+        '.has_cover': {
+          '.page_image': {
+            w: '100%',
+          },
+          '.page_content': {
+            w: '100%',
+            ml: 0,
+          },
         },
       },
     },

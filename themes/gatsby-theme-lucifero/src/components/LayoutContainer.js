@@ -13,14 +13,14 @@ import CookieConsent from '../components/CookieConsent'
 import { useNavItems } from '../hooks/use-navItems'
 import { useSiteMetadata } from '../hooks/use-siteMetadata'
 
-const LayoutComponent = ({ seoNode, isHome, title, pathname, children }) => {
+const LayoutComponent = ({ children, ...rest }) => {
   const { language } = React.useContext(I18nextContext)
   const navItems = useNavItems(language)
   const data = useSiteMetadata()
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Seo node={seoNode} isHome={isHome} pathname={pathname} title={title} />
+      <Seo {...rest} />
       <Flex flexDirection="column" minHeight="100vh">
         <NavBar navItems={navItems} data={data} />
         <Box as="main" flex="1 1 auto">

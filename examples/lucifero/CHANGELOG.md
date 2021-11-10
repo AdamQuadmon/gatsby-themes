@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.4 (Upcoming)
+
+- change pages name
+- remove unused hooks
+- add logo
+
 ## 1.0.3
 
 ### Patch Changes

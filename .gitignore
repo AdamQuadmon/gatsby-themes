@@ -1,4 +1,7 @@
+frontmatter.json
 .vscode
 .cache
 public
 node_modules
+/projects/
+csv/

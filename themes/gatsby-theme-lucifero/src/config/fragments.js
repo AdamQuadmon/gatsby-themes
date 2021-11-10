@@ -1,5 +1,16 @@
 import { graphql } from 'gatsby'
 
+export const localeEdgesFragment = graphql`
+  fragment LocaleEdges on LocaleConnection {
+    edges {
+      node {
+        ns
+        data
+        language
+      }
+    }
+  }
+`
 export const coverFieldsFragment = graphql`
   fragment CoverFields on MdxFrontmatter {
     cover {
@@ -14,63 +25,134 @@ export const coverFieldsFragment = graphql`
     }
   }
 `
-export const mdxFrontmatterFragment = graphql`
-  fragment MdxFrontmatter on Mdx {
-    frontmatter {
-      slug
-      order
-      title
-      ...CoverFields
-    }
-  }
-`
 
-export const placesFrontmatterFragment = graphql`
-  fragment PlacesFrontmatter on Mdx {
-    frontmatter {
-      slug
-      order
-      title
-      address
-      city
-      cap
-      region
-      places
-      noCover
-      # descriptions {
-      #   it
-      #   en
-      #   es
-      # }
-      ...CoverFields
-    }
-  }
-`
-export const mdxEdgesFragment = graphql`
-  fragment MdxEdges on MdxConnection {
-    edges {
-      node {
-        excerpt
-        body
-        fields {
-          langKey
-        }
-        ...MdxFrontmatter
+export const mdxOgImageFragment = graphql`
+  fragment MdxOgImage on MdxFrontmatter {
+    ogImage: cover {
+      publicURL
+      childImageSharp {
+        gatsbyImageData(
+          layout: FULL_WIDTH
+          placeholder: BLURRED
+          formats: [AUTO, WEBP, AVIF]
+        )
       }
     }
   }
 `
 
-export const placesEdgesFragment = graphql`
-  fragment PlacesEdges on MdxConnection {
+export const sectionFrontmatterFragment = graphql`
+  fragment SectionFrontmatter on Mdx {
+    frontmatter {
+      title
+      description
+    }
+  }
+`
+
+export const mdxNodeFragment = graphql`
+  fragment MdxNode on Mdx {
+    id
+    body
+    excerpt
+    fields {
+      langKey
+      type
+    }
+    frontmatter {
+      slug
+      order
+      title
+      noCover
+      navPage
+      ...CoverFields
+    }
+  }
+`
+
+export const navPageNodeFragment = graphql`
+  fragment NavPageNode on Mdx {
+    fields {
+      type
+      langKey
+    }
+    frontmatter {
+      slug
+      title
+      order
+      navPage
+    }
+  }
+`
+
+export const postNodeFragment = graphql`
+  fragment PostNode on Mdx {
+    id
+    body
+    fields {
+      slug
+      area
+      topic
+      langKey
+    }
+    frontmatter {
+      title
+      description
+      date(formatString: "MMM DD, YYYY")
+      tags
+      noCover
+      ...CoverFields
+    }
+  }
+`
+
+export const areaFragment = graphql`
+  fragment AreaGroup on MdxConnection {
+    totalCount
+    group(field: fields___area) {
+      fieldValue
+      totalCount
+    }
+  }
+`
+// TODO: Sorting on fields that need arguments to resolve is deprecated
+// move topic and area data in md and filter by it
+export const topicFragment = graphql`
+  fragment TopicGroup on MdxConnection {
+    totalCount
+    group(field: fields___topic) {
+      fieldValue
+      totalCount
+    }
+  }
+`
+
+export const mdxEdgesFragment = graphql`
+  fragment MdxEdges on MdxConnection {
     edges {
       node {
-        excerpt
-        body
-        fields {
-          langKey
-        }
-        ...PlacesFrontmatter
+        ...MdxNode
+      }
+    }
+  }
+`
+
+export const navPagesEdgesFragment = graphql`
+  fragment NavPagesEdges on MdxConnection {
+    edges {
+      node {
+        ...NavPageNode
+      }
+    }
+  }
+`
+
+export const postsEdgesFragment = graphql`
+  fragment PostsEdges on MdxConnection {
+    totalCount
+    edges {
+      node {
+        ...PostNode
       }
     }
   }

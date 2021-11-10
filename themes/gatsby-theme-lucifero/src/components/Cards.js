@@ -43,7 +43,7 @@ const CardBox = ({
   const content = (descriptions?.it && descriptions[language]) || text
   return (
     <Card className="card_box">
-      {/* <GatsbyLink to={`${slug}`}> */}
+      {/* <GatsbyLink to={`/${slug}`}> */}
       <Box w={'100%'} className="image">
         <Image
           h={'200px'}

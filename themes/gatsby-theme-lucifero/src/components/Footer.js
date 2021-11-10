@@ -51,7 +51,7 @@ const Footer = ({ data, navItems, variant }) => {
           </Box>
           <Stack className="second_column">
             {navItems.map((item) => (
-              <Link key={item.href} as={GatsbyLink} to={item.href}>
+              <Link key={item.href} as={GatsbyLink} to={`/${item.href}`}>
                 {item.label}
               </Link>
             ))}

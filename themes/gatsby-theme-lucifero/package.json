@@ -93,6 +93,6 @@
     "directory": "themes/gatsby-theme-lucifero"
   },
   "engines": {
-    "node": ">=v14.18.1"
+    "node": ">=v14.18.2"
   }
 }

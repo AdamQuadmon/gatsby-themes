@@ -4,20 +4,17 @@ import { graphql } from 'gatsby'
 import Layout from '../components/LayoutContainer'
 import Breadcrumbs from '../components/Breadcrumbs'
 import Sections from '../components/Blog/Sections'
-import LatestPosts from '../components/Blog/latest'
 
 const AreaPage = ({ data, pageContext }) => {
   let { breadcrumb } = pageContext
   const {
     section: { frontmatter },
-    latest,
   } = data
 
   return (
     <Layout seo={frontmatter}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Sections data={data} field="topic" />
-      {/* <LatestPosts posts={latest} /> */}
     </Layout>
   )
 }

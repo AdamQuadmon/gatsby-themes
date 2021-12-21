@@ -7,14 +7,17 @@ import { footer } from './components/footer'
 import { heading } from './components/heading'
 import { hero } from './components/hero'
 import { link } from './components/link'
+import { list } from './components/list'
 import { logo } from './components/logo'
 import { icon } from './components/icon'
+import { mdx } from './components/mdx'
 import { navbar } from './components/navbar'
 import { navbarTop } from './components/navbarTop'
 import { navItem } from './components/navItem'
 import { navItemSub } from './components/navItemSub'
 import { page } from './components/page'
 import { services } from './components/services'
+import { text } from './components/text'
 
 export const components = {
   components: {
@@ -27,13 +30,16 @@ export const components = {
     ...heading,
     ...hero,
     ...link,
+    ...list,
     ...logo,
     ...icon,
+    ...mdx,
     ...navbar,
     ...navbarTop,
     ...navItem,
     ...navItemSub,
     ...page,
     ...services,
+    ...text,
   },
 }

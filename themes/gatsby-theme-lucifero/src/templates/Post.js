@@ -14,7 +14,7 @@ export default function PostTemplate({ data, pageContext }) {
   const { breadcrumb /*, previous, next*/ } = pageContext
   const hasToc = !!tableOfContents?.items
   const variant = hasToc ? 'toc' : null
-  const styles = useStyleConfig('Post', { variant })
+  const styles = useStyleConfig('PostPage', { variant })
   return (
     <Layout seoNode={post}>
       <Breadcrumbs breadcrumb={breadcrumb} />

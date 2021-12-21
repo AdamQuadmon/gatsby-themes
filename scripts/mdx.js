@@ -20,6 +20,8 @@ const getDirectories = function (src, callback) {
 
 const contentPath = 'examples/giuno/pages/areas'
 const outputPath = 'csv/'
+// const getValue = (e) => e.name
+const getValue = (e) => e.id
 
 // contains frontmatter attributes use count
 let attributesCount = {}
@@ -68,8 +70,8 @@ const parseContent = (fileData) => {
     if (topic) {
       pushCounter(categoriesCount, topic, allCagegories)
       _category = allCagegories.find((o) => o.name === topic)
-      pushValue(_area, 'categories', _category.id)
-      pushValue(_category, 'areas', _area.id)
+      pushValue(_area, 'categories', getValue(_category))
+      pushValue(_category, 'areas', getValue(_area))
     }
   }
 
@@ -82,11 +84,11 @@ const parseContent = (fileData) => {
         pushCounter(tagsCount, tag, allTags)
         let _tag = allTags.find((o) => o.name === tag)
         if (_area) {
-          pushValue(_area, 'tags', _tag.id)
-          pushValue(_tag, 'areas', _area.id)
+          pushValue(_area, 'tags', getValue(_tag))
+          pushValue(_tag, 'areas', getValue(_area))
           if (_category) {
-            pushValue(_tag, 'categories', _category.id)
-            pushValue(_category, 'tags', _tag.id)
+            pushValue(_tag, 'categories', getValue(_category))
+            pushValue(_category, 'tags', getValue(_tag))
           }
         }
       })
@@ -95,16 +97,17 @@ const parseContent = (fileData) => {
 
   allPosts.push({
     slug: fileData.slug,
-    area: _area && _area.id,
-    category: _category && _category.id,
+    area: _area && getValue(_area),
+    category: _category && getValue(_category),
     post_slug: postSlug,
-    tags: tags && tags.map((tag) => allTags.find((o) => o.name === tag).id),
+    tags:
+      tags && tags.map((tag) => getValue(allTags.find((o) => o.name === tag))),
     title,
     description,
-    image: cover,
+    // image: cover,
     published,
-    created_at: date,
-    content: content.body,
+    // created_at: date,
+    // content: content.body,
     //   software,
   })
 }

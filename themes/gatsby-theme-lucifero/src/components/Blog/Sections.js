@@ -1,32 +1,52 @@
 import React from 'react'
 
-import { Box, Flex, Heading, Text, useStyleConfig } from '@chakra-ui/react'
+import { useTranslation } from 'gatsby-plugin-react-i18next'
+import { Box, useStyleConfig } from '@chakra-ui/react'
 
-import Card from './Card'
-import { getCounted } from './PostCount'
+import MDXProvider from '../MdxProvider'
+import FlexContainer from '../FlexContainer'
+import PostCard from './PostCard'
+import Title from './Title'
+import PostCount, { getCounted } from './PostCount'
+import PostsContainer from './PostsContainer'
 
 const Sections = ({ data, field, variant }) => {
-  const { section, sections, published, future } = data
+  const { section, sections, published, future, latest } = data
 
   if (!section) {
     return null
   }
 
-  const {
-    frontmatter: { title, description },
-  } = section
+  const { body, frontmatter } = section
+  const { title, description } = frontmatter
   const counts = getCounted(published, future)
+  const { t } = useTranslation()
   const styles = useStyleConfig('Sections', { variant })
 
   return (
     <Box __css={styles}>
-      <Heading as="h2">{title}</Heading>
-      <Text as="h3">{description}</Text>
-      <Flex className="cards_box">
-        {sections.edges.map(({ node }) => (
-          <Card key={node.id} node={node} count={counts[node.fields[field]]} />
-        ))}
-      </Flex>
+      <Title title={title} subtitle={description}></Title>
+      <FlexContainer>
+        {sections.edges.map(({ node }) => {
+          const { id, fields } = node
+          const TitleSide = <PostCount count={counts[fields[field]]} />
+          return (
+            <PostCard
+              key={id}
+              node={node}
+              titleSide={TitleSide}
+              titleSize="xl"
+              variant="sections"
+            />
+          )
+        })}
+      </FlexContainer>
+      <MDXProvider frontmatter={frontmatter} body={body} />
+      <PostsContainer
+        variant="latest"
+        posts={latest}
+        title={t('latestPosts')}
+      />
     </Box>
   )
 }

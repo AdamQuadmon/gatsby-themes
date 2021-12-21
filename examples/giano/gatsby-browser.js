@@ -1,2 +1,2 @@
-import '@fontsource/sorts-mill-goudy';
-import '@fontsource/im-fell-english';
+import '@fontsource/lato'
+import '@fontsource/im-fell-english'

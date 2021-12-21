@@ -1,12 +1,8 @@
 import React from 'react'
-import { Box, Heading, Image, Link, useStyleConfig } from '@chakra-ui/react'
-import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
+import { Box, Heading, Image, useStyleConfig } from '@chakra-ui/react'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import MDXProvider from './MdxProvider'
-
-// Provide common components here
-const shortcodes = { GatsbyLink, Link }
 
 const PageContent = ({ node, variant, ...rest }) => {
   const styles = useStyleConfig('Page', { variant })
@@ -16,7 +12,9 @@ const PageContent = ({ node, variant, ...rest }) => {
   const boxClass = !noCover ? 'has_cover' : 'no_cover'
   return (
     <Box __css={styles} {...rest}>
-      <Heading as="h1">{title}</Heading>
+      <Heading as="h1" size="2xl">
+        {title}
+      </Heading>
       <Box className={boxClass}>
         {!noCover && image && (
           <Image
@@ -26,13 +24,7 @@ const PageContent = ({ node, variant, ...rest }) => {
             alt={title}
           />
         )}
-        <Box className="page_content">
-          <MDXProvider
-            components={shortcodes}
-            frontmatter={frontmatter}
-            body={body}
-          />
-        </Box>
+        <MDXProvider frontmatter={frontmatter} body={body} />
       </Box>
     </Box>
   )

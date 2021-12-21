@@ -2,33 +2,23 @@ export const page = {
   Page: {
     baseStyle: {
       pb: 4,
-      h1: {
-        my: 4,
-        fontSize: { base: '4xl', sm: '5xl', lg: '6xl' },
-      },
-      '.page_content': {
-        pl: { base: 0, md: 4 },
-        p: {
-          my: 2,
-          textIndent: 16,
-          fontSize: 'lg',
-        },
-      },
       '.has_cover': {
         w: '100%',
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        mt: 4,
 
         '.page_image': {
           w: { base: '100%', md: '50%' },
+          mb: 8,
         },
-        '.page_content': {
+        '.mdx_content': {
           w: { base: '100%', md: '50%' },
         },
       },
       '.no_cover': {
-        '.page_content': {
+        '.mdx_content': {
           w: '100%',
           ml: 0,
         },
@@ -40,7 +30,7 @@ export const page = {
           '.page_image': {
             w: '100%',
           },
-          '.page_content': {
+          '.mdx_content': {
             w: '100%',
             ml: 0,
           },

@@ -2,9 +2,8 @@
 const urljoin = require('url-join')
 const { withDefaults, getLanguages } = require('./src/config/index.js')
 const remarkA11yEmoji = require('@fec/remark-a11y-emoji')
-// import rehypeSlug from 'rehype-slug'
 const rehypeSlug = require('rehype-slug')
-const rehypeSanitize = require('rehype-sanitize')
+// const rehypeSanitize = require('rehype-sanitize')
 
 const { NODE_ENV, CONTEXT: NETLIFY_ENV = NODE_ENV } = process.env
 
@@ -19,7 +18,7 @@ module.exports = (userConfig) => {
   const validatedPathPrefix = config.pathPrefix === '' ? '/' : config.pathPrefix
 
   // TODO: Manifest seems to not work inside themes
-  const { languages, defaultLanguage, localizeData } = getLanguages(config)
+  const { languages, defaultLanguage } = getLanguages(config)
 
   const siteUrl = urljoin(config.website.url, config.pathPrefix)
 
@@ -72,6 +71,7 @@ module.exports = (userConfig) => {
           name: 'locale',
         },
       },
+      'gatsby-plugin-mdx-embed',
       // {
       //   resolve: 'gatsby-source-filesystem',
       //   options: {
@@ -121,6 +121,7 @@ module.exports = (userConfig) => {
               options: {
                 maxWidth: config.embeddedImageWidth,
                 showCaptions: ['title', 'alt'],
+                linkImagesToOriginal: false,
               },
             },
             {
@@ -156,7 +157,10 @@ module.exports = (userConfig) => {
             },
           ],
           remarkPlugins: [remarkA11yEmoji],
-          rehypePlugins: [rehypeSlug, rehypeSanitize],
+          rehypePlugins: [
+            rehypeSlug,
+            // rehypeSanitize
+          ],
         },
       },
       {

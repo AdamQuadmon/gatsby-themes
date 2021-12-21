@@ -18,7 +18,7 @@ const localizeData = [
     start_url: 'it',
     lang: 'it',
     name: 'Giano',
-    shortName: 'Giano',
+    short_name: 'Giano',
     description: 'sito web in due lingue',
   },
 ]

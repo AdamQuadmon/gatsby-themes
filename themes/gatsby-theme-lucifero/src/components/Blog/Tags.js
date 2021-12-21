@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useTranslation } from 'gatsby-plugin-react-i18next'
-import { Box, Text } from '@chakra-ui/react'
+import { HStack, Text } from '@chakra-ui/react'
 
 const Tags = ({ tags }) => {
   if (!tags || !tags.length) {
@@ -9,12 +9,10 @@ const Tags = ({ tags }) => {
   }
   const { t } = useTranslation()
   return (
-    <Box>
-      <Text>{t('tags')}</Text>
-      {tags.map((item) => (
-        <Text key={item}>{item}</Text>
-      ))}
-    </Box>
+    <HStack className="tags">
+      <Text className="label">{t('tags')}</Text>
+      <Text>{tags.join(', ')}</Text>
+    </HStack>
   )
 }
 

@@ -12,7 +12,7 @@ import {
 import { Trans } from 'gatsby-plugin-react-i18next'
 import { Link as GatsbyLink } from 'gatsby'
 import Logo from './Logo'
-import Map from './Map'
+import GMap from './GMap'
 import SocialButtons from './SocialButtons'
 import LangSelector from './LangSelector'
 
@@ -57,7 +57,7 @@ const Footer = ({ data, navItems, variant }) => {
             ))}
           </Stack>
         </Flex>
-        <Map />
+        <GMap />
         <Text className="copyright">
           © {new Date().getFullYear()} {copyright}
         </Text>

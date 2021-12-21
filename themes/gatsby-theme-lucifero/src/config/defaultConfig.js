@@ -39,6 +39,9 @@ module.exports = {
     lng: 10.899881621452812,
     zoom: 12,
   },
+  ui: {
+    home: ['hero', 'sections'],
+  },
   keywords: ['i18n', 'mdx', 'pages'],
   languages: ['en'],
   defaultLanguage: 'en',
@@ -52,8 +55,8 @@ module.exports = {
   dataPath: path.resolve('data'), // Directory for other data
   localesPath: path.resolve('locales'), // Directory for locales
 
-  embeddedImageWidth: 896, // MDX embedded image width. Used by gatsby-plugin-image for optimization
-  embeddedVideoWidth: 920, // MDX embedded video width in pixels
+  embeddedImageWidth: 992, // MDX embedded image width. Used by gatsby-plugin-image for optimization
+  embeddedVideoWidth: 992, // MDX embedded video width in pixels
 
   // basePath: undefined, // Base path for mounting pages. Allows for multiple themes to be used in a single website
   i18nPages: [],

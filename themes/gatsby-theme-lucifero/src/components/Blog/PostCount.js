@@ -3,32 +3,6 @@ import React from 'react'
 import { useTranslation } from 'gatsby-plugin-react-i18next'
 import { Box, Text } from '@chakra-ui/react'
 
-const HasCount = ({ count }) => {
-  const { t } = useTranslation()
-  return (
-    <Box>
-      <Text>
-        <Text as="span">{t('articles')}</Text>: {count.published + count.future}
-        (<Text as="span">{count.published}</Text>/
-        <Text as="span">{count.future}</Text>)
-      </Text>
-    </Box>
-  )
-}
-
-const NoCount = () => {
-  const { t } = useTranslation()
-  return (
-    <Box>
-      <Text>{t('articles')}</Text>: <Text>0</Text>
-    </Box>
-  )
-}
-
-const PostCount = ({ count }) => {
-  return count ? <HasCount count={count} /> : <NoCount />
-}
-
 const initCount = (count, posts) => {
   posts.group.map((v) => (count[v.fieldValue] = { published: 0, future: 0 }))
 }
@@ -46,6 +20,36 @@ export const getCounted = (published, future) => {
   addCount(count, future, 'future')
 
   return count
+}
+
+const Count = ({ count }) => {
+  const { t } = useTranslation()
+  const published = count.published || 0
+  const future = count.future || 0
+  const total = published + future
+  return (
+    <Box>
+      <Text>
+        <Text as="span">{t('posts')}</Text>: {total}(
+        <Text as="span">{published}</Text>/<Text as="span">{future}</Text>)
+      </Text>
+    </Box>
+  )
+}
+
+const NoCount = () => {
+  const { t } = useTranslation()
+  return (
+    <Box>
+      <Text>
+        <Text as="span">{t('posts')}</Text>: <Text as="span">0</Text>
+      </Text>
+    </Box>
+  )
+}
+
+const PostCount = ({ count }) => {
+  return count ? <Count count={count} /> : <NoCount />
 }
 
 export default PostCount

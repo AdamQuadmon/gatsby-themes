@@ -2,33 +2,11 @@ import React from 'react'
 
 import { useTranslation } from 'gatsby-plugin-react-i18next'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
-import { Box, Heading, Image, useStyleConfig } from '@chakra-ui/react'
+import { Box, Image, Text, Stack, useStyleConfig } from '@chakra-ui/react'
 
+import Title from './Title'
 import Wordcloud, { countTags } from './Wordcloud'
-import PublishedPost from './PublishedPost'
-import FuturePost from './FuturePost'
-
-const PostsContainer = ({ component, posts, title, emptyTitle, variant }) => {
-  const styles = useStyleConfig('Posts', { variant })
-  const PostComponent = component
-  if (posts.edges.length < 1) {
-    if (!emptyTitle) {
-      return null
-    }
-
-    title = emptyTitle
-  }
-  return (
-    <Box __css={styles}>
-      <Heading as="h4">{title}</Heading>
-      <Box className="container">
-        {posts.edges.map(({ node }) => (
-          <PostComponent key={node.id} post={node} />
-        ))}
-      </Box>
-    </Box>
-  )
-}
+import PostsContainer from './PostsContainer'
 
 const Topic = ({ data, variant }) => {
   const {
@@ -40,6 +18,9 @@ const Topic = ({ data, variant }) => {
   } = data
 
   const tags = [...countTags(published), ...countTags(future)]
+  console.log(tags)
+  console.log(countTags(published))
+
   const hasPosts = published.edges.length || future.edges.length
   const image = getImage(cover)
   const styles = useStyleConfig('Topic', { variant })
@@ -47,36 +28,35 @@ const Topic = ({ data, variant }) => {
 
   return (
     <Box __css={styles}>
-      <Heading as="h2">{title}</Heading>
-      <Heading as="h3">{description}</Heading>
-      {!noCover && image && (
-        <Image
-          className="page_image"
-          as={GatsbyImage}
-          image={image}
-          alt={title}
-        />
-      )}
-      {hasPosts ? (
-        <Box>
-          <Wordcloud tags={tags} />
-          <PostsContainer
-            component={PublishedPost}
-            posts={published}
-            title={t('publishedPosts')}
-            emptyTitle={t('noPublishedPosts')}
+      <Title title={title} subtitle={description}></Title>
+      <Stack spacing={8}>
+        {!noCover && image && (
+          <Image
+            className="page_image"
+            as={GatsbyImage}
+            image={image}
+            alt={title}
           />
-          <PostsContainer
-            component={FuturePost}
-            posts={future}
-            title={t('futurePosts')}
-          />
-        </Box>
-      ) : (
-        <Box>
+        )}
+        {hasPosts ? (
+          <>
+            <Wordcloud tags={tags} />
+            <PostsContainer
+              variant="latest"
+              posts={published}
+              title={t('publishedPosts')}
+              emptyTitle={t('noPublishedPosts')}
+            />
+            <PostsContainer
+              variant="future"
+              posts={future}
+              title={t('futurePosts')}
+            />
+          </>
+        ) : (
           <Text>{t('noPosts')}</Text>
-        </Box>
-      )}
+        )}
+      </Stack>
     </Box>
   )
 }

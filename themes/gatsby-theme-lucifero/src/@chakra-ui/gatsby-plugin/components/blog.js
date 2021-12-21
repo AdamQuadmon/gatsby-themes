@@ -44,15 +44,7 @@ export const blog = {
     },
   },
 
-  Post: {
-    baseStyle: {
-      // '.no_cover': {
-      //   '.page_content': {
-      //     w: '100%',
-      //     ml: 0,
-      //   },
-      // },
-    },
+  PostPage: {
     variants: {
       toc: {
         w: '100%',

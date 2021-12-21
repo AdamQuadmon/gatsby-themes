@@ -22,12 +22,12 @@
   "dependencies": {
     "@browniebroke/gatsby-image-gallery": "^7.0.3",
     "@chakra-ui/gatsby-plugin": "^2.0.2",
-    "@chakra-ui/icons": "^1.0.17",
-    "@chakra-ui/react": "^1.6.12",
-    "@chakra-ui/system": "^1.7.6",
+    "@chakra-ui/icons": "^1.1.1",
+    "@chakra-ui/react": "^1.7.3",
+    "@chakra-ui/system": "^1.8.3",
     "@emotion/core": "^11.0.0",
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@fec/remark-a11y-emoji": "^3.1.0",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
@@ -61,7 +61,7 @@
     "gatsby-transformer-sharp": "^3.14.0",
     "gatsby-transformer-yaml-full": "^0.4.6",
     "gatsby-yaml-full-markdown": "^0.4.6",
-    "i18next": "^21.4.0",
+    "i18next": "^21.6.3",
     "lodash": "^4.17.21",
     "mdx-embed": "^0.0.22",
     "mdx-yaml-full": "^2.0.0",
@@ -70,14 +70,14 @@
     "react-country-flag": "^2.3.1",
     "react-error-boundary": "^3.1.4",
     "react-helmet": "^6.1.0",
-    "react-i18next": "^11.13.0",
+    "react-i18next": "^11.15.1",
     "react-icons": "^4.3.1",
     "react-typography": "^0.16.20",
     "react-wordcloud": "^1.2.7",
     "rehype-sanitize": "^4.0.0",
-    "rehype-slug": "^4.0.0",
+    "rehype-slug": "^4.0.1",
     "remark-codesandbox": "^0.10.0",
-    "remark-unwrap-images": "^3.0.0",
+    "remark-unwrap-images": "^3.0.1",
     "svgo": "^2.8.0",
     "typography": "^0.16.21",
     "url-join": "^4.0.1"
@@ -96,6 +96,6 @@
     "directory": "themes/gatsby-theme-lucifero"
   },
   "engines": {
-    "node": ">=v14.18.1"
+    "node": ">=v14.18.2"
   }
 }

@@ -7,12 +7,12 @@ export const useNavItems = (language) => {
   const areas = useAreas(language)
   const pages = useNavPages(language)
   const pagesItems = pages.map(({ node }) => ({
-    label: node.frontmatter.title,
-    href: node.frontmatter.slug,
+    label: node.meta.title,
+    href: node.slug,
   }))
   const areasItems = areas.map(({ node }) => ({
-    label: node.frontmatter.title,
-    href: node.fields.slug,
+    label: node.meta.title,
+    href: node.slug,
   }))
   return [...pagesItems, ...areasItems]
 }

@@ -1,61 +1,27 @@
 // Based on @wottpal suggestion
 // https://github.com/microapps/gatsby-plugin-react-i18next/issues/49#issuecomment-780695704
 const { merge } = require('lodash')
-
-const { withDefaults, getPageOptions } = require('../config/index.js')
-
-/**
- * Returns language code from file path of given node. As a fallback `defaultLanguage` is returned.
- */
-const getNodeLangCode = ({ fileAbsolutePath }, defaultLanguage = `en`) => {
-  // TODO: check if this works also with mdx
-  const langCodeRegex = /(?:[^/]*\.)(.*)(?:\.md)/
-  return (fileAbsolutePath || ``).match(langCodeRegex)?.[1] || defaultLanguage
-}
-
-/**
- * Returns relative file path of given node under given `basePath`
- * (optionally omitting file-extension)
- */
-const getNodeRelativePath = ({ fileAbsolutePath }, omitFileExt, basePath) => {
-  const absolutePath = fileAbsolutePath || ``
-  const relativePath = basePath
-    ? absolutePath.split(basePath)?.[1]
-    : absolutePath
-  if (!relativePath || !omitFileExt) return relativePath
-
-  return relativePath.split(`.`)?.[0]
-}
+const { withDefaults, withThemePath } = require('../config/index.js')
 
 const createMlPages = ({ nodes, template, context, userConfig, actions }) => {
+  const { createPage, createRedirect } = actions
   const options = withDefaults(userConfig)
   const allNodes = prepareMlNodes(nodes, options)
-  const { createPage, createRedirect } = actions
 
   nodes.forEach(({ node }, index) => {
-    if (!node.fields.slug) {
-      // TODO: improve notifications
-      console.log('node has no slug field: ', node.fileAbsolutePath)
-      return
-    }
-    createMlRedirects(createRedirect, allNodes, node, options)
-
+    createMlRedirects(createRedirect, allNodes, node, options.defaultLanguage)
     createPage(getPageOptions(nodes, index, template, context))
   })
 }
 
 const prepareMlNodes = (allNodes, options) => {
-  const { basePath, defaultLanguage, languages } = options
+  const { defaultLanguage, languages } = options
   if (languages.length < 1) return []
 
-  return allNodes.map(({ node: translatedNode }) => ({
-    translatedNode,
-    translatedNodeLangCode: getNodeLangCode(translatedNode, defaultLanguage),
-    translatedNodeRelativePath: getNodeRelativePath(
-      translatedNode,
-      true,
-      basePath
-    ),
+  return allNodes.map(({ node: tNode }) => ({
+    tNode,
+    tLang: getLang(tNode, defaultLanguage),
+    tPath: removeExtensions(tNode),
   }))
 }
 
@@ -63,39 +29,74 @@ const prepareMlNodes = (allNodes, options) => {
  * Determines equally named markdown-files with a different language,
  * and creates redirects from the theoretically translated url to the actual slug.
  */
-const createMlRedirects = (createRedirect, allNodes, node, options) => {
-  const { basePath, defaultLanguage, languages } = options
-  if (languages.length < 1) return
+const createMlRedirects = (createRedirect, allNodes, node, defaultLanguage) => {
+  const { slug } = node
 
-  const { slug } = node.fields
-  const langCode = getNodeLangCode(node, defaultLanguage)
-  const relativePath = getNodeRelativePath(node, true, basePath)
+  const lang = getLang(node, defaultLanguage)
+  const path = removeExtensions(node)
 
   allNodes
-    .filter(
-      ({ translatedNodeLangCode, translatedNodeRelativePath }) =>
-        langCode !== translatedNodeLangCode &&
-        relativePath === translatedNodeRelativePath
-    )
-    .forEach(({ translatedNode, translatedNodeLangCode }) => {
+    .filter(({ tLang, tPath }) => lang !== tLang && path === tPath)
+    .forEach(({ tNode, tLang }) => {
       const translatedUrlPath = getTranslatedUrlPath(
         slug,
-        langCode,
-        translatedNodeLangCode,
-        true,
-        defaultLanguage
+        lang,
+        tLang,
+        defaultLanguage,
+        true
       )
       const newRedirect = {
         fromPath: translatedUrlPath,
-        toPath: `/${translatedNode.fields.slug}`,
+        toPath: `/${tNode.slug}`,
         isPermanent: true,
         force: true,
         redirectInBrowser: true,
       }
 
-      console.log(`Adding Redirect: `, newRedirect)
+      console.log(`Redirect: ${translatedUrlPath} --> /${tNode.slug}`)
       createRedirect(newRedirect)
     })
+}
+
+const getPageOptions = (nodes, index, template, context = (node) => ({})) => {
+  const { node } = nodes[index]
+  const slug = node.slug
+
+  return {
+    path: slug,
+    component: withThemePath(template),
+    context: merge(
+      {
+        id: node.id,
+        slug,
+        prev: index === 0 ? null : nodes[index - 1].node,
+        next: index === nodes.length - 1 ? null : nodes[index + 1].node,
+      },
+      context(node)
+    ),
+  }
+}
+
+/**
+ * Returns language code from file path of given node. As a fallback `defaultLanguage` is returned.
+ */
+const getLang = (node, defaultLanguage) => {
+  const langRegex = /(?:[^/]*\.)(.*)(?:\.md)/
+  const { fileAbsolutePath } = node
+  if (!fileAbsolutePath) {
+    console.log('getLang', node)
+  } else {
+    return fileAbsolutePath.match(langRegex)?.[1] || defaultLanguage
+  }
+}
+
+const removeExtensions = (node) => {
+  const { fileAbsolutePath } = node
+  if (!fileAbsolutePath) {
+    console.log('removeExtensions', node)
+  } else {
+    return fileAbsolutePath.split(`.`)?.[0]
+  }
 }
 
 /**
@@ -106,14 +107,14 @@ const getTranslatedUrlPath = (
   slug,
   sourceLang,
   destLang,
-  omitDefaultLang,
-  defaultLanguage
+  defaultLanguage,
+  omitDefaultLang
 ) => {
   const baseUrlPathRegex = new RegExp(`(?:${sourceLang}/)?(.*)`)
   const baseUrlPath = slug.match(baseUrlPathRegex)?.[1] || ``
 
   return omitDefaultLang && destLang === defaultLanguage
-    ? `${baseUrlPath}`
+    ? `/${baseUrlPath}`
     : `/${destLang}/${baseUrlPath}`
 }
 

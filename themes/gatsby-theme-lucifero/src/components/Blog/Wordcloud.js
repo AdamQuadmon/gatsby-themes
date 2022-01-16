@@ -10,7 +10,7 @@ import 'tippy.js/dist/tippy.css'
 export const countTags = (posts) => {
   let tags = []
   posts.edges.map(({ node }) => {
-    tags = tags.concat(node.frontmatter.tags)
+    tags = tags.concat(node.tags)
   })
 
   return tags

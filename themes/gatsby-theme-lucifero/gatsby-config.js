@@ -9,7 +9,6 @@ const { NODE_ENV, CONTEXT: NETLIFY_ENV = NODE_ENV } = process.env
 
 const { GA_TRACKING_ID, TM_TRACKING_ID, FB_PIXEL_ID, TT_PIXEL_ID, HOTJAR_ID } =
   process.env
-
 module.exports = (userConfig) => {
   // Merge user and default configurations
   const config = withDefaults(userConfig)
@@ -17,7 +16,6 @@ module.exports = (userConfig) => {
   // Make sure that pathPrefix is not empty
   const validatedPathPrefix = config.pathPrefix === '' ? '/' : config.pathPrefix
 
-  // TODO: Manifest seems to not work inside themes
   const { languages, defaultLanguage } = getLanguages(config)
 
   const siteUrl = urljoin(config.website.url, config.pathPrefix)
@@ -69,6 +67,33 @@ module.exports = (userConfig) => {
         options: {
           path: config.localesPath,
           name: 'locale',
+        },
+      },
+      {
+        resolve: `@imgix/gatsby`,
+        options: {
+          // This is the domain of your imgix source, which can be created at
+          // https://dashboard.imgix.com/.
+          // Only "Web Proxy" imgix sources can be used for this configuration.
+          domain: `${config.imgix.source}.imgix.net`,
+
+          // This is the source's secure token. Can be found under the "Security"
+          // heading in your source's configuration page, and revealed by tapping
+          // "Show Token".
+          // secureURLToken: config.imgix.token,
+
+          // This configures the plugin to work in proxy mode.
+          // sourceType: ImgixSourceType.WebProxy,
+
+          // These are some default imgix parameters to set for each image. It is
+          // recommended to have at least this minimal configuration.
+          defaultImgixParams: { auto: ['compress', 'format'] },
+          disableIxlibParam: true,
+
+          // This configures which nodes to modify.
+          fields: [
+            // Add an object to this array for each node type you want to modify. Follow the instructions below for this.
+          ],
         },
       },
       'gatsby-plugin-mdx-embed',
@@ -241,6 +266,7 @@ module.exports = (userConfig) => {
           plugins: [`mdx-yaml-full`],
         },
       },
+      `gatsby-transformer-csv`,
       {
         resolve: 'gatsby-plugin-react-i18next',
         options: {
@@ -356,6 +382,7 @@ module.exports = (userConfig) => {
           }),
         },
       },
+      'gatsby-image-sitemap',
     ],
   }
 }

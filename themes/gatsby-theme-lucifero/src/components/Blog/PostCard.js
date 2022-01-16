@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
+import Image from '../Image'
 import { motion } from 'framer-motion'
 import {
   Box,
@@ -15,10 +15,10 @@ import {
 
 const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
   const {
-    fields: { slug },
-    frontmatter: { title, cover, noCover, description },
+    slug,
+    title,
+    meta: { folder, cover, noCover, description },
   } = node
-  const image = getImage(cover)
   const styles = useStyleConfig('PostCard', { variant })
   const isFuture = variant === 'future'
 
@@ -48,8 +48,8 @@ const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
                 >
                   <Image
                     className="image"
-                    as={GatsbyImage}
-                    image={image}
+                    folder={folder}
+                    file={cover}
                     alt={title}
                   />
                 </motion.div>

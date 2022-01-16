@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'gatsby-plugin-react-i18next'
 import { Box, useStyleConfig } from '@chakra-ui/react'
 
-import MDXProvider from '../MdxProvider'
+import MDXWrapper from '../MDXWrapper'
 import FlexContainer from '../FlexContainer'
 import PostCard from './PostCard'
 import Title from './Title'
@@ -17,8 +17,8 @@ const Sections = ({ data, field, variant }) => {
     return null
   }
 
-  const { body, frontmatter } = section
-  const { title, description } = frontmatter
+  const { body, meta } = section
+  const { title, description } = meta
   const counts = getCounted(published, future)
   const { t } = useTranslation()
   const styles = useStyleConfig('Sections', { variant })
@@ -41,7 +41,7 @@ const Sections = ({ data, field, variant }) => {
           )
         })}
       </FlexContainer>
-      <MDXProvider frontmatter={frontmatter} body={body} />
+      <MDXWrapper frontmatter={meta} body={body} />
       <PostsContainer
         variant="latest"
         posts={latest}

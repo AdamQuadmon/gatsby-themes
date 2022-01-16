@@ -8,6 +8,8 @@ import {
   UnorderedList,
   ListItem,
 } from '@chakra-ui/react'
+import { customComponents } from './MdxCustomComponents'
+import Image from './Image'
 import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
 
 const CustomLink = (props) => {
@@ -49,5 +51,6 @@ export const baseComponents = {
   ul,
   ol,
   li,
+  Image,
 }
-export const mdxComponents = { ...baseComponents }
+export const mdxComponents = { ...baseComponents, ...customComponents }

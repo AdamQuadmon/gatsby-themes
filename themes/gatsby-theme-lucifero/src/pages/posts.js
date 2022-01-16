@@ -9,7 +9,7 @@ const PostsPage = ({ data }) => {
   let nodes = {}
 
   edges.forEach(({ node }) => {
-    const { area, topic, slug } = node.fields
+    const { area, topic, slug } = node
     if (area && topic) {
       if (!nodes[area]) nodes[area] = {}
       if (!nodes[area][topic]) nodes[area][topic] = []
@@ -38,7 +38,7 @@ const PostsPage = ({ data }) => {
                       <Heading>{topicKey}</Heading>
                       <ul>
                         {posts.map((node) => {
-                          const { title } = node.frontmatter
+                          const { title } = node.meta
                           return <li>{title}</li>
                         })}
                       </ul>
@@ -61,23 +61,11 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    posts: allMdx(
-      filter: { fields: { type: { eq: "post" } } }
+    posts: allBlogPost(
+      filter: { type: { eq: "post" } }
       sort: { fields: fileAbsolutePath, order: ASC }
     ) {
-      edges {
-        node {
-          fields {
-            slug
-            area
-            topic
-          }
-          frontmatter {
-            title
-            published
-          }
-        }
-      }
+      ...PostsEdges
     }
   }
 `

@@ -60,4 +60,5 @@ module.exports = {
 
   // basePath: undefined, // Base path for mounting pages. Allows for multiple themes to be used in a single website
   i18nPages: [],
+  imgix: false,
 }

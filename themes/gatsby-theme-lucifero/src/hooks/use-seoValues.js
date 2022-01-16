@@ -13,7 +13,7 @@ export const useSeoValues = ({
   isBlogPost,
 }) => {
   const seo = useSeoDefault()
-  const postMeta = seoMeta || (node && node.frontmatter) || {}
+  const postMeta = seoMeta || (node && node.meta) || {}
 
   const { siteUrl, author, organization } = seo
 

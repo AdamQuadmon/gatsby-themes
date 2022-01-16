@@ -35,7 +35,7 @@ export const pageQuery = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    post: mdx(id: { eq: $id }) {
+    post: blogPost(id: { eq: $id }) {
       ...PostNode
     }
   }

@@ -1,3 +1,13 @@
+const { createWriteStream, promises } = require('fs')
+const glob = require('glob')
+const fastcsv = require('fast-csv')
+
+const outputPath = 'csv/'
+
+const getDirectories = function (src, callback) {
+  glob(src + '/**/*{.md,.mdx}', callback)
+}
+
 // sort a-z then for key value
 const sortObjectByKeys = (o) => {
   return Object.keys(o)
@@ -42,9 +52,37 @@ const filterPostSlug = (slug) => {
   return slug
 }
 
+const getSortedKeys = (obj) => {
+  return Object.keys(sortObjectByKeys(obj))
+}
+
+// return { slug, content } of file path
+const getFile = async (contentPath, file) => {
+  const slug = file.split(contentPath)[1].split('.md')[0]
+  const content = await promises.readFile(file, 'utf8')
+  return {
+    slug,
+    content,
+  }
+}
+
+const pushValue = (object, key, value) => {
+  if (!object[key]) object[key] = []
+  if (value && !object[key].includes(value)) object[key].push(value)
+}
+
+const writeCsv = (data, name) => {
+  const ws = createWriteStream(`${outputPath}${name}.csv`)
+  fastcsv.write(data, { headers: true }).pipe(ws)
+}
+
 module.exports = {
-  sortObjectByKeys,
-  pushCounter,
-  filterPostSlug,
+  getDirectories,
+  getFile,
+  writeCsv,
+  getSortedKeys,
   getCountsArray,
+  pushValue,
+  filterPostSlug,
+  pushCounter,
 }

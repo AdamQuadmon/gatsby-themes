@@ -1,14 +1,14 @@
 import React from 'react'
-import { Box, Heading, Image, useStyleConfig } from '@chakra-ui/react'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
+import { Box, Heading, useStyleConfig } from '@chakra-ui/react'
+import Image from './Image'
 
-import MDXProvider from './MdxProvider'
+import MDXWrapper from './MDXWrapper'
 
-const PageContent = ({ node, variant, ...rest }) => {
+const PageContent = ({ page, variant, ...rest }) => {
   const styles = useStyleConfig('Page', { variant })
-  const { frontmatter, body } = node
-  const { cover, title, noCover } = frontmatter
-  const image = getImage(cover)
+  const { body, title, meta } = page
+  const { folder, cover, noCover } = meta
+
   const boxClass = !noCover ? 'has_cover' : 'no_cover'
   return (
     <Box __css={styles} {...rest}>
@@ -16,15 +16,15 @@ const PageContent = ({ node, variant, ...rest }) => {
         {title}
       </Heading>
       <Box className={boxClass}>
-        {!noCover && image && (
+        {!noCover && cover && (
           <Image
             className="page_image"
-            as={GatsbyImage}
-            image={image}
+            file={cover}
+            folder={folder}
             alt={title}
           />
         )}
-        <MDXProvider frontmatter={frontmatter} body={body} />
+        <MDXWrapper meta={meta} body={body} />
       </Box>
     </Box>
   )

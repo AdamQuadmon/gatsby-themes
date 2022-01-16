@@ -1,25 +1,22 @@
 import React from 'react'
-import { Box, Image, Heading, useStyleConfig } from '@chakra-ui/react'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { Box, Heading, useStyleConfig } from '@chakra-ui/react'
+import Image from '../Image'
 
 import { Link } from 'gatsby'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 const NavItemSub = ({ variant, item, ...rest }) => {
   const styles = useStyleConfig('NavItemSub', { variant })
-  const { body, frontmatter } = item
-  const { cover, slug, title } = frontmatter
-  const coverImage = cover && getImage(cover)
+
+  const { slug, excerpt, meta } = item
+  const { folder, cover, title } = meta
   return (
     <Box __css={styles} {...rest}>
       <Link to={`/${slug}`}>
         <Heading as="h4" size="md" className="item_header">
           {title}
         </Heading>
-        {cover && <Image as={GatsbyImage} image={coverImage} alt={title} />}
-        <Box className="item_content">
-          <MDXRenderer>{body}</MDXRenderer>
-        </Box>
+        {cover && <Image file={cover} folder={folder} alt={title} />}
+        <Box className="item_content">{excerpt}</Box>
       </Link>
     </Box>
   )

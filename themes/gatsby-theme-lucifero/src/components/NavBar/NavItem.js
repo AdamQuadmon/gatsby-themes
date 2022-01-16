@@ -32,7 +32,7 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
         >
           <Container maxW="container.lg" display="flex">
             {children.map(({ node }) => (
-              <NavItemSub item={node} key={node.frontmatter.slug} />
+              <NavItemSub item={node} key={node.slug} />
             ))}
           </Container>
         </Box>

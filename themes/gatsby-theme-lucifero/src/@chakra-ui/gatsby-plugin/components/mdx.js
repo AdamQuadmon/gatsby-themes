@@ -1,5 +1,5 @@
 export const mdx = {
-  MDXProvider: {
+  MDXWrapper: {
     baseStyle: ({ colorMode }) => ({
       figure: {
         my: 8,

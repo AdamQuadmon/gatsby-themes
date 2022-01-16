@@ -1,16 +1,14 @@
 import { useStaticQuery, graphql } from 'gatsby'
+import { edgesByLanguage } from '../utils/utils'
 
 export const useNavPages = (language) => {
-  const pages = useStaticQuery(
+  const data = useStaticQuery(
     graphql`
       # NOTE: don't use PageQuery or PagesQuery as these are reserved
       query NavPagesQuery {
-        allMdx(
-          filter: {
-            fields: { type: { eq: "page" } }
-            frontmatter: { navPage: { eq: true } }
-          }
-          sort: { fields: frontmatter___order }
+        allBlogPost(
+          filter: { type: { eq: "page" }, meta: { navPage: { eq: true } } }
+          sort: { fields: order }
         ) {
           ...NavPagesEdges
         }
@@ -18,11 +16,7 @@ export const useNavPages = (language) => {
     `
   )
 
-  if (language) {
-    return pages.allMdx.edges.filter(({ node }) => {
-      return node.fields.langKey === language
-    })
-  }
+  const { allBlogPost } = data
 
-  return pages.allMdx.edges
+  return edgesByLanguage(allBlogPost, language)
 }

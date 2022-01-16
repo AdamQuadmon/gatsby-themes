@@ -3,13 +3,16 @@ import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
 import PageContent from '../components/PageContent'
+import Breadcrumbs from '../components/Breadcrumbs'
 
-export default function PageTemplate({ data }) {
+export default function PageTemplate({ data, pageContext }) {
   const { page } = data
+  const { breadcrumb /*, previous, next*/ } = pageContext
 
   return (
     <Layout seoNode={page}>
-      <PageContent node={page} />
+      <Breadcrumbs breadcrumb={breadcrumb} />
+      <PageContent page={page} />
     </Layout>
   )
 }
@@ -19,8 +22,8 @@ export const pageQuery = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    page: mdx(id: { eq: $id }) {
-      ...MdxNode
+    page: page(id: { eq: $id }) {
+      ...PageNode
     }
   }
 `

@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const { merge } = require('lodash')
 const urlJoin = require('url-join')
@@ -25,24 +26,58 @@ const withThemePath = (relativePath) => {
 const getLanguages = (config) => {
   const languages = config.languages
   const defaultLanguage = config.defaultLanguage
-  const otherLanguages = languages.filter((lang) => lang !== defaultLanguage)
 
   return { languages, defaultLanguage }
 }
 
-const getPageOptions = (nodes, index, template, context = (node) => ({})) => {
-  const { node } = nodes[index]
+const getPagePathInfo = (node, path, options) => {
+  let pathParts = splitPath(path)
+  let slug, type, area, topic
+  const base = pathParts[0]
+
+  if (base === 'areas') {
+    pathParts.shift()
+    if (!pathParts.length) {
+      slug = ''
+      type = 'blog'
+    } else {
+      // the rest of pathParts create the real post slug
+      slug = withBasePath(options, pathParts.join('/'))
+      area = pathParts.shift()
+
+      if (!pathParts.length) {
+        type = 'area'
+      } else {
+        topic = pathParts.shift()
+
+        if (!pathParts.length) {
+          type = 'topic'
+        } else {
+          type = 'post'
+        }
+      }
+    }
+  } else {
+    slug = withBasePath(options, getSlug(node, path))
+
+    if (['ui'].includes(base)) {
+      // TODO fix this or remove
+      // it was used to add content for UI
+    } else {
+      if (node.frontmatter.slug) {
+        type = 'page'
+      }
+    }
+  }
+
   return {
-    path: node.fields.slug,
-    component: withThemePath(template),
-    context: merge(
-      {
-        id: node.id,
-        prev: index === 0 ? null : nodes[index - 1].node,
-        next: index === nodes.length - 1 ? null : nodes[index + 1].node,
-      },
-      context(node)
-    ),
+    base,
+    fields: {
+      slug,
+      type,
+      area,
+      topic,
+    },
   }
 }
 
@@ -72,6 +107,42 @@ const getThemePaths = (userConfig) => {
   ]
 }
 
+const createThemePaths = (reporter, userConfig) => {
+  const themePaths = getThemePaths(userConfig)
+
+  themePaths.forEach((themePath) => {
+    if (!fs.existsSync(themePath)) {
+      reporter.info(`creating the ${themePath} directory`)
+      fs.mkdirSync(themePath)
+    }
+  })
+}
+
+const createProxyNode = (gatsbyNodeHelpers, fieldData, type, index) => {
+  const { node, actions, createNodeId, createContentDigest } = gatsbyNodeHelpers
+  const { createNode, createParentChildLink } = actions
+  const contentDigest =
+    type !== 'Tag'
+      ? node.internal.contentDigest
+      : createContentDigest(fieldData)
+  const id = type !== 'Tag' ? node.id : `${node.id}${index}`
+
+  const proxyNode = {
+    ...fieldData,
+    id: createNodeId(`${id} >>> ${type}`),
+    parent: node.id,
+    children: [],
+    internal: {
+      type,
+      contentDigest,
+      content: JSON.stringify(fieldData),
+      description: `${type} node`,
+    },
+  }
+  createNode(proxyNode)
+  createParentChildLink({ parent: node, child: proxyNode })
+}
+
 const getSlug = (node, filePath) => {
   if (node.frontmatter.slug) {
     return node.frontmatter.slug
@@ -88,6 +159,26 @@ const slugify = (str) => {
   return slug
 }
 
+// Create custom directive that defaults a field to true if not specified
+const stringToBoolean = (string) => {
+  switch (string.toLowerCase().trim()) {
+    case 'true':
+    case 'yes':
+    case '1':
+      return true
+    case 'false':
+    case 'no':
+    case '0':
+    case null:
+      return false
+
+    default:
+      return Boolean(string)
+  }
+}
+
+// https://github.com/NickyMeuleman/gatsby-theme-nicky-blog/blob/master/theme/src/utils.js
+// https://github.com/LekoArts/gatsby-themes/blob/main/themes/gatsby-theme-emilia-core/gatsby-node.js
 // helper that grabs the mdx resolver when given a string fieldname
 const mdxResolverPassthrough =
   (fieldName) => async (source, args, context, info) => {
@@ -103,13 +194,15 @@ const mdxResolverPassthrough =
   }
 
 module.exports = {
+  createThemePaths,
+  createProxyNode,
   getLanguages,
   getLanguageFromPath,
-  getPageOptions,
+  getPagePathInfo,
   getSlug,
-  getThemePaths,
   splitPath,
   slugify,
+  stringToBoolean,
   withBasePath,
   withDefaults,
   withThemePath,

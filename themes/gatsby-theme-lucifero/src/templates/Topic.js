@@ -9,7 +9,7 @@ const TopicPage = ({ data, pageContext }) => {
   let { breadcrumb } = pageContext
 
   return (
-    <Layout title={data.section.frontmatter.title}>
+    <Layout title={data.section.meta.title}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Topic data={data} />
     </Layout>
@@ -23,24 +23,18 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    section: mdx(fields: { slug: { eq: $slug } }) {
+    section: blogPost(slug: { eq: $slug }) {
       ...PostNode
     }
-    published: allMdx(
-      filter: {
-        fields: { topic: { eq: $topic }, type: { eq: "post" } }
-        frontmatter: { published: { eq: true } }
-      }
-      sort: { fields: frontmatter___date, order: DESC }
+    published: allBlogPost(
+      filter: { topic: { eq: $topic }, published: { eq: true } }
+      sort: { fields: date, order: DESC }
     ) {
       ...PostsEdges
     }
-    future: allMdx(
-      filter: {
-        fields: { topic: { eq: $topic }, type: { eq: "post" } }
-        frontmatter: { published: { eq: false } }
-      }
-      sort: { fields: frontmatter___title, order: ASC }
+    future: allBlogPost(
+      filter: { topic: { eq: $topic }, published: { eq: false } }
+      sort: { fields: date, order: ASC }
     ) {
       ...PostsEdges
     }

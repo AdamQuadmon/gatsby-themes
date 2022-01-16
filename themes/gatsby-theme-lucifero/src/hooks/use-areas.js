@@ -1,12 +1,13 @@
 import { useStaticQuery, graphql } from 'gatsby'
+import { edgesByLanguage } from '../utils/utils'
 
 export const useAreas = (language) => {
-  const areas = useStaticQuery(
+  const data = useStaticQuery(
     graphql`
       query AreasQuery {
-        allMdx(
-          filter: { fields: { type: { eq: "area" } } }
-          sort: { fields: frontmatter___date, order: ASC }
+        allBlogPost(
+          filter: { type: { eq: "area" } }
+          sort: { fields: date, order: ASC }
         ) {
           ...PostsEdges
         }
@@ -14,11 +15,7 @@ export const useAreas = (language) => {
     `
   )
 
-  if (language) {
-    return areas.allMdx.edges.filter(({ node }) => {
-      return node.fields.langKey === language
-    })
-  }
+  const { allBlogPost } = data
 
-  return areas.allMdx.edges
+  return edgesByLanguage(allBlogPost, language)
 }

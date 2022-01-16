@@ -1,40 +1,34 @@
 import { useStaticQuery, graphql } from 'gatsby'
+import { edgesByLanguage } from '../utils/utils'
 
-export const useHomeAreas = () => {
+export const useHomeAreas = (language) => {
   const data = useStaticQuery(
     graphql`
       query {
-        section: mdx(fields: { type: { eq: "blog" } }) {
+        section: blogPost(type: { eq: "blog" }) {
           ...PostNode
         }
-        sections: allMdx(
-          filter: { fields: { type: { eq: "area" } } }
-          sort: { fields: frontmatter___date, order: ASC }
+        sections: allBlogPost(
+          filter: { type: { eq: "area" } }
+          sort: { fields: date, order: ASC }
+        ) {
+          #
+
+          ...PostsEdges
+        }
+        latest: allBlogPost(
+          filter: { type: { eq: "post" }, published: { eq: true } }
+          sort: { fields: date, order: DESC }
         ) {
           ...PostsEdges
         }
-        latest: allMdx(
-          filter: {
-            fields: { type: { eq: "post" } }
-            frontmatter: { published: { eq: true } }
-          }
-          sort: { fields: frontmatter___date, order: DESC }
-        ) {
-          ...PostsEdges
-        }
-        published: allMdx(
-          filter: {
-            fields: { type: { eq: "post" } }
-            frontmatter: { published: { eq: true } }
-          }
+        published: allBlogPost(
+          filter: { type: { eq: "post" }, published: { eq: true } }
         ) {
           ...AreaGroup
         }
-        future: allMdx(
-          filter: {
-            fields: { type: { eq: "post" } }
-            frontmatter: { published: { eq: false } }
-          }
+        future: allBlogPost(
+          filter: { type: { eq: "post" }, published: { eq: false } }
         ) {
           ...AreaGroup
         }
@@ -42,5 +36,13 @@ export const useHomeAreas = () => {
     `
   )
 
-  return data
+  const { section, sections, latest, published, future } = data
+
+  return {
+    section: edgesByLanguage(section, language),
+    sections: edgesByLanguage(sections, language),
+    latest: edgesByLanguage(latest, language),
+    published: edgesByLanguage(published, language),
+    future: edgesByLanguage(future, language),
+  }
 }

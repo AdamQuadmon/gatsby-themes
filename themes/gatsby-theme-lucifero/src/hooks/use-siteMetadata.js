@@ -30,6 +30,11 @@ export const useSiteMetadata = () => {
               instagram
               whatsapp
             }
+            config {
+              imgix {
+                source
+              }
+            }
           }
         }
       }

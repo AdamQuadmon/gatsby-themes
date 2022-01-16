@@ -24,7 +24,7 @@ const LangSelector = ({ showLabel, ...props }) => {
             <Box key={lng}>
               <Button
                 as={GatsbyLink}
-                to={`${originalPath}`}
+                to={originalPath}
                 language={lng}
                 size="sm"
               >

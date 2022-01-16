@@ -8,11 +8,11 @@ import Sections from '../components/Blog/Sections'
 const AreaPage = ({ data, pageContext }) => {
   let { breadcrumb } = pageContext
   const {
-    section: { frontmatter },
+    section: { meta },
   } = data
 
   return (
-    <Layout seo={frontmatter}>
+    <Layout seo={meta}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Sections data={data} field="topic" />
     </Layout>
@@ -30,36 +30,39 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    section: mdx(fields: { slug: { eq: $slug } }) {
+    section: blogPost(slug: { eq: $slug }) {
       ...PostNode
     }
-    sections: allMdx(
-      filter: { fields: { area: { eq: $area }, type: { eq: "topic" } } }
-      sort: { fields: frontmatter___date, order: ASC }
+    sections: allBlogPost(
+      filter: { area: { eq: $area }, type: { eq: "topic" } }
+      sort: { fields: date, order: ASC }
     ) {
       ...PostsEdges
     }
-    latest: allMdx(
+    latest: allBlogPost(
       filter: {
-        fields: { type: { eq: "post" }, area: { eq: $area } }
-        frontmatter: { published: { eq: true } }
+        published: { eq: true }
+        type: { eq: "post" }
+        area: { eq: $area }
       }
-      sort: { fields: frontmatter___date, order: DESC }
+      sort: { fields: date, order: DESC }
     ) {
       ...PostsEdges
     }
-    published: allMdx(
+    published: allBlogPost(
       filter: {
-        fields: { area: { eq: $area }, type: { eq: "post" } }
-        frontmatter: { published: { eq: true } }
+        published: { eq: true }
+        type: { eq: "post" }
+        area: { eq: $area }
       }
     ) {
       ...TopicGroup
     }
-    future: allMdx(
+    future: allBlogPost(
       filter: {
-        fields: { area: { eq: $area }, type: { eq: "post" } }
-        frontmatter: { published: { eq: false } }
+        published: { eq: false }
+        type: { eq: "post" }
+        area: { eq: $area }
       }
     ) {
       ...TopicGroup

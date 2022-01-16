@@ -10,6 +10,7 @@ import { link } from './components/link'
 import { list } from './components/list'
 import { logo } from './components/logo'
 import { icon } from './components/icon'
+import { image } from './components/image'
 import { mdx } from './components/mdx'
 import { navbar } from './components/navbar'
 import { navbarTop } from './components/navbarTop'
@@ -33,6 +34,7 @@ export const components = {
     ...list,
     ...logo,
     ...icon,
+    ...image,
     ...mdx,
     ...navbar,
     ...navbarTop,

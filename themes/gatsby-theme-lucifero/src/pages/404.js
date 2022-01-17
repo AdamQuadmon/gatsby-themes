@@ -1,17 +1,14 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Heading, Link, Text } from '@chakra-ui/react'
-import {
-  Link as GatsbyLink,
-  Trans,
-  useTranslation,
-} from 'gatsby-plugin-react-i18next'
+import { Heading, Text } from '@chakra-ui/react'
+import { Trans, useTranslation } from 'gatsby-plugin-react-i18next'
 import Layout from '../components/LayoutContainer'
+import { LinkTranslated } from '../components/Link'
 
 const NotFoundPage = () => {
   const { t } = useTranslation()
   return (
-    <Layout title={t('404notFound')} pathname="404">
+    <Layout page={{ meta: { title: t('404notFound') }, slug: '404' }}>
       <Heading>
         <Trans>404notFound</Trans>
       </Heading>
@@ -22,9 +19,9 @@ const NotFoundPage = () => {
         </Text>{' '}
         <Trans>notFound</Trans>
       </Text>
-      <Link as={GatsbyLink} to="/">
+      <LinkTranslated to="/">
         <Trans>goHome</Trans>
-      </Link>
+      </LinkTranslated>
     </Layout>
   )
 }

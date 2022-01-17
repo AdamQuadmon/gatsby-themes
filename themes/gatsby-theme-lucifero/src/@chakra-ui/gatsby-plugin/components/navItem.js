@@ -4,8 +4,9 @@ export const navItem = {
       textTransform: 'uppercase',
       w: 'full',
       color: colorMode === 'dark' ? 'gray.200' : 'gray.500',
-      fontSize: 'md',
       '.chakra-button': {
+        fontSize: { base: 'sm', lg: 'md' },
+        height: { base: '28px', lg: '32px' },
         bg: colorMode === 'dark' ? 'gray.900' : 'gray.200',
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,

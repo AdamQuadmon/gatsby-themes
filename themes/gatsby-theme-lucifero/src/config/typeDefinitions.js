@@ -134,19 +134,64 @@ module.exports = `#graphql
     topic: String
     tags: [Tag!] @link(by: "name")
   }
+
+  type AlbumsCsv implements Node {
+    id: ID!
+    section: String!
+    order: Int
+    album: String!
+    title: String
+    page: String
+    pageTitle: String
+  }
+  type ImagesCsv implements Node {
+    id: ID!
+    account: String!
+    domain: String!
+    section: String!
+    folder: String!
+    album: String!
+    file: String!
+    order: Int @defaultNumber(n:999)
+    area: String
+    zone: String
+    season: String
+    month: Int @defaultNumber
+    daytime: String
+    alt: String
+    title: String
+    format:String
+    size:Int @defaultNumber
+    width:Int @defaultNumber
+    height:Int @defaultNumber
+    vratio: Float @defaultNumber
+    hratio: Float @defaultNumber
+    space:String
+    channels:String
+    depth:String
+    density:String
+    chromaSubsampling:String
+    compression:String
+    isProgressive:Boolean @defaultFalse
+    hasProfile:Boolean @defaultFalse
+    hasAlpha:Boolean @defaultFalse
+    orientation:Boolean @defaultFalse
+  }
   type PagesCsv implements Node {
     id: ID!
     file: String!
     slug: String!
     title: String
+    metaTitle: String
     description: String
     published: Boolean @defaultTrue
     order: String
     navPage: Boolean @defaultFalse
     noCover: Boolean @defaultFalse
     folder: String
+    ogImage: String
     cover: String
-    gallery: String
+    album: String
     pax: String
     region: String
     city: String

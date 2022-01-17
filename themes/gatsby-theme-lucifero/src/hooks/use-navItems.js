@@ -14,5 +14,11 @@ export const useNavItems = (language) => {
     label: node.meta.title,
     href: node.slug,
   }))
-  return [...pagesItems, ...areasItems]
+  const otherItems = [
+    {
+      label: 'gallery',
+      href: '/gallery',
+    },
+  ]
+  return [...pagesItems, ...areasItems, ...otherItems]
 }

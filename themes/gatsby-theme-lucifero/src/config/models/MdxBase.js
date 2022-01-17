@@ -57,7 +57,7 @@ const MdxBase = {
       type: `Int`,
       resolve: async (source, args, context, info) => {
         const meta = await getMetaBySlug(source.slug, context)
-        const order = meta.order || 999
+        const order = (meta && meta.order) || 999
 
         return order
       },
@@ -66,7 +66,7 @@ const MdxBase = {
       type: `Boolean`,
       resolve: async (source, args, context, info) => {
         const meta = await getMetaBySlug(source.slug, context)
-        const published = stringToBoolean(meta.published)
+        const published = (meta && stringToBoolean(meta.published)) || false
 
         return published
       },
@@ -79,7 +79,7 @@ const MdxBase = {
       },
       resolve: async (source, args, context, info) => {
         const meta = await getMetaBySlug(source.slug, context)
-        if (meta.date) {
+        if (meta && meta.date) {
           return meta.date
         }
         const mdxNode = getParent(source, context)
@@ -96,7 +96,7 @@ const MdxBase = {
       resolve: async (source, args, context, info) => {
         const meta = await getMetaBySlug(source.slug, context)
 
-        if (meta.updatedAt) {
+        if (meta && meta.updatedAt) {
           return meta.updatedAt
         }
         const mdxNode = getParent(source, context)

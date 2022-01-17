@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Heading, useStyleConfig } from '@chakra-ui/react'
 import Image from '../Image'
 
-import { Link } from 'gatsby'
+import { Link } from '../Link'
 
 const NavItemSub = ({ variant, item, ...rest }) => {
   const styles = useStyleConfig('NavItemSub', { variant })

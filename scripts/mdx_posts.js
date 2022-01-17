@@ -44,7 +44,8 @@ const parsePost = (fileData, postsData) => {
   const topic = filterPostSlug(pathParts.length && pathParts.shift())
   const postSlug = filterPostSlug(pathParts.join('/'))
 
-  const { title, description, tags, published, date } = content.attributes
+  const { metaTitle, title, description, tags, published, date } =
+    content.attributes
 
   let _area, _category
   if (area) {
@@ -89,8 +90,11 @@ const parsePost = (fileData, postsData) => {
         getValue(postsData.allTags.find((o) => o.name === tag))
       ),
     title,
+    metaTitle,
     description,
-    // image: cover,
+    folder,
+    cover,
+    ogImage,
     published,
     // created_at: date,
     // content: content.body,

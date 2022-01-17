@@ -17,3 +17,15 @@ import 'prismjs/themes/prism-solarizedlight.css'
 // exports.onInitialClientRender = () => {
 //   window.___GATSBYGRAM_INITIAL_RENDER_COMPLETE = true
 // }
+
+import React from 'react'
+import { AnimatePresence } from 'framer-motion'
+
+// Logs before the client route changes
+export const onPreRouteUpdate = ({ location }) => {
+  window.oldLocation = location.pathname
+}
+// Wraps every page in animation
+export const wrapPageElement = ({ element }) => {
+  return <AnimatePresence exitBeforeEnter>{element}</AnimatePresence>
+}

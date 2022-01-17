@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, useStyleConfig } from '@chakra-ui/react'
-import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
+import { LinkTranslated } from './Link'
 
 import LogoImage from './LogoImage'
 
@@ -9,7 +9,7 @@ const Logo = ({ title, variant }) => {
   return (
     <Button
       __css={styles}
-      as={GatsbyLink}
+      as={LinkTranslated}
       alt={title}
       h={'100%'}
       variant="ghost"

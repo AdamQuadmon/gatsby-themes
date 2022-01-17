@@ -5,14 +5,13 @@ import {
   Spacer,
   HStack,
   Text,
-  Link,
   useStyleConfig,
 } from '@chakra-ui/react'
-import { Trans } from 'gatsby-plugin-react-i18next'
+import { LinkExternal } from '../Link'
 import LangSelector from '../LangSelector'
+import SocialButtons from '../SocialButtons'
 import Hamburger from './Hamburger'
 import ThemeSwitcher from './ThemeSwitcher'
-import SocialButtons from '../SocialButtons'
 
 const NavBarTop = ({ variant, mobileNav, data, ...rest }) => {
   const styles = useStyleConfig('NavBarTop', { variant })
@@ -28,13 +27,9 @@ const NavBarTop = ({ variant, mobileNav, data, ...rest }) => {
         <Text as="span">{address2short}</Text>
       </Box>
       <Spacer />
-      <Link
-        className="phoneNumber"
-        href={`https://wa.me/${whatsapp}`}
-        isExternal
-      >
+      <LinkExternal className="phoneNumber" href={`https://wa.me/${whatsapp}`}>
         <Text as="span">{cellNumber}</Text>
-      </Link>
+      </LinkExternal>
       <Spacer />
       <HStack>
         <LangSelector />

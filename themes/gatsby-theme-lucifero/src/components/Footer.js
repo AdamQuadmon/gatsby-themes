@@ -3,14 +3,13 @@ import {
   Box,
   Container,
   Spacer,
-  Link,
   Flex,
   Stack,
   Text,
   useStyleConfig,
 } from '@chakra-ui/react'
 import { Trans } from 'gatsby-plugin-react-i18next'
-import { Link as GatsbyLink } from 'gatsby'
+import { Link } from './Link'
 import Logo from './Logo'
 import GMap from './GMap'
 import SocialButtons from './SocialButtons'
@@ -51,7 +50,7 @@ const Footer = ({ data, navItems, variant }) => {
           </Box>
           <Stack className="second_column">
             {navItems.map((item) => (
-              <Link key={item.href} as={GatsbyLink} to={`/${item.href}`}>
+              <Link key={item.href} to={`/${item.href}`}>
                 {item.label}
               </Link>
             ))}

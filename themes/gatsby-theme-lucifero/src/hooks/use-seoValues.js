@@ -1,72 +1,58 @@
 import { useSeoDefault } from '../hooks/use-seoDefault'
 
-export const useSeoValues = ({
-  isHome,
-  pathname,
-  node,
-  seo: seoMeta,
-  title: metaTitle,
-  description: metaDescription,
-  keywords: metaKeywords,
-  image: metaImage,
-  meta,
-  isBlogPost,
-}) => {
+const getImage = (meta, seo) => {
+  let image = meta.ogImage || meta.cover
+  if (image) {
+    image = meta.folder ? [meta.folder, image].join('/') : image
+  } else {
+    image = seo.ogImage
+  }
+  return `https://${seo.imgixSource}.imgix.net/${image}?w=1200&h=630&crop=edges&auto=compress,format`
+}
+
+// https://neilpatel.com/blog/open-graph-meta-tags/
+export const useSeoValues = ({ isHome, page }) => {
   const seo = useSeoDefault()
-  const postMeta = seoMeta || (node && node.meta) || {}
-
-  const { siteUrl, author, organization } = seo
-
-  const title = metaTitle || postMeta.title || postMeta.metaTitle || seo.title
-  const description =
-    metaDescription ||
-    postMeta.description ||
-    postMeta.metaDescription ||
-    seo.description
+  const meta = (page && page.meta) || {}
 
   const titleTemplate = isHome ? `%s` : seo.titleTemplate
+  const title =
+    meta.metaTitle || (page && page.title) || meta.title || seo.title
 
-  const keywords = metaKeywords || postMeta.keywords || seo.keywords
+  const description = meta.description || seo.description
+  const keywords = meta.keywords || seo.keywords
 
-  const postPath = pathname || postMeta.slug
+  const postPath = (page && page.slug) || null
 
-  const canonical = postPath && `${siteUrl}${postPath}`
+  const siteUrl = seo.siteUrl
+  const canonical = (postPath && `${siteUrl}/${postPath}`) || false
 
-  // TODO: check if cover works as ogImage
-  const image =
-    metaImage ||
-    postMeta.cover ||
-    postMeta.shareImage?.localFile.publicURL ||
-    seo.ogImage
-  if (!image) {
-    console.log(`missing image for ${canonical}`)
-  }
+  // TODO: improve this using types
+  // https://ogp.me/#types
+  const type = postPath ? 'article' : 'website'
+  const isBlogPost = type === 'article'
 
+  const image = getImage(meta, seo)
+
+  const date = meta.date ? meta.date : false
   const iconPath = seo.iconPath
-
-  const imagePath = `${siteUrl}/og-image/${image}`
-
-  const type = canonical !== siteUrl ? 'article' : 'website'
-  const datePublished = postMeta.datePublished ? postMeta.datePublished : false
-
-  const otherMeta = meta || []
+  const author = seo.author
+  const organization = seo.organization
 
   return {
-    title,
+    isHome,
+    isBlogPost,
     titleTemplate,
+    title,
     description,
     keywords,
-    canonical,
-    image,
-    imagePath,
-    type,
-    datePublished,
-    otherMeta,
-    isBlogPost,
-    iconPath,
     siteUrl,
+    canonical,
+    type,
+    image,
+    date,
+    iconPath,
     author,
     organization,
-    isHome,
   }
 }

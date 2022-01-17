@@ -117,27 +117,6 @@ module.exports = (userConfig) => {
                 width: config.embeddedVideoWidth,
               },
             },
-            // {
-            //   resolve: `gatsby-remark-relative-images`,
-            //   options: {
-            //     // [Optional] The root of "media_folder" in your config.yml
-            //     // Defaults to "static"
-            //     staticFolderName: config.imagesPath,
-            //     // staticFolderName: 'images',
-            //     // [Optional] Include the following fields, use dot notation for nested fields
-            //     // All fields are included by default
-            //     include: ['cover'],
-            //     // [Optional] Exclude the following fields, use dot notation for nested fields
-            //     // No fields are excluded by default
-            //     // exclude: ['cover.skip'],
-            //   },
-            // },
-            // {
-            //   resolve: 'gatsby-remark-normalize-paths',
-            //   options: {
-            //     pathFields: ['image', 'cover'],
-            //   },
-            // },
             {
               resolve: 'gatsby-remark-responsive-iframe',
             },
@@ -317,7 +296,6 @@ module.exports = (userConfig) => {
         resolve: `gatsby-plugin-breadcrumb`,
         options: {
           useAutoGen: true,
-          autoGenHomeLabel: `start`,
           exclude: [
             `**/dev-404-page/**`,
             `**/404/**`,
@@ -340,33 +318,61 @@ module.exports = (userConfig) => {
                 siteUrl
               }
             }
+            allPage {
+              edges {
+                node {
+                  lang
+                  slug
+                  fileAbsolutePath
+                }
+              }
+            }
             allSitePage( filter: { context: { i18n: { routed: { eq: false } } } } ) {
               nodes {
                 path
                 context {
                   i18n {
-                    defaultLanguage
-                    languages
                     originalPath
                   }
                 }
               }
             }
           }`,
-          resolvePages: ({ site, allSitePage: { nodes: allPages } }) => {
+          resolvePages: ({ site, allPage, allSitePage }) => {
             const { siteUrl } = site.siteMetadata
 
-            return allPages.map((page) => {
-              const { languages, originalPath, defaultLanguage } =
-                page.context.i18n
+            const pagesFileBySlug = {}
+            const pagesSlugByFile = {}
+            languages.forEach((lang) => {
+              pagesFileBySlug[lang] = {}
+              pagesSlugByFile[lang] = {}
+            })
+
+            allPage.edges.forEach(({ node }) => {
+              const file = node.fileAbsolutePath.split('.')[0]
+              const slug = `/${node.slug}`
+              pagesFileBySlug[node.lang][slug] = file
+              pagesSlugByFile[node.lang][file] = slug
+            })
+
+            return allSitePage.nodes.map((page) => {
+              const { originalPath } = page.context.i18n
               const url = siteUrl + originalPath
               const links = [
                 { lang: defaultLanguage, url },
                 { lang: 'x-default', url },
               ]
               languages.forEach((lang) => {
+                let slug
                 if (lang === defaultLanguage) return
-                links.push({ lang, url: `${siteUrl}/${lang}${originalPath}` })
+                if (originalPath === '/') {
+                  slug = `/${lang}`
+                } else {
+                  const file = pagesFileBySlug[defaultLanguage][originalPath]
+                  slug = pagesSlugByFile[lang][file]
+                }
+
+                slug && links.push({ lang, url: `${siteUrl}${slug}` })
               })
               return {
                 ...page,
@@ -382,7 +388,6 @@ module.exports = (userConfig) => {
           }),
         },
       },
-      'gatsby-image-sitemap',
     ],
   }
 }

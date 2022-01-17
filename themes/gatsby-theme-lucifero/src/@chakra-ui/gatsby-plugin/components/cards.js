@@ -11,6 +11,7 @@ export const cards = {
       '.cards_box': {
         w: '100%',
         dispaly: 'flex',
+        gap: 4,
         flexWrap: 'wrap',
         justifyContent: 'space-between',
       },
@@ -69,7 +70,7 @@ export const cards = {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: 6,
+      gap: 1,
       overflow: 'hidden',
       '.content': {
         px: 2,

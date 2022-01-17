@@ -2,7 +2,6 @@ import React from 'react'
 
 import {
   Heading,
-  Link,
   Text,
   OrderedList,
   UnorderedList,
@@ -10,19 +9,20 @@ import {
 } from '@chakra-ui/react'
 import { customComponents } from './MdxCustomComponents'
 import Image from './Image'
-import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
+import Swipe from './Images/Swipe'
+import { Link, LinkTranslated, LinkExternal } from './Link'
 
 const CustomLink = (props) => {
   const href = props.href
   const isInternalLink = href && (href.startsWith('/') || href.startsWith('#'))
   if (isInternalLink) {
-    return <Link as={GatsbyLink} to={href} variant="mdx" {...props} />
+    return <LinkTranslated to={href} variant="mdx" {...props} />
   }
 
   return (
-    <Link variant="mdx" {...props}>
+    <LinkExternal variant="mdx" {...props}>
       {props.children}
-    </Link>
+    </LinkExternal>
   )
 }
 // For style images use MDXProvider `figure` and `figcaption` html elements
@@ -52,5 +52,7 @@ export const baseComponents = {
   ol,
   li,
   Image,
+  Swipe,
+  Link,
 }
 export const mdxComponents = { ...baseComponents, ...customComponents }

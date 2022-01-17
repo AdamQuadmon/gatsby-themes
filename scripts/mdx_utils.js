@@ -1,11 +1,24 @@
 const { createWriteStream, promises } = require('fs')
 const glob = require('glob')
 const fastcsv = require('fast-csv')
+const sharp = require('sharp')
 
 const outputPath = 'csv/'
 
 const getDirectories = function (src, callback) {
   glob(src + '/**/*{.md,.mdx}', callback)
+}
+
+const getImages = function (src, callback) {
+  glob(src + '/**/*.jpg', callback)
+}
+
+const getImage = async (contentPath, file) => {
+  const metadata = await sharp(`${file}`).metadata()
+  return {
+    file: file.split(contentPath)[1],
+    metadata,
+  }
 }
 
 // sort a-z then for key value
@@ -78,6 +91,8 @@ const writeCsv = (data, name) => {
 
 module.exports = {
   getDirectories,
+  getImages,
+  getImage,
   getFile,
   writeCsv,
   getSortedKeys,

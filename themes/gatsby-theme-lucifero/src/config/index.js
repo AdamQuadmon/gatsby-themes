@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { merge } = require('lodash')
+const { merge, sortBy } = require('lodash')
 const urlJoin = require('url-join')
 
 const baseConfig = require('./defaultConfig')
@@ -118,6 +118,89 @@ const createThemePaths = (reporter, userConfig) => {
   })
 }
 
+const getPageOptions = (nodes, index, template, context = (node) => ({})) => {
+  const { node } = nodes[index]
+  const slug = node.slug
+
+  return {
+    path: slug,
+    component: withThemePath(template),
+    context: merge(
+      {
+        id: node.id,
+        slug,
+        prev: index === 0 ? null : nodes[index - 1].node,
+        next: index === nodes.length - 1 ? null : nodes[index + 1].node,
+      },
+      context(node)
+    ),
+  }
+}
+
+const createAlbums = ({
+  nodes,
+  albumTemplate,
+  imageTemplate,
+  actions,
+  createNodeId,
+}) => {
+  const { createPage } = actions
+
+  const albums = {}
+
+  nodes.forEach(({ node }) => {
+    if (!albums[node.album]) albums[node.album] = []
+    albums[node.album].push(node)
+  })
+  Object.keys(albums).forEach((album) => {
+    const id = createNodeId(`${album} >>> Album`)
+    createPage(getAlbumOptions(id, album, albumTemplate))
+
+    const images = sortBy(albums[album], 'order')
+    images.forEach(({ node }, index) => {
+      createPage(getImageOptions(images, index, imageTemplate))
+    })
+  })
+}
+
+const getAlbumOptions = (id, album, template) => {
+  const path = `gallery/${album}`
+
+  return {
+    path,
+    component: withThemePath(template),
+    context: {
+      id,
+      album,
+    },
+  }
+}
+
+// TODO merge with getImageSlug() from utils component
+const getImageSlug = (node) => {
+  if (!node) return null
+  const fileName = node.file.replace('LePietrebnb-', '').split('.')[0]
+  return `/gallery/${node.album}/${fileName}`
+}
+
+const getImageOptions = (nodes, index, template) => {
+  const node = nodes[index]
+  const { album, file } = node
+  const path = getImageSlug(node)
+
+  return {
+    path,
+    component: withThemePath(template),
+    context: {
+      id: node.id,
+      album,
+      file,
+      prev: index === 0 ? null : nodes[index - 1],
+      next: index === nodes.length - 1 ? null : nodes[index + 1],
+    },
+  }
+}
+
 const createProxyNode = (gatsbyNodeHelpers, fieldData, type, index) => {
   const { node, actions, createNodeId, createContentDigest } = gatsbyNodeHelpers
   const { createNode, createParentChildLink } = actions
@@ -196,10 +279,13 @@ const mdxResolverPassthrough =
 module.exports = {
   createThemePaths,
   createProxyNode,
+  createAlbums,
   getLanguages,
   getLanguageFromPath,
   getPagePathInfo,
+  getPageOptions,
   getSlug,
+  getImageSlug,
   splitPath,
   slugify,
   stringToBoolean,

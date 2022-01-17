@@ -14,6 +14,7 @@ export const useSeoDefault = () => {
     iconPath,
     organization,
     socials,
+    config,
   } = site
 
   return {
@@ -27,5 +28,6 @@ export const useSeoDefault = () => {
     ogImage,
     organization,
     socials,
+    imgixSource: config.imgix.source,
   }
 }

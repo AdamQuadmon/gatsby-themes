@@ -13,6 +13,7 @@ const parsePage = (fileData, pagesData) => {
 
   const {
     slug,
+    metaTitle,
     title,
     description,
     published,
@@ -21,7 +22,8 @@ const parsePage = (fileData, pagesData) => {
     noCover,
     folder,
     cover,
-    gallery,
+    ogImage,
+    album,
     pax,
     region,
     city,
@@ -38,6 +40,7 @@ const parsePage = (fileData, pagesData) => {
     // seo
     file: fileData.slug,
     slug,
+    metaTitle,
     title,
     description,
     // Navigation
@@ -48,7 +51,8 @@ const parsePage = (fileData, pagesData) => {
     noCover,
     folder,
     cover,
-    gallery,
+    ogImage,
+    album,
     //Listings
     pax,
     //Locations

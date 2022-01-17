@@ -1,4 +1,5 @@
 const { stringToBoolean } = require('./index')
+const _ = require('lodash')
 
 const defaultTrueConfig = {
   name: `defaultTrue`,
@@ -28,7 +29,29 @@ const defaultFalseConfig = {
   },
 }
 
+const defaultNumber = {
+  name: `defaultNumber`,
+  args: {
+    n: {
+      type: 'Int!',
+      defaultValue: 0,
+    },
+  },
+  extend() {
+    return {
+      resolve(source, args, context, info) {
+        let value = source[info.fieldName]
+        if (value === undefined) {
+          value = args.n
+        }
+        return _.toInteger(value)
+      },
+    }
+  },
+}
+
 module.exports = {
   defaultTrueConfig,
   defaultFalseConfig,
+  defaultNumber,
 }

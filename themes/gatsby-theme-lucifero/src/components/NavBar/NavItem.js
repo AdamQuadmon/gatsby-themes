@@ -1,9 +1,8 @@
 import React from 'react'
 import { Box, Button, Container, useStyleConfig } from '@chakra-ui/react'
-
-import { Link as GatsbyLink } from 'gatsby'
 import { IoIosArrowDown } from 'react-icons/io'
 
+import { Link } from '../Link'
 import NavItemSub from './NavItemSub'
 
 const NavItem = ({ label, children, href, variant, ...rest }) => {
@@ -12,7 +11,7 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
   return (
     <Box __css={styles} role="group" {...rest}>
       <Button
-        as={GatsbyLink}
+        as={Link}
         to={`/${href}`}
         activeClassName={'active'}
         partiallyActive

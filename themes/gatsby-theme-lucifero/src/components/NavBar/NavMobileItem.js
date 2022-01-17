@@ -1,12 +1,12 @@
 import React from 'react'
 import { Flex, Button } from '@chakra-ui/react'
-import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
+import { Link } from '../Link'
 
 const NavMobileItem = ({ label, children, href }) => {
   return (
     <Flex
       py={2}
-      as={GatsbyLink}
+      as={Link}
       to={`/${href}`}
       justify={'space-between'}
       align={'center'}

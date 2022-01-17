@@ -7,12 +7,10 @@ import Sections from '../components/Blog/Sections'
 
 const AreaPage = ({ data, pageContext }) => {
   let { breadcrumb } = pageContext
-  const {
-    section: { meta },
-  } = data
+  const { section } = data
 
   return (
-    <Layout seo={meta}>
+    <Layout page={section}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Sections data={data} field="topic" />
     </Layout>
@@ -22,11 +20,7 @@ const AreaPage = ({ data, pageContext }) => {
 export default AreaPage
 
 export const query = graphql`
-  query AreaTopicsAndPostsCount(
-    $slug: String!
-    $area: String!
-    $language: String!
-  ) {
+  query AreaQuery($slug: String!, $area: String!, $language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }

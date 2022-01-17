@@ -10,11 +10,13 @@ export const page = {
         mt: 4,
 
         '.page_image': {
-          w: { base: '100%', md: '50%' },
+          // w: { base: '100%', md: '50%' },
+          w: '100%',
           mb: 8,
         },
         '.mdx_content': {
-          w: { base: '100%', md: '50%' },
+          w: '100%',
+          // w: { base: '100%', md: '50%' },
         },
       },
       '.no_cover': {

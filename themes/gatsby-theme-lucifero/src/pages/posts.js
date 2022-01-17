@@ -20,7 +20,7 @@ const PostsPage = ({ data }) => {
   const areas = Object.keys(nodes)
 
   return (
-    <Layout>
+    <Layout page={{ meta: { title: 'posts' } }}>
       <Flex>
         {areas.map((areaKey) => {
           const area = nodes[areaKey]
@@ -31,7 +31,6 @@ const PostsPage = ({ data }) => {
               <Heading>{areaKey}</Heading>
               <ul>
                 {topics.map((topicKey) => {
-                  // console.log(topics, topicKey)
                   const posts = nodes[areaKey][topicKey]
                   return (
                     <li>

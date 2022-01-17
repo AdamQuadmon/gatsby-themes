@@ -11,7 +11,7 @@ export const navbar = {
         minHeight: 10,
       },
       '.nav-items': {
-        mt: 1,
+        mt: { base: 2, lg: 1 },
       },
       '.hamburger': {
         fontSize: 'lg',

@@ -5,7 +5,7 @@ import { Box, useStyleConfig } from '@chakra-ui/react'
 
 import Layout from '../components/LayoutContainer'
 import Breadcrumbs from '../components/Breadcrumbs'
-import PageContent from '../components/PageContent'
+import PageContent from '../components/Content/PageContent'
 import TableOfContents from '../components/Blog/toc'
 
 export default function PostTemplate({ data, pageContext }) {
@@ -16,7 +16,7 @@ export default function PostTemplate({ data, pageContext }) {
   const variant = hasToc ? 'toc' : null
   const styles = useStyleConfig('PostPage', { variant })
   return (
-    <Layout seoNode={post}>
+    <Layout page={post}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Box __css={styles}>
         {hasToc && (
@@ -31,7 +31,7 @@ export default function PostTemplate({ data, pageContext }) {
 }
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String, $language: String!) {
+  query PostQuery($id: String, $language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }

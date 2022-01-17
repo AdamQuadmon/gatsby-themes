@@ -12,7 +12,8 @@ import {
   Text,
   useStyleConfig,
 } from '@chakra-ui/react'
-import { Link, Trans } from 'gatsby-plugin-react-i18next'
+import { Trans } from 'gatsby-plugin-react-i18next'
+import { LinkTranslated } from './Link'
 
 function isBrowser() {
   return typeof window !== 'undefined'
@@ -83,9 +84,9 @@ const CookieConsent = ({ variant }) => {
               </Heading>
               <Text>
                 <Trans>cookieText</Trans>{' '}
-                <Link to="/cookies">
+                <LinkTranslated to="/cookies">
                   <Trans>cookieLink</Trans>
-                </Link>
+                </LinkTranslated>
                 .
               </Text>
             </Box>

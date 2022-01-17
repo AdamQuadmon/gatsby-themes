@@ -1,7 +1,6 @@
 // Based on @wottpal suggestion
 // https://github.com/microapps/gatsby-plugin-react-i18next/issues/49#issuecomment-780695704
-const { merge } = require('lodash')
-const { withDefaults, withThemePath } = require('../config/index.js')
+const { withDefaults, getPageOptions } = require('../config/index.js')
 
 const createMlPages = ({ nodes, template, context, userConfig, actions }) => {
   const { createPage, createRedirect } = actions
@@ -56,25 +55,6 @@ const createMlRedirects = (createRedirect, allNodes, node, defaultLanguage) => {
       console.log(`Redirect: ${translatedUrlPath} --> /${tNode.slug}`)
       createRedirect(newRedirect)
     })
-}
-
-const getPageOptions = (nodes, index, template, context = (node) => ({})) => {
-  const { node } = nodes[index]
-  const slug = node.slug
-
-  return {
-    path: slug,
-    component: withThemePath(template),
-    context: merge(
-      {
-        id: node.id,
-        slug,
-        prev: index === 0 ? null : nodes[index - 1].node,
-        next: index === nodes.length - 1 ? null : nodes[index + 1].node,
-      },
-      context(node)
-    ),
-  }
 }
 
 /**

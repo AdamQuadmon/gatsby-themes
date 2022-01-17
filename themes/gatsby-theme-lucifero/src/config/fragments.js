@@ -64,6 +64,7 @@ export const pageMetaFragment = graphql`
   fragment PageMeta on Page {
     meta {
       title
+      metaTitle
       description
       order
       ...CoverFields
@@ -151,17 +152,82 @@ export const pagesDataEdgesFragment = graphql`
     }
   }
 `
+export const imagesDataEdgesFragment = graphql`
+  fragment ImagesDataEdges on ImagesCsvConnection {
+    edges {
+      node {
+        ...ImageDataNode
+      }
+    }
+  }
+`
+
+export const albumsDataEdgesFragment = graphql`
+  fragment AlbumsDataEdges on AlbumsCsvConnection {
+    edges {
+      node {
+        ...AlbumDataNode
+      }
+    }
+  }
+`
+
+export const albumDataNodeFragment = graphql`
+  fragment AlbumDataNode on AlbumsCsv {
+    section
+    order
+    album
+    title
+    page
+    pageTitle
+  }
+`
+export const imageDataNodeFragment = graphql`
+  fragment ImageDataNode on ImagesCsv {
+    account
+    domain
+    section
+    folder
+    album
+    file
+    order
+    area
+    zone
+    season
+    month
+    daytime
+    alt
+    title
+    format
+    size
+    width
+    height
+    vratio
+    hratio
+    # space
+    # channels
+    # depth
+    # density
+    # chromaSubsampling
+    # compression
+    # isProgressive
+    # hasProfile
+    # hasAlpha
+    # orientation
+  }
+`
 export const pageDataNodeFragment = graphql`
   fragment PageDataNode on PagesCsv {
     file
     slug
     title
+    metaTitle
     description
     published
     order
     navPage
     ...CoverFields
-    gallery
+    album
     pax
     region
     city
@@ -178,6 +244,7 @@ export const pageDataNodeFragment = graphql`
 export const coverFieldsFragment = graphql`
   fragment CoverFields on PagesCsv {
     cover
+    ogImage
     folder
     noCover
   }

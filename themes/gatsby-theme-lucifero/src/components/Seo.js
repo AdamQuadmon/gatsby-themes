@@ -8,27 +8,25 @@ import { useSeoValues } from '../hooks/use-seoValues'
 
 const Seo = (props) => {
   const {
-    title,
+    isHome,
+    isBlogPost,
     titleTemplate,
+    title,
     description,
     keywords,
-    canonical,
-    image,
-    imagePath,
-    iconPath,
-    type,
-    datePublished,
-    otherMeta,
-    isBlogPost,
     siteUrl,
+    canonical,
+    type,
+    image,
+    date,
+    iconPath,
     author,
     organization,
-    isHome,
   } = useSeoValues(props)
 
   if (!canonical && !isHome) {
     console.log(
-      'missing canonical url, if this is the Home Page please add the isHome flag, otherwise check your pathname or node.frontmatter.slug'
+      'missing canonical url, if this is the Home Page please add the isHome flag, otherwise check your pathname or node.slug'
     )
   }
 
@@ -76,29 +74,28 @@ const Seo = (props) => {
             content: author,
           },
         ]
-          // TODO: check if image or imagePath
           .concat(
-            imagePath
+            image
               ? [
                   {
                     name: `image`,
-                    content: imagePath,
+                    content: image,
                   },
                   {
                     property: `og:image`,
-                    content: imagePath,
+                    content: image,
                   },
                   {
                     property: `twitter:image`,
-                    content: imagePath,
+                    content: image,
                   },
                   {
                     property: 'og:image:width',
-                    content: 1080,
+                    content: 1200,
                   },
                   {
                     property: 'og:image:height',
-                    content: 1080,
+                    content: 630,
                   },
                   {
                     property: 'og:image:alt',
@@ -127,8 +124,7 @@ const Seo = (props) => {
                   content: keywords.join(', '),
                 }
               : []
-          )
-          .concat(otherMeta)}
+          )}
       />
 
       <SchemaOrg
@@ -137,7 +133,7 @@ const Seo = (props) => {
         title={title}
         image={image}
         description={description}
-        datePublished={datePublished}
+        datePublished={date}
         canonicalUrl={siteUrl}
         author={author}
         organization={organization}

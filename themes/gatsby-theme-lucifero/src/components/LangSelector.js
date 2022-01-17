@@ -1,12 +1,12 @@
 import React from 'react'
 import { Box, Button, Stack, Text } from '@chakra-ui/react'
 import {
-  Link as GatsbyLink,
   I18nextContext,
   useI18next,
   useTranslation,
 } from 'gatsby-plugin-react-i18next'
 import ReactCountryFlag from 'react-country-flag'
+import { LinkTranslated } from './Link'
 
 const LangSelector = ({ showLabel, ...props }) => {
   const { t } = useTranslation()
@@ -23,7 +23,7 @@ const LangSelector = ({ showLabel, ...props }) => {
           lng !== language && (
             <Box key={lng}>
               <Button
-                as={GatsbyLink}
+                as={LinkTranslated}
                 to={originalPath}
                 language={lng}
                 size="sm"

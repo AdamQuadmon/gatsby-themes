@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link as GatsbyLink } from 'gatsby-plugin-react-i18next'
+import { LinkOverlay } from '../Link'
 import Image from '../Image'
 import { motion } from 'framer-motion'
 import {
@@ -7,7 +7,6 @@ import {
   Heading,
   HStack,
   Image,
-  Link,
   Spacer,
   Text,
   useStyleConfig,
@@ -38,7 +37,7 @@ const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
           </HStack>
         </Box>
       ) : (
-        <Link as={GatsbyLink} to={`/${slug}`}>
+        <LinkBox as="article">
           <Box>
             <Box className="image_container">
               {!noCover && image && (
@@ -58,7 +57,7 @@ const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
             <Box className="info">
               <HStack className="title">
                 <Heading size={titleSize} as="h4">
-                  {title}
+                  <LinkOverlay to={`/${slug}`}>{title}</LinkOverlay>
                 </Heading>
                 <Spacer />
                 {titleSide}
@@ -67,7 +66,7 @@ const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
               <Text className="description">{description}</Text>
             </Box>
           </Box>
-        </Link>
+        </LinkBox>
       )}
     </Box>
   )

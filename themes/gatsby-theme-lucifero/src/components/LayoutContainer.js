@@ -13,7 +13,7 @@ import CookieConsent from '../components/CookieConsent'
 import { useNavItems } from '../hooks/use-navItems'
 import { useSiteMetadata } from '../hooks/use-siteMetadata'
 
-const LayoutComponent = ({ children, ...rest }) => {
+const LayoutContainer = ({ children, ...rest }) => {
   const { language } = React.useContext(I18nextContext)
   const navItems = useNavItems(language)
   const data = useSiteMetadata()
@@ -33,4 +33,4 @@ const LayoutComponent = ({ children, ...rest }) => {
   )
 }
 
-export default LayoutComponent
+export default LayoutContainer

@@ -5,7 +5,7 @@ export const hero = {
 
       textAlign: 'center',
       align: 'center',
-      pt: { base: 4, md: 8 },
+      // pt: { base: 4, md: 8 },
       h1: {
         pt: { base: 2 },
         pb: { base: 2, md: 4, lg: 8 },
@@ -47,7 +47,7 @@ export const hero = {
         maxW: '3xl',
       },
       img: {
-        pt: { base: 2, md: 4, lg: 8 },
+        // pt: { base: 2, md: 4, lg: 8 },
         borderBottomRadius: 'md',
       },
     }),

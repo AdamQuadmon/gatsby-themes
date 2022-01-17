@@ -3,23 +3,29 @@ import {
   Box,
   Flex,
   Heading,
-  Link,
   Button,
+  LinkBox,
   useStyleConfig,
 } from '@chakra-ui/react'
 import { SiGooglemaps } from 'react-icons/si'
+import { Link, LinkOverlay, LinkExternal } from './Link'
 import Image from './Image'
-import { Link as GatsbyLink, I18nextContext } from 'gatsby-plugin-react-i18next'
+
 import Card from '../components/Card'
 
 const Places = ({ places, address, city }) => {
   return (
-    <Link href={places} isExternal className="card_places" maxWidth="200px">
+    <LinkExternal
+      href={places}
+      isExternal
+      className="card_places"
+      maxWidth="200px"
+    >
       <Button size="xs" aria-label={'Google Maps'} leftIcon={<SiGooglemaps />}>
         {address}
         {city && ` - ${city}`}
       </Button>
-    </Link>
+    </LinkExternal>
   )
 }
 
@@ -28,22 +34,18 @@ const CardBox = ({ node, titleAs, size }) => {
   const { title, folder, cover, places, address, city } = meta
   const hasPlaces = !!places || !!address || !!city
   return (
-    <Card className="card_box">
-      <GatsbyLink to={`/${slug}`}>
-        <Box w={'100%'} className="image">
-          <Image height={'200px'} file={cover} folder={folder} alt={title} />
-        </Box>
-        <Box className="content">
-          {hasPlaces && (
-            <Places places={places} address={address} city={city} />
-          )}
-          <Heading as={titleAs} size={size} className="card_title">
-            {title}
-          </Heading>
-          <Box className="card_content">{excerpt}</Box>
-        </Box>
-      </GatsbyLink>
-    </Card>
+    <LinkBox as={Card} className="card_box">
+      <Box w={'100%'} className="image">
+        <Image file={cover} folder={folder} alt={title} height="200px" />
+      </Box>
+      <Box className="content">
+        {hasPlaces && <Places places={places} address={address} city={city} />}
+        <Heading as={titleAs} size={size} className="card_title">
+          <LinkOverlay to={`/${slug}`}>{title}</LinkOverlay>
+        </Heading>
+        <Box className="card_content">{excerpt}</Box>
+      </Box>
+    </LinkBox>
   )
 }
 
@@ -54,6 +56,7 @@ CardBox.defaultProps = {
 
 const Cards = ({
   title,
+  to,
   nodes,
   columns,
   spacing,
@@ -66,7 +69,7 @@ const Cards = ({
     <Box className="cards" __css={styles} {...rest}>
       {title && (
         <Heading as={titleAs} className="cards_title">
-          {title}
+          {to ? <Link to={to}>{title}</Link> : title}
         </Heading>
       )}
       <Flex className="cards_box">

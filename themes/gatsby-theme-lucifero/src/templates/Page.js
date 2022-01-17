@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
-import PageContent from '../components/PageContent'
+import PageContent from '../components/Content/PageContent'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function PageTemplate({ data, pageContext }) {
@@ -10,8 +10,8 @@ export default function PageTemplate({ data, pageContext }) {
   const { breadcrumb /*, previous, next*/ } = pageContext
 
   return (
-    <Layout seoNode={page}>
-      <Breadcrumbs breadcrumb={breadcrumb} />
+    <Layout page={page}>
+      <Breadcrumbs breadcrumb={breadcrumb} removeStart />
       <PageContent page={page} />
     </Layout>
   )

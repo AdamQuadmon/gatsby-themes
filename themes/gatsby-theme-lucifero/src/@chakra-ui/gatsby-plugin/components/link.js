@@ -1,6 +1,21 @@
 export const link = {
   Link: {
     variants: {
+      inactive: ({ colorMode }) => ({
+        color: colorMode === 'dark' ? 'gray.800' : 'gray.400',
+        fontSize: 'xs',
+        fontWeight: 'black',
+        textTransform: 'uppercase',
+        _hover: {
+          textDecoration: 'none',
+          cursor: 'default',
+        },
+      }),
+      imageLink: {
+        fontSize: 'xs',
+        fontWeight: 'black',
+        textTransform: 'uppercase',
+      },
       active_toc: {
         fontWeight: '800',
         color: 'red',

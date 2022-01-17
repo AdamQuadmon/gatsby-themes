@@ -9,11 +9,13 @@ const MdxPage = require('./src/config/models/MdxPage')
 const {
   defaultTrueConfig,
   defaultFalseConfig,
+  defaultNumber,
 } = require('./src/config/fieldExtensions')
 
 const {
   createThemePaths,
   createProxyNode,
+  createAlbums,
   getLanguageFromPath,
   getPagePathInfo,
   slugify,
@@ -32,6 +34,7 @@ const createSchemaCustomization = ({ actions, schema }, userConfig) => {
 
   createFieldExtension(defaultTrueConfig)
   createFieldExtension(defaultFalseConfig)
+  createFieldExtension(defaultNumber)
 
   createTypes(typeDefinitions)
   createTypes(buildObjectType(MdxBlogPost))
@@ -92,9 +95,24 @@ const onCreateNode = (
   }
 }
 
-const createPages = async ({ graphql, actions, reporter }, userConfig) => {
+const createPages = async (
+  { graphql, actions, reporter, createNodeId },
+  userConfig
+) => {
   const result = await graphql(`
     query {
+      images: allImagesCsv {
+        edges {
+          node {
+            id
+            album
+            file
+            order
+            width
+            height
+          }
+        }
+      }
       pages: allPage(filter: { meta: { published: { eq: true } } }) {
         edges {
           node {
@@ -141,6 +159,15 @@ const createPages = async ({ graphql, actions, reporter }, userConfig) => {
   if (result.errors) {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
+
+  createAlbums({
+    nodes: result.data.images.edges,
+    albumTemplate: `../templates/Album.js`,
+    imageTemplate: `../templates/Image.js`,
+    userConfig,
+    actions,
+    createNodeId,
+  })
   createMlPages({
     nodes: result.data.pages.edges,
     template: `../templates/Page.js`,

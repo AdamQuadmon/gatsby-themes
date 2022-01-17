@@ -1,20 +1,35 @@
 export const breadcrumbs = {
   Breadcrumbs: {
     baseStyle: ({ colorMode }) => ({
+      textTransform: 'uppercase',
+      py: 1,
       //Applied to the breadcrumb title (<span>)
       '.breadcrumb__title': {},
       // Applied to the breadcrumb container (<nav>)
-      '.breadcrumb': {},
+      'nav.breadcrumb': {
+        fontSize: 'xs',
+      },
       // Applied to the breadcrumb ordered list (<ol>)
-      '.breadcrumb__list': {},
+      '.breadcrumb__list': {
+        alignItems: 'center',
+      },
       // Applied to each breadcrumb 'crumbs' (<li>)
-      '.breadcrumb__link': {},
+      'a.breadcrumb__link': {
+        fontSize: 'xs',
+        fontWeight: 'black',
+        _hover: {
+          color: colorMode === 'dark' ? 'gray.600' : 'gray.400',
+        },
+      },
       // Applied to the link of the breadcrumb (<a>)
       '.breadcrumb__title': {},
       // Added to the current link (<a>)
       '.breadcrumb__link__active': {},
       // Applied to the breadcrumb separators (<span>)
-      '.breadcrumb__separator': {},
+      '.breadcrumb__separator': {
+        fontSize: 'xs',
+        fontWeight: 'bold',
+      },
     }),
   },
 }

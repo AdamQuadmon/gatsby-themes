@@ -3,13 +3,13 @@ import { graphql } from 'gatsby'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 import Layout from '../components/LayoutContainer'
-import Topic from '../components/Blog/topic'
+import Topic from '../components/Blog/Topic'
 
 const TopicPage = ({ data, pageContext }) => {
   let { breadcrumb } = pageContext
 
   return (
-    <Layout title={data.section.meta.title}>
+    <Layout page={section}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Topic data={data} />
     </Layout>
@@ -19,7 +19,7 @@ const TopicPage = ({ data, pageContext }) => {
 export default TopicPage
 
 export const query = graphql`
-  query TopicPosts($slug: String!, $topic: String!, $language: String!) {
+  query TopicQuery($slug: String!, $topic: String!, $language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }

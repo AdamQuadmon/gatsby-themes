@@ -82,9 +82,9 @@ Have a look at the [contributing guide](CONTRIBUTING.md) to learn more.
 
 ## TODO
 
-- [] fix MDX Blog
-  - [] fix favicon and ogImage
-  - [] use MdxBlog model
+- [x] fix MDX Blog
+  - [x] fix favicon and ogImage
+  - [x] use MdxBlog model
 - [] use Strapi
 - [] add theme translations
 - [] add sub pages to navPage items

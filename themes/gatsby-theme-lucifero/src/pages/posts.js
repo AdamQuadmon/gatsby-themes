@@ -3,9 +3,11 @@ import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
 import { Box, Flex, Heading } from '@chakra-ui/layout'
+import Breadcrumbs from '../components/Breadcrumbs'
 
-const PostsPage = ({ data }) => {
+const PostsPage = ({ data, pageContext }) => {
   const { edges } = data.posts
+  const { breadcrumb } = pageContext
   let nodes = {}
 
   edges.forEach(({ node }) => {
@@ -18,9 +20,10 @@ const PostsPage = ({ data }) => {
   })
 
   const areas = Object.keys(nodes)
-
+  // TODO add collections meta
   return (
-    <Layout page={{ meta: { title: 'posts' } }}>
+    <Layout page={{ name: 'posts' }} crumbs={breadcrumb.crumbs}>
+      <Breadcrumbs breadcrumb={breadcrumb} />
       <Flex>
         {areas.map((areaKey) => {
           const area = nodes[areaKey]
@@ -37,8 +40,8 @@ const PostsPage = ({ data }) => {
                       <Heading>{topicKey}</Heading>
                       <ul>
                         {posts.map((node) => {
-                          const { title } = node.meta
-                          return <li>{title}</li>
+                          const { headline } = node
+                          return <li>{headline}</li>
                         })}
                       </ul>
                     </li>
@@ -60,11 +63,11 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    posts: allBlogPost(
+    posts: allPage(
       filter: { type: { eq: "post" } }
-      sort: { fields: fileAbsolutePath, order: ASC }
+      sort: { fields: [slug], order: ASC }
     ) {
-      ...PostsEdges
+      ...PageEdges
     }
   }
 `

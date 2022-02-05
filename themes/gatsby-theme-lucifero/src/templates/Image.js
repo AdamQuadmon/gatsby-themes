@@ -6,36 +6,34 @@ import ImageContent from '../components/Content/ImageContent'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function ImageTemplate({ data, pageContext }) {
-  const { page, album, image } = data
-  const { breadcrumb, prev, next } = pageContext
+  const { album, images, page } = data
+  const { breadcrumb } = pageContext
 
   return (
-    <Layout page={page}>
+    <Layout imageNode={page} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} />
 
-      <ImageContent album={album} image={image} prev={prev} next={next} />
+      <ImageContent album={album} page={page} images={images.edges} />
     </Layout>
   )
 }
 
 export const pageQuery = graphql`
-  query ImageQuery(
-    $id: String
-    $language: String!
-    $album: String!
-    $file: String!
-  ) {
+  query ImageQuery($id: String!, $language: String!, $topic: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
-    }
-    album: albumsCsv(album: { eq: $album }) {
-      ...AlbumDataNode
     }
     page: page(id: { eq: $id }) {
       ...PageNode
     }
-    image: imagesCsv(album: { eq: $album }, file: { eq: $file }) {
-      ...ImageDataNode
+    album: albumCsv(topic: { eq: $topic }) {
+      ...AlbumCsvNode
+    }
+    images: allImageCsv(
+      filter: { topic: { eq: $topic } }
+      sort: { fields: [order] }
+    ) {
+      ...ImageCsvEdges
     }
   }
 `

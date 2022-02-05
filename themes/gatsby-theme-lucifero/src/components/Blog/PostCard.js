@@ -6,18 +6,15 @@ import {
   Box,
   Heading,
   HStack,
-  Image,
   Spacer,
+  LinkBox,
   Text,
   useStyleConfig,
 } from '@chakra-ui/react'
 
 const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
-  const {
-    slug,
-    title,
-    meta: { folder, cover, noCover, description },
-  } = node
+  const { slug, headline, image, noCover, description } = node
+
   const styles = useStyleConfig('PostCard', { variant })
   const isFuture = variant === 'future'
 
@@ -32,7 +29,7 @@ const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
         >
           <HStack className="title">
             <Heading size={titleSize} as="h4">
-              {title}
+              {headline}
             </Heading>
           </HStack>
         </Box>
@@ -42,22 +39,19 @@ const PostCard = ({ node, titleSide, titleSize, children, variant }) => {
             <Box className="image_container">
               {!noCover && image && (
                 <motion.div
+                  as={Box}
+                  w={'100%'}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 1 }}
                 >
-                  <Image
-                    className="image"
-                    folder={folder}
-                    file={cover}
-                    alt={title}
-                  />
+                  <Image className="image" image={image} alt={headline} />
                 </motion.div>
               )}
             </Box>
             <Box className="info">
               <HStack className="title">
                 <Heading size={titleSize} as="h4">
-                  <LinkOverlay to={`/${slug}`}>{title}</LinkOverlay>
+                  <LinkOverlay to={slug}>{headline}</LinkOverlay>
                 </Heading>
                 <Spacer />
                 {titleSide}

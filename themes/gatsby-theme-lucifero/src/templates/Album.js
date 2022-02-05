@@ -6,11 +6,11 @@ import AlbumContent from '../components/Content/AlbumContent'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function AlbumTemplate({ data, pageContext }) {
-  const { page, images, album } = data
+  const { page, album, images } = data
   const { breadcrumb /*, previous, next*/ } = pageContext
 
   return (
-    <Layout page={page}>
+    <Layout page={page} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <AlbumContent album={album} page={page} images={images} />
     </Layout>
@@ -18,21 +18,21 @@ export default function AlbumTemplate({ data, pageContext }) {
 }
 
 export const pageQuery = graphql`
-  query AlbumQuery($id: String, $language: String!, $album: String) {
+  query AlbumQuery($id: String, $language: String!, $topic: String) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
-    }
-    album: albumsCsv(album: { eq: $album }) {
-      ...AlbumDataNode
     }
     page: page(id: { eq: $id }) {
       ...PageNode
     }
-    images: allImagesCsv(
-      filter: { album: { eq: $album } }
-      sort: { fields: order }
+    album: albumCsv(topic: { eq: $topic }) {
+      ...AlbumCsvNode
+    }
+    images: allImageCsv(
+      filter: { topic: { eq: $topic } }
+      sort: { fields: [order] }
     ) {
-      ...ImagesDataEdges
+      ...ImageCsvEdges
     }
   }
 `

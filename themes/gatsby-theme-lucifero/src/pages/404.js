@@ -7,8 +7,9 @@ import { LinkTranslated } from '../components/Link'
 
 const NotFoundPage = () => {
   const { t } = useTranslation()
+  // TODO add 404 meta
   return (
-    <Layout page={{ meta: { title: t('404notFound') }, slug: '404' }}>
+    <Layout page={{ headline: t('404notFound'), name: '404' }}>
       <Heading>
         <Trans>404notFound</Trans>
       </Heading>

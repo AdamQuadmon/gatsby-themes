@@ -6,6 +6,8 @@ const website = {
   bgColor: '#A8A29E', // Used for setting manifest background color.
   themeColor: '#44403C', // Used for setting manifest and progress theme colors.
   ogImage: '/lucifero.jpg',
+  dateCreated: '2021-11-11',
+  mainKeyword: 'gatsby theme lucifero',
 }
 const icon = './src/images/lucifero-logo.png'
 

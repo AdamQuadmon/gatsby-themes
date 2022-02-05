@@ -5,41 +5,35 @@ export const useHomeAreas = (language) => {
   const data = useStaticQuery(
     graphql`
       query {
-        section: blogPost(type: { eq: "blog" }) {
-          ...PostNode
-        }
-        sections: allBlogPost(
+        sections: allPage(
           filter: { type: { eq: "area" } }
-          sort: { fields: date, order: ASC }
+          sort: { fields: timestamp, order: ASC }
         ) {
-          #
-
-          ...PostsEdges
+          ...PageEdges
         }
-        latest: allBlogPost(
+        latest: allPage(
           filter: { type: { eq: "post" }, published: { eq: true } }
-          sort: { fields: date, order: DESC }
+          sort: { fields: timestamp, order: ASC }
         ) {
-          ...PostsEdges
+          ...PageEdges
         }
-        published: allBlogPost(
+        published: allPage(
           filter: { type: { eq: "post" }, published: { eq: true } }
         ) {
-          ...AreaGroup
+          ...PageEdges
         }
-        future: allBlogPost(
+        future: allPage(
           filter: { type: { eq: "post" }, published: { eq: false } }
         ) {
-          ...AreaGroup
+          ...BasePagesEdges
         }
       }
     `
   )
 
-  const { section, sections, latest, published, future } = data
+  const { sections, latest, published, future } = data
 
   return {
-    section: edgesByLanguage(section, language),
     sections: edgesByLanguage(sections, language),
     latest: edgesByLanguage(latest, language),
     published: edgesByLanguage(published, language),

@@ -1,15 +1,15 @@
-import _ from 'lodash'
+import { upperFirst } from 'lodash'
 import { getGatsbyImageData } from '@imgix/gatsby'
 import { useSiteMetadata } from '../hooks/use-siteMetadata'
 
-export const getImageData = (node) => {
-  if (!node) {
-    return null
-  }
-  const { file, folder, width, height } = node
+// TODO unify with getImageParams
+// <ImageLink /> component cal this to get next/prev image preloading
+export const getImageData = (image) => {
+  if (!image || !image.contentUrl) return null
 
+  const { contentUrl, width, height } = image
   const imageData = getGatsbyImageData({
-    src: getSrc(file, folder),
+    src: contentUrl,
     imgixParams: { crop: 'faces' },
     layout: 'constrained',
     sourceWidth: width,
@@ -28,56 +28,62 @@ export const getImageData = (node) => {
   }
 }
 
+// <Image /> component call this function to get image info.
+//
+// Component params:
+// - image
+// - file, folder, source
+// - width, height, aspectRatio
+// - alt, caption, addCaption
+// - imgixParams
+//
+// `image` params:
+// - contentUrl
+// - description
+// - name
+// - width
+// - height
+//
+// Returns `params` and `src`
+
+// `src` can be `file` or `image.contentUrl` if is valid URL
+// otherwise returns https://${source}.imgix.net${path}
+// where:
+//   - `path` is made from `file` and `folder`
+//   - `source` from siteMetadata if missing
+//
+// `params` contains:
+//
+// - `className`
+//
+// - `layout`
+//
+// - `imgixParams` defaults to auto=compress,format
+//
+// - `alt` and `caption` if `addCaption` is true
+//   if `caption` is not defined and `image` is defined
+//   it get caption value from image `description`, `name` or `headline`
+//
+// - `width` and `height` if defined
+//
+// - `aspectRatio` will default to `16/9` if not present
+//    and only one of `width` and `height` is defined
+//
+// - `sourceWidth` and `sourceHeight` from image `width` and `heigth`
+//    if both `width` and `height` are missing and `image` is defined
 export const getImageParams = (props) => {
-  const { className, layout, image, aspectRatio, ...rest } = props
-
-  let { folder, file, source, alt, title, width, height, imgixParams } = props
-  imgixParams = imgixParams || {}
-  if (!imgixParams.auto) {
-    imgixParams.auto = ['compress', 'format']
-  }
-
-  if (image) {
-    folder = folder || image.folder
-    file = file || image.file
-    source = source || image.source
-    alt = alt || image.alt
-    title = title || image.title
-  }
-
-  alt = alt || makeTitle(file)
-  title = title || alt
-
-  const src = getSrc(file, folder, source)
-
-  let sizeParams = {}
-  if (aspectRatio) {
-    sizeParams.aspectRatio = aspectRatio
-    if (width) {
-      sizeParams.width = width
-    }
-    if (height) {
-      sizeParams.height = height
-    }
-  } else {
-    if (image) {
-      sizeParams = {
-        sourceWidth: image.width,
-        sourceHeight: image.height,
-      }
-    } else {
-      sizeParams.aspectRatio = 4 / 3
-    }
-  }
+  const { className, layout } = props
+  const imageData = getBaseParams(props)
+  const sizeParams = getSizeParams(props)
+  const imgixParams = getImgixParams(props)
+  const src = getSrc(props)
 
   const params = {
     className,
     layout,
-    alt,
-    title,
-    imgixParams,
+    ...imgixParams,
+    ...imageData,
     ...sizeParams,
-    ...rest,
   }
 
   return {
@@ -86,31 +92,84 @@ export const getImageParams = (props) => {
   }
 }
 
-const cleanFileName = (file) => {
-  return file.replace('LePietrebnb-', '').split('.')[0]
+const getBaseParams = (props) => {
+  const { file, image, addCaption } = props
+  const imageParams = ['description', 'name', 'headline']
+  let imageAlt = pickFirst(image, imageParams) || makeTitle(file)
+  let alt = props.alt || imageAlt
+  let caption = props.caption || (addCaption && (imageAlt || props.alt))
+  let data = {
+    alt,
+  }
+  if (caption) data.caption = caption
+
+  return data
 }
 
-export const getAlbumSlug = (node) => {
-  if (!node) return null
-  return `/gallery/${node.album}`
-}
-export const getImageSlug = (node) => {
-  if (!node) return null
-  const fileName = cleanFileName(node.file)
-  return `/gallery/${node.album}/${fileName}`
+// TODO: add max width/height or sizes for reducing file size
+const getSizeParams = (props) => {
+  let { image } = props
+  let params = getSizePropsParams(props)
+  if (!params.aspectRatio) {
+    if (image && !params.width && !params.height) {
+      addParams(image, params, [
+        { s: 'width', d: 'sourceWidth' },
+        { s: 'height', d: 'sourceHeight' },
+      ])
+    } else {
+      params.aspectRatio = 16 / 9
+    }
+  }
+
+  return params
 }
 
-export const makeTitle = (string) => {
-  return _.upperFirst(
-    cleanFileName(string).replaceAll('-', ' ').replaceAll('/', ' ')
-  )
+// return only `width` and `height` if defined
+// `aspectRatio` is returned if one or both are missing
+const getSizePropsParams = (props) => {
+  let { width, height } = props
+  let params = {}
+
+  if (width && height) {
+    params = { width, height }
+  } else {
+    addParams(props, params, ['aspectRatio', 'width', 'height'])
+  }
+  return params
 }
 
-export const getSrc = (file, folder, source) => {
-  const {
-    config: { imgix },
-  } = useSiteMetadata()
-  source = source ? source : imgix.source
+const getImgixParams = (props) => {
+  let imgixParams = props.imgixParams || {}
+  if (!imgixParams.auto) {
+    imgixParams.auto = ['compress', 'format']
+  }
+
+  return { imgixParams }
+}
+// returns `file` or `image.contentUrl` if is valid URL
+//
+// otherwise returns https://${source}.imgix.net${path}
+//
+// - `path` is made from `file` and `folder`
+// - `source` from siteMetadata if missing
+export const getSrc = (props) => {
+  let { source, file, folder, image } = props
+
+  if (file && isValidHttpUrl(file)) return file
+  if (image && isValidHttpUrl(image.contentUrl)) return image.contentUrl
+
+  if (!source) {
+    const {
+      config: {
+        imgix: { source: imgixSource },
+      },
+    } = useSiteMetadata()
+    source = imgixSource
+  }
+
+  if (!file) {
+    return null
+  }
 
   if (!folder) {
     const fileParts = file.split('/')
@@ -121,34 +180,56 @@ export const getSrc = (file, folder, source) => {
     }
   }
 
-  folder = folder ? `${folder}/` : ``
+  const path = folder ? `/${folder}/${file}` : file
 
-  let src = `https://${source || imgix.source}.imgix.net/${folder}${file}`
+  let src = `https://${source}.imgix.net${path}`
   return src
 }
 
-export const getImagesByAlbum = (edges) => {
-  let albums = {}
-  edges.forEach(({ node }) => {
-    const { album } = node
-    if (!albums[album]) albums[album] = []
-    albums[album].push(node)
-  })
+const isValidHttpUrl = (string) => {
+  let url
 
-  return albums
+  try {
+    url = new URL(string)
+  } catch (_) {
+    return false
+  }
+
+  return url.protocol === 'http:' || url.protocol === 'https:'
 }
 
-export const getAlbumsByName = (edges) => {
-  let albums = {}
-  edges.forEach(({ node }) => {
-    const { album } = node
-    albums[album] = node
-  })
+export const makeTitle = (fileName) => {
+  if (!fileName) return ''
 
-  return albums
+  const {
+    config: { imagesReplaceText },
+  } = useSiteMetadata()
+
+  const fileParts = fileName.split('.')
+  fileParts.pop()
+
+  const cleanFileName = fileParts
+    .join('.')
+    .replace(imagesReplaceText, '')
+    .replaceAll('-', ' ')
+    .replaceAll('/', ' ')
+
+  return upperFirst(cleanFileName)
 }
 
-export const getAlbumsKeys = (imagesByAlbum, albumsByName) => {
-  const albumKeys = Object.keys(imagesByAlbum)
-  return albumKeys.sort((a, b) => albumsByName[a].order - albumsByName[b].order)
+// maybe better in other file
+const pickFirst = (item, properties) => {
+  if (!item) return null
+  const property = properties.find((property) => item[property])
+  return property && item[property]
+}
+
+const addParams = (source, dest, properties) => {
+  properties.forEach((property) => {
+    if (property.s) {
+      if (source[property.s]) dest[property.d] = source[property.s]
+    } else {
+      if (source[property]) dest[property] = source[property]
+    }
+  })
 }

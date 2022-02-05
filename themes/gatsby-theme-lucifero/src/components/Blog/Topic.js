@@ -10,9 +10,7 @@ import PostsContainer from './PostsContainer'
 
 const Topic = ({ data, variant }) => {
   const {
-    section: {
-      meta: { title, description, cover, noCover },
-    },
+    section: { headline, description, image, noCover },
     published,
     future,
   } = data
@@ -25,10 +23,10 @@ const Topic = ({ data, variant }) => {
 
   return (
     <Box __css={styles}>
-      <Title title={title} subtitle={description}></Title>
+      <Title title={headline} subtitle={description}></Title>
       <Stack spacing={8}>
-        {!noCover && cover && (
-          <Image className="page_image" file={cover} alt={title} />
+        {!noCover && image && (
+          <Image className="page_image" image={image} alt={headline} />
         )}
         {hasPosts ? (
           <>

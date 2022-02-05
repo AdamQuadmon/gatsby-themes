@@ -5,15 +5,15 @@ export const useImages = (language) => {
   const data = useStaticQuery(
     graphql`
       query ImagesQuery {
-        allImagesCsv {
-          ...ImagesDataEdges
+        allImageCsv {
+          ...ImageCsvEdges
         }
       }
     `
   )
 
-  const { allImagesCsv } = data
+  const { allImageCsv } = data
 
-  // return edgesByLanguage(allImagesCsv, language)
-  return allImagesCsv
+  // return edgesByLanguage(allImageCsv, language)
+  return allImageCsv
 }

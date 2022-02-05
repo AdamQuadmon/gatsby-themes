@@ -10,38 +10,40 @@ import Title from './Title'
 import PostCount, { getCounted } from './PostCount'
 import PostsContainer from './PostsContainer'
 
-const Sections = ({ data, field, variant }) => {
-  const { section, sections, published, future, latest } = data
+const Sections = ({ data, page, variant }) => {
+  const { sections, published, future, latest } = data
 
-  if (!section) {
+  if (!page) {
     return null
   }
 
-  const { body, meta } = section
-  const { title, description } = meta
-  const counts = getCounted(published, future)
+  const { headline, description, mdx } = page
+  const body = mdx ? mdx.body : description
+
+  // const counts = getCounted(published, future)
   const { t } = useTranslation()
   const styles = useStyleConfig('Sections', { variant })
+  const posts = sections.edges ? sections.edges : sections
 
   return (
     <Box __css={styles}>
-      <Title title={title} subtitle={description}></Title>
+      <Title title={headline} subtitle={description}></Title>
       <FlexContainer>
-        {sections.edges.map(({ node }) => {
+        {posts.map(({ node }) => {
           const { id, fields } = node
-          const TitleSide = <PostCount count={counts[fields[field]]} />
+          // const TitleSide = <PostCount count={counts[fields[field]]} />
           return (
             <PostCard
               key={id}
               node={node}
-              titleSide={TitleSide}
+              // titleSide={TitleSide}
               titleSize="xl"
               variant="sections"
             />
           )
         })}
       </FlexContainer>
-      <MDXWrapper frontmatter={meta} body={body} />
+      <MDXWrapper body={body} />
       <PostsContainer
         variant="latest"
         posts={latest}

@@ -2,13 +2,14 @@ module.exports = `#graphql
   type SiteSiteMetadata {
     config: SiteConfig!
     ogImage: String
+    icon: String
     maps: MapsData
     socials: SocialsData
+    organization: OrganizationData
   }
 
-  type  SiteConfig {
+  type SiteConfig {
     website: WebsiteData!
-    organization: OrganizationData
     socials: SocialsData!
     maps: MapsData
 
@@ -28,26 +29,51 @@ module.exports = `#graphql
     basePath: String
     i18nPages: [I18PagesData!]!
     imgix: ImgixConfig
+    imagesReplaceText: String
+    allowBlogTypePage: Boolean!
   }
 
   type WebsiteData {
+    author: String!
+    alternateName: String!
+    bgColor: String!
+    copyright: String!
+    dateCreated: String!
+    description: String!
+    mainKeyword: String!
+    ogImage: String
+    shortTitle: String!
+    themeColor: String!
     titleTemplate: String!
     title: String!
-    shortTitle: String!
-    description: String!
-    copyright: String!
-    bgColor: String!
-    themeColor: String!
-    author: String!
-    ogImage: String
     url: String!
   }
 
   type OrganizationData {
+    type: String!
     name: String!
     description: String!
-    logoUrl: String!
     url: String!
+    logo: String!
+    telephone: String
+    hasMap: String
+    alternateName: [String]
+    address: AddressData
+    geo: GeoData
+    vatID: String
+    slogan: String
+    legalName: String
+  }
+  type GeoData {
+    latitude: String
+    longitude: String
+  }
+  type AddressData {
+    streetAddress: String
+    addressLocality: String
+    addressRegion: String
+    postalCode: String
+    addressCountry: String
   }
 
   type SocialsData {
@@ -91,118 +117,54 @@ module.exports = `#graphql
     routed: Boolean
   }
 
-  """Extend childOf types with every type of source as they are added"""
-  type Tag implements Node @dontInfer @childOf(types: ["MdxBlogPost"]) {
+  """
+  Extend childOf types with every type of source as they are added
+  """
+  type Tag implements Node @dontInfer @childOf(types: ["Page"]) {
     id: ID!
     name: String!
     slug: String!
     postPublished: Boolean
   }
 
-  interface Page implements Node {
+  type PlaceCsv implements Node {
     id: ID!
-    fileAbsolutePath: String!
-    slug: String!
-    lang: String
-    order: Int
-    type: String
-    published: Boolean
-    body: String
-    excerpt: String
-    date: Date! @dateformat
-    updatedAt: Date @dateformat
-    timeToRead: Int
-    tableOfContents(maxDepth: Int = 6): JSON
-    meta: PagesCsv
-  }
-  interface BlogPost implements Node & Page {
-    id: ID!
-    fileAbsolutePath: String!
-    slug: String!
-    lang: String
-    order: Int
-    type: String
-    published: Boolean
-    body: String!
-    excerpt: String!
-    date: Date! @dateformat
-    updatedAt: Date @dateformat
-    timeToRead: Int
-    tableOfContents(maxDepth: Int = 6): JSON
-    meta: PagesCsv
+    published: Boolean @defaultFalse
     area: String
     topic: String
-    tags: [Tag!] @link(by: "name")
-  }
-
-  type AlbumsCsv implements Node {
-    id: ID!
-    section: String!
-    order: Int
-    album: String!
-    title: String
-    page: String
-    pageTitle: String
-  }
-  type ImagesCsv implements Node {
-    id: ID!
-    account: String!
-    domain: String!
-    section: String!
-    folder: String!
-    album: String!
-    file: String!
-    order: Int @defaultNumber(n:999)
-    area: String
-    zone: String
-    season: String
-    month: Int @defaultNumber
-    daytime: String
-    alt: String
-    title: String
-    format:String
-    size:Int @defaultNumber
-    width:Int @defaultNumber
-    height:Int @defaultNumber
-    vratio: Float @defaultNumber
-    hratio: Float @defaultNumber
-    space:String
-    channels:String
-    depth:String
-    density:String
-    chromaSubsampling:String
-    compression:String
-    isProgressive:Boolean @defaultFalse
-    hasProfile:Boolean @defaultFalse
-    hasAlpha:Boolean @defaultFalse
-    orientation:Boolean @defaultFalse
-  }
-  type PagesCsv implements Node {
-    id: ID!
-    file: String!
-    slug: String!
-    title: String
-    metaTitle: String
+    # i18nPath: String
+    # slug: String
+    #
+    # Thing Schema
+    #
     description: String
-    published: Boolean @defaultTrue
-    order: String
-    navPage: Boolean @defaultFalse
-    noCover: Boolean @defaultFalse
-    folder: String
-    ogImage: String
-    cover: String
-    album: String
-    pax: String
+    image: String
+    name: String
+    #
+    # CreativeWork Schema
+    tags: String
+    abstract: String
+    author: String
+    contentLocation: String
+    dateCreated: Date @dateformat
+    dateModified: Date @dateformat
+    datePublished: Date @dateformat
+    genre: String
+    headline: String
+    language: String
+    order: Int @defaultNumber(n: 999)
+    #
+    # Other fields
+    #
+    pax: Int
     region: String
     city: String
     cap: String
     address: String
     cell: String
     places: String
+    web: String
     facebook: String
     instagram: String
-    web: String
-    tags: [Tag!] @link(by: "name")
-    # authors: [Author!] @link(by: "shortName")
   }
 `

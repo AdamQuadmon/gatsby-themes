@@ -1,65 +1,31 @@
 import React from 'react'
+import { navigate } from 'gatsby'
 import { motion } from 'framer-motion'
 import { Box, Button, Flex, Heading, useStyleConfig } from '@chakra-ui/react'
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa'
 import Image, { ImageLink } from '../Image'
 import { Link, LinkTranslated } from '../Link'
-import { navigate } from 'gatsby'
-import { getImageSlug, getAlbumSlug, makeTitle } from '../../utils/images'
 
-/**
- * Experimenting with distilling swipe offset and velocity into a single variable, so the
- * less distance a user has swiped, the more velocity they need to register as a swipe.
- * Should accomodate longer swipes and short flicks without having binary checks on
- * just distance thresholds and velocity > 0.
- */
-const swipeConfidenceThreshold = 10000
-const swipePower = (offset, velocity) => {
-  return Math.abs(offset) * velocity
-}
-const isBrowser = typeof window !== 'undefined'
-
-const getDirection = (nextSlug) => {
-  if (!isBrowser || !nextSlug) return 1
-  return window.oldLocation === nextSlug ? 0 : 1
-}
-
-const variants = {
-  enter: (direction) => {
-    return {
-      x: direction > 0 ? -2000 : 2000,
-      opacity: 0,
-    }
-  },
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-  },
-}
-
-const ImageContent = ({ album, image, prev, next, variant, ...rest }) => {
+const ImageContent = ({ album, page, images, variant, ...rest }) => {
   const styles = useStyleConfig('ImageContent', { variant })
-
-  const nextSlug = getImageSlug(next)
-  const prevSlug = getImageSlug(prev)
-  const albumSlug = getAlbumSlug(image)
-  const direction = getDirection(nextSlug)
+  const { image } = page
+  const { prev, next } = getSiblings(page, images)
+  const direction = getDirection(next, window)
 
   const onDragEnd = (e, { offset, velocity }) => {
     const swipe = swipePower(offset.x, velocity.x)
 
     if (swipe < -swipeConfidenceThreshold) {
-      prevSlug && navigate(prevSlug)
+      prev && navigate(prev.slug)
     } else if (swipe > swipeConfidenceThreshold) {
-      nextSlug && navigate(nextSlug)
+      next && navigate(next.slug)
     }
   }
-  // TODO: implement full screen
+
   return (
     <Box __css={styles} {...rest}>
       <Heading as="h1" size="2xl">
-        {makeTitle(image.file)}
+        {image.heading}
       </Heading>
       <Flex className="nav-container" justifyContent="space-between" mx="auto">
         <ImageLink
@@ -68,13 +34,17 @@ const ImageContent = ({ album, image, prev, next, variant, ...rest }) => {
           label="Prev"
           keydown="ArrowLeft"
         />
-        {/* <Button>Full Screen</Button> */}
-        <Button as={Link} to={albumSlug}>
+
+        {/*
+        // TODO: implement full screen
+        <Button>Full Screen</Button>
+        */}
+        <Button as={Link} to={album.slug}>
           Back to Album
         </Button>
-        {album.page && (
-          <Button as={LinkTranslated} to={album.page}>
-            {album.pageTitle}
+        {album.pageUrl && (
+          <Button as={LinkTranslated} to={album.pageUrl}>
+            {album.pageLabel}
           </Button>
         )}
         <ImageLink
@@ -88,9 +58,10 @@ const ImageContent = ({ album, image, prev, next, variant, ...rest }) => {
         key={image.file}
         initial="enter"
         animate="center"
+        exit="leave"
         custom={direction}
         variants={variants}
-        transition={{ type: 'spring', velocity: 2 }}
+        transition={{ type: 'tween', velocity: 2, stiffness: 100 }}
         drag="x"
         dragPropagation
         // dragElastic={1}
@@ -106,3 +77,48 @@ const ImageContent = ({ album, image, prev, next, variant, ...rest }) => {
 }
 
 export default ImageContent
+
+/**
+ * Experimenting with distilling swipe offset and velocity into a single variable, so the
+ * less distance a user has swiped, the more velocity they need to register as a swipe.
+ * Should accomodate longer swipes and short flicks without having binary checks on
+ * just distance thresholds and velocity > 0.
+ */
+const swipeConfidenceThreshold = 10000
+const swipePower = (offset, velocity) => {
+  return Math.abs(offset) * velocity
+}
+
+const variants = {
+  enter: (direction) => {
+    return {
+      x: direction > 0 ? -2000 : 2000,
+      opacity: 0,
+    }
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  leave: (direction) => {
+    console.log('exit', direction)
+    return {
+      x: direction > 0 ? 2000 : -2000,
+      opacity: 0,
+    }
+  },
+}
+
+const getSiblings = (page, images) => {
+  const index = images.findIndex(({ node }) => node.slug === page.slug)
+  return {
+    prev: index === 0 ? null : images[index - 1].node,
+    next: index === images.length - 1 ? null : images[index + 1].node,
+  }
+}
+
+const getDirection = (next, window) => {
+  // this SMELLS, try a react way for it
+  return window && next && window.oldLocation === next.slug ? 0 : 1
+}

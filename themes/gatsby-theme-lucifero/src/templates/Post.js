@@ -9,14 +9,14 @@ import PageContent from '../components/Content/PageContent'
 import TableOfContents from '../components/Blog/toc'
 
 export default function PostTemplate({ data, pageContext }) {
-  const { post } = data
-  const { tableOfContents } = post
+  const { page } = data
+  const { tableOfContents } = page
   const { breadcrumb /*, previous, next*/ } = pageContext
   const hasToc = !!tableOfContents?.items
   const variant = hasToc ? 'toc' : null
   const styles = useStyleConfig('PostPage', { variant })
   return (
-    <Layout page={post}>
+    <Layout page={page} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} />
       <Box __css={styles}>
         {hasToc && (
@@ -24,19 +24,33 @@ export default function PostTemplate({ data, pageContext }) {
             <TableOfContents tableOfContents={tableOfContents} />
           </Box>
         )}
-        <PageContent className="post" node={post} variant="blog" />
+        <PageContent
+          className="speakable-wrapper post"
+          page={page}
+          variant="blog"
+        />
       </Box>
     </Layout>
   )
 }
-
+/*
+TODO: implement
+$prev: String!
+$next: String!
+prev: page(id: { eq: $prev }) {
+  ...PageNode
+}
+next: page(id: { eq: $next }) {
+  ...PageNode
+}
+*/
 export const pageQuery = graphql`
   query PostQuery($id: String, $language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    post: blogPost(id: { eq: $id }) {
-      ...PostNode
+    page: page(id: { eq: $id }) {
+      ...PageNode
     }
   }
 `

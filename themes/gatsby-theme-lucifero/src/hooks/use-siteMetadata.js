@@ -6,24 +6,43 @@ export const useSiteMetadata = () => {
       query SiteMetadataQuery {
         site {
           siteMetadata {
+            alternateName
+            author
+            copyright
+            dateCreated
+            description
+            keywords
+            icon
+            language
+            mainKeyword
+            ogImage
+            shortTitle
+            siteUrl
             title
             titleTemplate
-            description
-            author
-            keywords
-            siteUrl
-            ogImage
             organization {
+              type
               name
-              subTitle
-              address1
-              address2
-              address2short
-              iva
-              copyright
-              cellNumber
+              description
               url
+              legalName
               logo
+              telephone
+              hasMap
+              slogan
+              vatID
+              alternateName
+              address {
+                streetAddress
+                addressLocality
+                addressRegion
+                postalCode
+                addressCountry
+              }
+              geo {
+                latitude
+                longitude
+              }
             }
             socials {
               facebook

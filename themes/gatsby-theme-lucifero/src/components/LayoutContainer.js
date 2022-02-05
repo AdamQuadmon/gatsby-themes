@@ -4,7 +4,7 @@ import { Box, Container, Flex } from '@chakra-ui/react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { I18nextContext } from 'gatsby-plugin-react-i18next'
 
-import Seo from '../components/Seo'
+import Seo from '../components/Seo/Seo'
 import NavBar from '../components/NavBar/NavBar'
 import Footer from '../components/Footer'
 import ErrorFallback from '../components/ErrorFallback'

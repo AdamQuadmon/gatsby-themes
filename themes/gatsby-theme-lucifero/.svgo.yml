@@ -1,0 +1,4 @@
+multipass: true
+plugins:
+  - cleanupIDs: true # remove unused IDs and minify remaining IDs (default)
+  - removeViewBox: false # remove viewBox when possible (default)

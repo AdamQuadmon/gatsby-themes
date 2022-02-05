@@ -9,12 +9,13 @@ const Breadcrumbs = ({ breadcrumb, variant }) => {
   const { crumbs } = breadcrumb
 
   crumbs[0].crumbLabel = <ImHome />
-
-  const customCrumbLabel = location.pathname
-    .toLowerCase()
-    .replaceAll('-', ' ')
-    .split('/')
-    .pop()
+  const customCrumbLabel =
+    crumbs.length > 1 &&
+    crumbs[crumbs.length - 1].crumbLabel
+      .toLowerCase()
+      .replaceAll('-', ' ')
+      .split('/')
+      .pop()
 
   return (
     <Box __css={styles}>

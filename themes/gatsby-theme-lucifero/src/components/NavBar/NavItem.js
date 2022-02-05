@@ -12,7 +12,7 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
     <Box __css={styles} role="group" {...rest}>
       <Button
         as={Link}
-        to={`/${href}`}
+        to={href}
         activeClassName={'active'}
         partiallyActive
         rightIcon={children && <IoIosArrowDown />}

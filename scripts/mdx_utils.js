@@ -29,39 +29,34 @@ const sortObjectByKeys = (o) => {
     .reduce((r, k) => ((r[k] = o[k]), r), {})
 }
 
-const getCountsArray = (object, objectsArray) => {
-  const valueKey = 'count'
-  return Object.keys(object).map((key) => {
-    const value = object[key]
-    if (objectsArray) {
-      let _object = objectsArray.find((o) => o.name === key)
-      if (_object) {
-        _object[valueKey] = value
-        return _object
-      }
-    }
+const getKeysCount = (counters, section) => {
+  const counter = counters[section]
 
-    return {
-      name: key,
-      count: object[key],
-    }
+  return Object.keys(counter.counts).map((key) => {
+    const count = counter.counts[key]
+    let entity = getEntityByName(counters, section, key)
+    entity['count'] = count
+    return entity
   })
 }
 
 // add key to array
-const pushCounter = (elements, key, elementsArray) => {
-  if (!elements[key]) {
-    elements[key] = 0
-    if (elementsArray)
-      elementsArray.push({ id: elementsArray.length + 1, name: key })
+const countSectionKey = (counters, section, key) => {
+  const counter = counters[section]
+  if (!counter.counts[key]) {
+    counter.counts[key] = 0
+    counter.entities.push({
+      id: counter.entities.length + 1,
+      name: key,
+    })
   }
 
-  elements[key]++
+  counter.counts[key]++
 }
 
 // filter index from slug
-const filterPostSlug = (slug) => {
-  if (slug === 'index') slug = ''
+const getSlugUnlessIndex = (slug) => {
+  if (slug === 'index') return null
   return slug
 }
 
@@ -79,6 +74,10 @@ const getFile = async (contentPath, file) => {
   }
 }
 
+const getEntityByName = (object, section, key) => {
+  return object[section].entities.find((o) => o.name === key)
+}
+
 const pushValue = (object, key, value) => {
   if (!object[key]) object[key] = []
   if (value && !object[key].includes(value)) object[key].push(value)
@@ -90,14 +89,36 @@ const writeCsv = (data, name) => {
 }
 
 module.exports = {
+  getEntityByName,
+  getKeysCount,
   getDirectories,
-  getImages,
-  getImage,
   getFile,
-  writeCsv,
+  getImage,
+  getImages,
+  getSlugUnlessIndex,
   getSortedKeys,
-  getCountsArray,
   pushValue,
-  filterPostSlug,
-  pushCounter,
+  countSectionKey,
+  writeCsv,
+}
+
+const getNodePath = (node) => {
+  const { fileAbsolutePath } = node
+  if (!fileAbsolutePath) {
+    console.log('getNodePath: node has no fileAbsolutePath', node)
+    return ''
+  }
+
+  return fileAbsolutePath
+}
+
+const removeExtensions = (node, options) => {
+  const { languages } = options
+  let fileAbsolutePath = getNodePath(node)
+  const parts = fileAbsolutePath.split('.')
+  if (parts.length > 1 && languages.includes(parts.pop())) {
+    fileAbsolutePath = parts.join('.')
+  }
+
+  return fileAbsolutePath
 }

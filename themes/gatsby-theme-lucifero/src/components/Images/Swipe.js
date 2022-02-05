@@ -29,7 +29,6 @@ import 'swiper/css/thumbs'
 import { Link } from '../Link'
 import Image from '../Image'
 import { useImages } from '../../hooks/use-images'
-import { getImageSlug } from '../../utils/images'
 
 SwiperCore.use([
   FreeMode,
@@ -80,20 +79,14 @@ const Swipe = ({ album, area, zone, variant }) => {
           autoHeight
           navigation
           // lazy
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
+          // onSlideChange={() => console.log('slide change')}
+          // onSwiper={(swiper) => console.log(swiper)}
         >
           {images.map(({ node }, index) => (
             <SwiperSlide key={`slide_${index}_${node.file}`}>
               {React.cloneElement(
-                <Link to={getImageSlug(node)}>
-                  <Image
-                    key={node.file}
-                    file={node.file}
-                    folder={node.folder}
-                    aspectRatio={16 / 9}
-                    className="swiper-lazy"
-                  />
+                <Link to={node.slug}>
+                  <Image key={node.file} image={node} className="swiper-lazy" />
                 </Link>
               )}
             </SwiperSlide>

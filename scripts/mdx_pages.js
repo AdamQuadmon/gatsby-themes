@@ -73,7 +73,7 @@ const printInfo = (pagesData) => {
 }
 
 const getMdx = (filesData) => {
-  filesData.forEach((fileData) => parsePage(fileData, pagesData))
+  filesData.forEach((data) => parsePage(data, pagesData))
   printInfo(pagesData)
 
   writeCsv(pagesData.pages, 'pages')

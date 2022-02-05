@@ -1,133 +1,199 @@
 const fm = require('front-matter')
+const moment = require('moment')
 
 const {
+  getKeysCount,
   getDirectories,
   getFile,
-  printInfo,
-  writeCsv,
+  getEntityByName,
+  getSlugUnlessIndex,
   getSortedKeys,
-  getCountsArray,
+  countSectionKey,
   pushValue,
-  filterPostSlug,
-  pushCounter,
+  writeCsv,
 } = require('./mdx_utils')
 
 const {
   splitPath,
 } = require('../themes/gatsby-theme-lucifero/src/config/index.js')
 
-const contentPath = 'examples/giuno/pages/areas'
+const contentPath = 'projects/lux/pages/blog'
+// const contentPath = 'examples/giuno/pages/blog'
 
 let postsData = {
+  areas: {
+    counts: {},
+    entities: [],
+  },
+  topics: {
+    counts: {},
+    entities: [],
+  },
+  attributes: {
+    counts: {},
+    entities: [],
+  },
+  tags: {
+    counts: {},
+    entities: [],
+  },
+  posts: [],
   // contains frontmatter attributes use count
-  attributesCount: {},
+  // attributesCount: {},
   // contains areas use count
-  areasCount: {},
-  allAreas: [],
-  // contains categories use count
-  categoriesCount: {},
-  allCategories: [],
+  // areasCount: {},
+  // allAreas: [],
+  // // contains categories use count
+  // categoriesCount: {},
+  // allCategories: [],
   // contains tags use count
-  tagsCount: {},
-  allTags: [],
-  allPosts: [],
+  // tagsCount: {},
+  // allTags: [],
+  // allPosts: [],
 }
 
-// const getValue = (e) => e.name
-const getValue = (e) => e.id
+const getEntityKey = (e) => e.name
+// const getEntityKey = (e) => e.id
 
+const checkAttributes = (attributes, slug) => {
+  const attributesKeys = Object.keys(attributes)
+
+  const defaultAttributes = [
+    'slug',
+    'metaTitle',
+    'title',
+    'date',
+    'description',
+    'published',
+    'order',
+    'navPage',
+    'noCover',
+    'cover',
+    'tags',
+    'software',
+    // 'folder',
+    // 'ogImage',
+    // 'album',
+  ]
+
+  attributesKeys.forEach((key) => {
+    if (!defaultAttributes.includes(key)) {
+      console.log('checkAttributes! unknown', key, 'in slug:', slug)
+    }
+  })
+}
 const parsePost = (fileData, postsData) => {
   const content = fm(fileData.content)
 
   let pathParts = splitPath(fileData.slug)
-  const area = filterPostSlug(pathParts.shift())
-  const topic = filterPostSlug(pathParts.length && pathParts.shift())
-  const postSlug = filterPostSlug(pathParts.join('/'))
+  const areaKey = getSlugUnlessIndex(pathParts.shift())
+  const topicKey =
+    (pathParts.length && getSlugUnlessIndex(pathParts.shift())) || null
+  const pageSlug = getSlugUnlessIndex(pathParts.join('/'))
 
-  const { metaTitle, title, description, tags, published, date } =
-    content.attributes
+  checkAttributes(content.attributes, fileData.slug)
 
-  let _area, _category
-  if (area) {
-    pushCounter(postsData.areasCount, area, postsData.allAreas)
-    _area = postsData.allAreas.find((o) => o.name === area)
-    if (topic) {
-      pushCounter(postsData.categoriesCount, topic, postsData.allCategories)
-      _category = postsData.allCategories.find((o) => o.name === topic)
-      pushValue(_area, 'categories', getValue(_category))
-      pushValue(_category, 'areas', getValue(_area))
+  const {
+    slug: metaSlug,
+    metaTitle,
+    title,
+    date,
+    description,
+    published,
+    order,
+    navPage,
+    noCover,
+    cover,
+  } = content.attributes
+
+  let area,
+    topic,
+    tags = []
+  if (areaKey) {
+    countSectionKey(postsData, 'areas', areaKey)
+    area = getEntityByName(postsData, 'areas', areaKey)
+    if (topicKey) {
+      countSectionKey(postsData, 'topics', topicKey)
+      topic = getEntityByName(postsData, 'topics', topicKey)
+      pushValue(area, 'topics', getEntityKey(topic))
+      pushValue(topic, 'areas', getEntityKey(area))
     }
   }
 
   Object.keys(content.attributes).forEach((attributeKey) => {
-    pushCounter(postsData.attributesCount, attributeKey)
+    countSectionKey(postsData, 'attributes', attributeKey)
     const attribute = content.attributes[attributeKey]
 
     if (attributeKey === 'tags') {
-      attribute.forEach((tag) => {
-        pushCounter(postsData.tagsCount, tag, postsData.allTags)
-        let _tag = postsData.allTags.find((o) => o.name === tag)
-        if (_area) {
-          pushValue(_area, 'tags', getValue(_tag))
-          pushValue(_tag, 'areas', getValue(_area))
-          if (_category) {
-            pushValue(_tag, 'categories', getValue(_category))
-            pushValue(_category, 'tags', getValue(_tag))
+      attribute.forEach((tagKey) => {
+        countSectionKey(postsData, 'tags', tagKey)
+        let tag = getEntityByName(postsData, 'tags', tagKey)
+        tags.push(tag)
+        if (area) {
+          pushValue(area, 'tags', getEntityKey(tag))
+          pushValue(tag, 'areas', getEntityKey(area))
+          if (topic) {
+            pushValue(tag, 'topics', getEntityKey(topic))
+            pushValue(topic, 'tags', getEntityKey(tag))
           }
         }
       })
     }
   })
 
-  postsData.allPosts.push({
-    slug: fileData.slug,
-    area: _area && getValue(_area),
-    category: _category && getValue(_category),
-    post_slug: postSlug,
-    tags:
-      tags &&
-      tags.map((tag) =>
-        getValue(postsData.allTags.find((o) => o.name === tag))
-      ),
-    title,
-    metaTitle,
-    description,
-    folder,
-    cover,
-    ogImage,
+  const dateF = moment(date).format('YYYY-MM-DD HH:mm:ss')
+
+  postsData.posts.push({
+    // Article Specific
     published,
-    // created_at: date,
-    // content: content.body,
-    //   software,
+    area: area && getEntityKey(area),
+    topic: topic && getEntityKey(topic),
+    i18nPath: fileData.slug,
+    slug: fileData.slug.replace('/index', ''),
+    pageSlug,
+    // tags: tags.join(','),
+    type: getPostType(pageSlug, topic),
+    // seo thing
+    description,
+    image: cover,
+    name: title,
+    // seo CreativeWork
+    tags: tags.map((tag) => tag.name),
+    abstract: '',
+    author: '',
+    contentLocation: '',
+    dateModified: dateF,
+    dateCreated: dateF,
+    datePublished: dateF,
+    genre: '',
+    headline: metaTitle,
+    order,
+    // Ui
+    navPage,
+    noCover,
+    // Others
+    metaSlug,
   })
 }
 
+const getPostType = (pageSlug, topic) => {
+  return pageSlug ? 'article' : topic ? 'topic' : 'area'
+}
+
 const printInfo = (postsData) => {
-  //   console.log(tags)
-  console.log('Posts:', postsData.allPosts.length)
-  //   console.log(allPosts)
-  console.log('Attributes:', Object.keys(postsData.attributesCount).length)
-  //   console.log(attributesCount)
-  console.log('Tags:', Object.keys(postsData.tagsCount).length)
-  //   const tagsByUsage = Object.entries(tagsCount).sort(sortByPropertyValue)
-  //   console.log(Object.entries(tagsCount))
-  getSortedKeys(postsData.tagsCount).forEach((tag) => {
-    //     // console.log(tagsCount[tag])
-    // if (tagsCount[tag] > 1) console.log(tag, tagsCount[tag])
-  })
+  console.log('Posts:', postsData.posts.length)
+  console.log('Attributes:', postsData.attributes.entities.length)
+  console.log('Tags:', postsData.tags.entities.length)
 }
 
 const getMdx = (filesData) => {
   filesData.forEach((data) => parsePost(data, postsData))
   printInfo(postsData)
 
-  writeCsv(postsData.allPosts, 'posts')
-  writeCsv(getCountsArray(postsData.areasCount, postsData.allAreas), 'areas')
-  writeCsv(
-    getCountsArray(postsData.categoriesCount, postsData.allCategories),
-    'categories'
-  )
-  writeCsv(getCountsArray(postsData.tagsCount, postsData.allTags), 'tags')
+  writeCsv(postsData.posts, 'meta')
+  writeCsv(getKeysCount(postsData, 'areas'), 'areas')
+  writeCsv(getKeysCount(postsData, 'topics'), 'topics')
+  writeCsv(getKeysCount(postsData, 'tags'), 'tags')
 }
 
 getDirectories(contentPath, (err, files) => {

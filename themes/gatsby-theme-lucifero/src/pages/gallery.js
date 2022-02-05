@@ -5,42 +5,23 @@ import { Box, Flex, Heading } from '@chakra-ui/layout'
 import Layout from '../components/LayoutContainer'
 import Breadcrumbs from '../components/Breadcrumbs'
 import Album from '../components/Images/Album'
-import {
-  getImagesByAlbum,
-  getAlbumsByName,
-  getAlbumsKeys,
-} from '../utils/images'
 
-const GallerySection = ({ edges, albums, title }) => {
-  const imagesByAlbum = getImagesByAlbum(edges)
-  const albumsByName = getAlbumsByName(albums)
-  const albumsKeys = getAlbumsKeys(imagesByAlbum, albumsByName)
-  return (
-    <Box>
-      <Heading as="h2">{title}</Heading>
-
-      <Flex justifyContent="space-between">
-        {albumsKeys.map((album) => {
-          const images = imagesByAlbum[album]
-          return (
-            <Album key={album} album={albumsByName[album]} images={images} />
-          )
-        })}
-      </Flex>
-    </Box>
-  )
-}
+// TODO add collections meta
 const GalleryPage = ({ data, pageContext }) => {
   const { breadcrumb } = pageContext
-  const albums = data.albums.edges
-  const tenuta = data.tenuta.edges
-  const luoghi = data.luoghi.edges
+  const { page, albums } = data
 
+  const areas = getAreasAlbums(albums.edges)
   return (
-    <Layout page={{ meta: { title: 'Gallery' } }}>
+    <Layout page={page} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} />
-      <GallerySection edges={tenuta} albums={albums} title="La Tenuta" />
-      <GallerySection edges={luoghi} albums={albums} title="I Dintorni" />
+      {areas.map((area) => (
+        <GallerySection
+          key={area.name}
+          areaName={area.name}
+          albums={area.albums}
+        />
+      ))}
     </Layout>
   )
 }
@@ -52,20 +33,45 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    albums: allAlbumsCsv(sort: { fields: [order], order: ASC }) {
-      ...AlbumsDataEdges
-    }
-    tenuta: allImagesCsv(
-      filter: { section: { eq: "tenuta" } }
+    albums: allAlbumCsv(
+      filter: { published: { eq: true } }
       sort: { fields: [order], order: ASC }
     ) {
-      ...ImagesDataEdges
+      ...AlbumCsvEdges
     }
-    luoghi: allImagesCsv(
-      filter: { section: { eq: "luoghi" } }
-      sort: { fields: [order], order: ASC }
-    ) {
-      ...ImagesDataEdges
+    page(type: { eq: "gallery" }, language: { eq: $language }) {
+      ...PageNode
     }
   }
 `
+
+const GallerySection = ({ areaName, albums }) => {
+  return (
+    <Box>
+      <Heading as="h2">{areaName}</Heading>
+      <Flex justifyContent="space-between">
+        {albums.map((album) => (
+          <Album key={album.slug} album={album} />
+        ))}
+      </Flex>
+    </Box>
+  )
+}
+
+const getAreasAlbums = (albums) => {
+  const areas = []
+  const areasNames = {}
+
+  albums.forEach(({ node }) => {
+    if (!areasNames[node.area]) areasNames[node.area] = []
+    areasNames[node.area].push(node)
+  })
+
+  Object.keys(areasNames).forEach((areaKey) => {
+    areas.push({
+      name: areaKey,
+      albums: areasNames[areaKey],
+    })
+  })
+  return areas
+}

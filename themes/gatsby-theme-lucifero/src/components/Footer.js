@@ -14,17 +14,20 @@ import Logo from './Logo'
 import GMap from './GMap'
 import SocialButtons from './SocialButtons'
 import LangSelector from './LangSelector'
+import { getPlaceAddress } from './Seo/Schema/PlacesAndOrganizations'
 
 // https://chakra-templates.dev/page-sections/footer
 const Footer = ({ data, navItems, variant }) => {
   const styles = useStyleConfig('Footer', { variant })
   const { organization, socials } = data
-  const { name, subTitle, address1, address2, iva, copyright } = organization
+  const { legalName, address, vatID, copyright } = organization
+  const { streetAddress } = address
+  const addressPlace = getPlaceAddress(address)
   return (
     <Box __css={styles}>
       <Container as={Stack} maxW={'6xl'}>
         <Flex className="first_row">
-          <Logo title={name} w="full" />
+          <Logo title={legalName} w="full" />
           <Spacer />
           <Stack direction={['column', 'row']} alignItems="end">
             <LangSelector showLabel />
@@ -36,29 +39,29 @@ const Footer = ({ data, navItems, variant }) => {
         </Flex>
         <Flex>
           <Box className="first_column">
-            <Text className="subtitle">{subTitle}</Text>
-            <Text>{address1}</Text>
-            <Text className="address2">{address2}</Text>
+            <Text className="subtitle">{legalName}</Text>
+            <Text>{streetAddress}</Text>
+            <Text className="address2">{addressPlace}</Text>
             <Text>
-              <Text as="span" className="iva_label">
+              <Text as="span" className="vat_label">
                 <Trans>vat</Trans>{' '}
               </Text>
-              <Text as="span" className="iva_value">
-                {iva}
+              <Text as="span" className="vat_value">
+                {vatID}
               </Text>
             </Text>
           </Box>
           <Stack className="second_column">
-            {navItems.map((item) => (
-              <Link key={item.href} to={`/${item.href}`}>
-                {item.label}
+            {navItems.map((navItem) => (
+              <Link key={navItem.href} to={navItem.href}>
+                {navItem.label}
               </Link>
             ))}
           </Stack>
         </Flex>
         <GMap />
         <Text className="copyright">
-          © {new Date().getFullYear()} {copyright}
+          {copyright}-{new Date().getFullYear()}
         </Text>
       </Container>
     </Box>

@@ -1,6 +1,6 @@
 //github.com/gatsbyjs/gatsby/discussions/31599#discussioncomment-1239988
 const urljoin = require('url-join')
-const { withDefaults, getLanguages } = require('./src/config/index.js')
+const { withDefaults } = require('./src/config/index.js')
 const remarkA11yEmoji = require('@fec/remark-a11y-emoji')
 const rehypeSlug = require('rehype-slug')
 // const rehypeSanitize = require('rehype-sanitize')
@@ -16,7 +16,7 @@ module.exports = (userConfig) => {
   // Make sure that pathPrefix is not empty
   const validatedPathPrefix = config.pathPrefix === '' ? '/' : config.pathPrefix
 
-  const { languages, defaultLanguage } = getLanguages(config)
+  const { languages, defaultLanguage } = config
 
   const siteUrl = urljoin(config.website.url, config.pathPrefix)
 
@@ -24,27 +24,13 @@ module.exports = (userConfig) => {
     pathPrefix: validatedPathPrefix,
     siteMetadata: {
       config, // Make the merged configuration available via GraphQL
-      titleTemplate: config.website.titleTemplate,
-      title: config.website.title,
-      shortTitle: config.website.shortTitle,
-      description: config.website.description,
-      copyright: config.website.copyright,
-      bgColor: config.website.bgColor,
-      themeColor: config.website.themeColor,
-      author: config.website.author,
-      ogImage: config.website.ogImage,
-      iconPath: config.website.iconPath,
+      ...config.website,
+      language: defaultLanguage,
       siteUrl,
       keywords: config.keywords,
       organization: config.organization,
       socials: config.socials,
-      maps: {
-        src: config.maps.src,
-        address: config.maps.address,
-        lat: config.maps.lat,
-        lng: config.maps.lng,
-        zoom: config.maps.zoom,
-      },
+      maps: config.maps,
     },
     plugins: [
       'gatsby-plugin-lodash',
@@ -231,12 +217,12 @@ module.exports = (userConfig) => {
         options: {
           prettier: true, // use prettier to format JS code output (default)
           svgo: true, // use svgo to optimize SVGs (default)
-          svgoConfig: {
-            plugins: [
-              { removeViewBox: true }, // remove viewBox when possible (default)
-              { cleanupIDs: true }, // remove unused IDs and minify remaining IDs (default)
-            ],
-          },
+          // svgoConfig: {
+          //   plugins: [
+          //     { removeViewBox: true }, // remove viewBox when possible (default)
+          //     { cleanupIDs: true }, // remove unused IDs and minify remaining IDs (default)
+          //   ],
+          // },
         },
       },
       {
@@ -312,6 +298,7 @@ module.exports = (userConfig) => {
         resolve: 'gatsby-plugin-sitemap',
         options: {
           excludes: [`/__generated/*`, '/**/404', '/**/404.html'],
+          // TODO check if we can simplify this with the new Meta models
           query: `{
             site {
               siteMetadata{
@@ -321,9 +308,9 @@ module.exports = (userConfig) => {
             allPage {
               edges {
                 node {
-                  lang
+                  language
                   slug
-                  fileAbsolutePath
+                  i18nPath
                 }
               }
             }
@@ -341,18 +328,19 @@ module.exports = (userConfig) => {
           resolvePages: ({ site, allPage, allSitePage }) => {
             const { siteUrl } = site.siteMetadata
 
-            const pagesFileBySlug = {}
-            const pagesSlugByFile = {}
-            languages.forEach((lang) => {
-              pagesFileBySlug[lang] = {}
-              pagesSlugByFile[lang] = {}
+            const pages = {
+              bySlug: [],
+              byPath: [],
+            }
+            languages.forEach((language) => {
+              pages.bySlug[language] = {}
+              pages.byFile[language] = {}
             })
 
             allPage.edges.forEach(({ node }) => {
-              const file = node.fileAbsolutePath.split('.')[0]
-              const slug = `/${node.slug}`
-              pagesFileBySlug[node.lang][slug] = file
-              pagesSlugByFile[node.lang][file] = slug
+              const { language, slug, i18nPath } = node
+              pages.bySlug[language][slug] = i18nPath
+              pages.byFile[language][i18nPath] = slug
             })
 
             return allSitePage.nodes.map((page) => {
@@ -362,17 +350,17 @@ module.exports = (userConfig) => {
                 { lang: defaultLanguage, url },
                 { lang: 'x-default', url },
               ]
-              languages.forEach((lang) => {
+              languages.forEach((language) => {
                 let slug
-                if (lang === defaultLanguage) return
+                if (language === defaultLanguage) return
                 if (originalPath === '/') {
-                  slug = `/${lang}`
+                  slug = `/${language}`
                 } else {
-                  const file = pagesFileBySlug[defaultLanguage][originalPath]
-                  slug = pagesSlugByFile[lang][file]
+                  const path = pages.bySlug[defaultLanguage][originalPath]
+                  slug = pages.byFile[language][path]
                 }
 
-                slug && links.push({ lang, url: `${siteUrl}${slug}` })
+                slug && links.push({ lang: language, url: `${siteUrl}${slug}` })
               })
               return {
                 ...page,

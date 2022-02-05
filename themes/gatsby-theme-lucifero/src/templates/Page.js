@@ -10,9 +10,9 @@ export default function PageTemplate({ data, pageContext }) {
   const { breadcrumb /*, previous, next*/ } = pageContext
 
   return (
-    <Layout page={page}>
+    <Layout page={page} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} removeStart />
-      <PageContent page={page} />
+      <PageContent className="speakable-wrapper" page={page} />
     </Layout>
   )
 }

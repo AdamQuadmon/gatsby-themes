@@ -10,9 +10,14 @@ const AreaPage = ({ data, pageContext }) => {
   const { section } = data
 
   return (
-    <Layout page={section}>
+    <Layout page={section} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} />
-      <Sections data={data} field="topic" />
+      <Sections
+        className="speakable-wrapper"
+        data={data}
+        page={section}
+        field="topic"
+      />
     </Layout>
   )
 }
@@ -24,42 +29,49 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    section: blogPost(slug: { eq: $slug }) {
-      ...PostNode
+    section: page(slug: { eq: $slug }) {
+      ...PageNode
     }
-    sections: allBlogPost(
-      filter: { area: { eq: $area }, type: { eq: "topic" } }
-      sort: { fields: date, order: ASC }
+    sections: allPage(
+      filter: {
+        area: { eq: $area }
+        type: { eq: "topic" }
+        language: { eq: $language }
+      }
+      sort: { fields: timestamp, order: ASC }
     ) {
-      ...PostsEdges
+      ...PageEdges
     }
-    latest: allBlogPost(
+    latest: allPage(
       filter: {
         published: { eq: true }
         type: { eq: "post" }
         area: { eq: $area }
+        language: { eq: $language }
       }
-      sort: { fields: date, order: DESC }
+      sort: { fields: timestamp, order: ASC }
     ) {
-      ...PostsEdges
+      ...PageEdges
     }
-    published: allBlogPost(
+    published: allPage(
       filter: {
         published: { eq: true }
         type: { eq: "post" }
         area: { eq: $area }
+        language: { eq: $language }
       }
     ) {
-      ...TopicGroup
+      ...PageEdges
     }
-    future: allBlogPost(
+    future: allPage(
       filter: {
         published: { eq: false }
         type: { eq: "post" }
         area: { eq: $area }
+        language: { eq: $language }
       }
     ) {
-      ...TopicGroup
+      ...BasePagesEdges
     }
   }
 `

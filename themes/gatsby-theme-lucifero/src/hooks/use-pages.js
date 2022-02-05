@@ -6,7 +6,7 @@ export const usePages = (language) => {
     graphql`
       # NOTE: don't use PageQuery or PagesQuery as these are reserved
       query BlogPagesQuery {
-        allPage(filter: { type: { eq: "page" } }, sort: { fields: order }) {
+        allPage(filter: { type: { eq: "page" } }, sort: { fields: [order] }) {
           ...PageEdges
         }
       }

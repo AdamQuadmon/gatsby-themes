@@ -6,12 +6,13 @@ import Layout from '../components/LayoutContainer'
 import Topic from '../components/Blog/Topic'
 
 const TopicPage = ({ data, pageContext }) => {
+  let { section } = data
   let { breadcrumb } = pageContext
 
   return (
-    <Layout page={section}>
+    <Layout page={section} crumbs={breadcrumb.crumbs}>
       <Breadcrumbs breadcrumb={breadcrumb} />
-      <Topic data={data} />
+      <Topic data={data} className="speakable-wrapper" />
     </Layout>
   )
 }
@@ -23,20 +24,20 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    section: blogPost(slug: { eq: $slug }) {
-      ...PostNode
+    section: page(slug: { eq: $slug }) {
+      ...PageNode
     }
-    published: allBlogPost(
+    published: allPage(
       filter: { topic: { eq: $topic }, published: { eq: true } }
-      sort: { fields: date, order: DESC }
+      sort: { fields: timestamp, order: ASC }
     ) {
-      ...PostsEdges
+      ...PageEdges
     }
-    future: allBlogPost(
+    future: allPage(
       filter: { topic: { eq: $topic }, published: { eq: false } }
-      sort: { fields: date, order: ASC }
+      sort: { fields: timestamp, order: ASC }
     ) {
-      ...PostsEdges
+      ...BasePagesEdges
     }
   }
 `

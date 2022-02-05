@@ -5,17 +5,17 @@ export const useAreas = (language) => {
   const data = useStaticQuery(
     graphql`
       query AreasQuery {
-        allBlogPost(
+        allPage(
           filter: { type: { eq: "area" } }
-          sort: { fields: date, order: ASC }
+          sort: { fields: timestamp, order: ASC }
         ) {
-          ...PostsEdges
+          ...PageEdges
         }
       }
     `
   )
 
-  const { allBlogPost } = data
+  const { allPage } = data
 
-  return edgesByLanguage(allBlogPost, language)
+  return edgesByLanguage(allPage, language)
 }

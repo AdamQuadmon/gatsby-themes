@@ -8,6 +8,8 @@ const website = {
   themeColor: '#44403C', // Used for setting manifest and progress theme colors.
   author: 'Luciano Amodio',
   ogImage: '/lucifero.jpg',
+  dateCreated: '2012-04-10',
+  mainKeyword: 'gatsbyjs theme',
   url: 'http://localhost:8000',
 }
 const icon = 'src/images/lucifero-logo.png'
@@ -33,14 +35,17 @@ module.exports = {
         organization: {
           name: 'The Hell',
           url: 'https://github.com/adamquadmon/gatsby-theme-lucifer',
-          logo: '/og-image/lucifero.jpg',
-          subTitle: 'feels like home',
-          address1: '666, Sunset Bl.',
-          address2: '	7517 - Hell',
-          address2short: 'Hell',
-          iva: '0123456789',
-          copyright: 'Luciano Amodio',
-          cellNumber: '+1 666 142857',
+          logo: 'https://ik.imagekit.io/adamquadmon/lucifero/lucifero-logo_OdnZnen7n3G.png',
+          slogan: 'feels like home',
+          address: {
+            streetAddress: '666, Sunset Bl.',
+            addressLocality: 'Hell',
+            addressRegion: '',
+            postalCode: '7517',
+            addressCountry: '',
+          },
+          vatID: '0123456789',
+          telephone: '+1 666 142857',
         },
         socials: {
           facebook: 'luciferotheme',
@@ -87,7 +92,6 @@ module.exports = {
         display: 'minimal-ui',
         cache_busting_mode: 'none',
         icon,
-        // icons: [],
         lang: defaultLanguage,
         localize: localizeData,
       },

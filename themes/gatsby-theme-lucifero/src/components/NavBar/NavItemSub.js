@@ -7,16 +7,17 @@ import { Link } from '../Link'
 const NavItemSub = ({ variant, item, ...rest }) => {
   const styles = useStyleConfig('NavItemSub', { variant })
 
-  const { slug, excerpt, meta } = item
-  const { folder, cover, title } = meta
+  const { slug, abstract, image, name, headline, description, mdx } = item
+
+  const content = abstract || mdx ? mdx.excerpt : description
   return (
     <Box __css={styles} {...rest}>
-      <Link to={`/${slug}`}>
+      <Link to={slug}>
         <Heading as="h4" size="md" className="item_header">
-          {title}
+          {name}
         </Heading>
-        {cover && <Image file={cover} folder={folder} alt={title} />}
-        <Box className="item_content">{excerpt}</Box>
+        {image && <Image image={image} alt={headline} aspectRatio={16 / 9} />}
+        <Box className="item_content">{content}</Box>
       </Link>
     </Box>
   )

@@ -6,7 +6,7 @@ import { MDXProvider } from '@mdx-js/react'
 
 import { mdxComponents } from './MdxComponents'
 
-const MDXWrapper = ({ meta, body, variant, ...rest }) => {
+const MDXWrapper = ({ body, variant, ...rest }) => {
   const styles = useStyleConfig('MDXWrapper', { variant })
   if (!body) {
     return null
@@ -15,7 +15,7 @@ const MDXWrapper = ({ meta, body, variant, ...rest }) => {
   return (
     <Box className="mdx_content" __css={styles} {...rest}>
       <MDXProvider components={mdxComponents}>
-        <MDXRenderer frontmatter={meta}>{body}</MDXRenderer>
+        <MDXRenderer>{body}</MDXRenderer>
       </MDXProvider>
     </Box>
   )

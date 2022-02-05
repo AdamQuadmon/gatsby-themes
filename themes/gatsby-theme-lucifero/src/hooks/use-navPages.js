@@ -6,17 +6,17 @@ export const useNavPages = (language) => {
     graphql`
       # NOTE: don't use PageQuery or PagesQuery as these are reserved
       query NavPagesQuery {
-        allBlogPost(
-          filter: { type: { eq: "page" }, meta: { navPage: { eq: true } } }
-          sort: { fields: order }
+        allPage(
+          filter: { type: { eq: "page" }, navPage: { eq: true } }
+          sort: { fields: [order] }
         ) {
-          ...NavPagesEdges
+          ...BasePagesEdges
         }
       }
     `
   )
 
-  const { allBlogPost } = data
+  const { allPage } = data
 
-  return edgesByLanguage(allBlogPost, language)
+  return edgesByLanguage(allPage, language)
 }

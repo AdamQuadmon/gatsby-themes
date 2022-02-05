@@ -25,10 +25,10 @@ export const footer = {
           fontSize: 'xs',
           mb: 4,
         },
-        '.iva_label': {
+        '.vat_label': {
           fontSize: 'xs',
         },
-        '.iva_value': {},
+        '.vat_value': {},
         '.copyright': {
           fontSize: 'xs',
         },

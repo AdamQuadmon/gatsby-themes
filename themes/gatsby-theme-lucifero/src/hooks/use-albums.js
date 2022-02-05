@@ -5,15 +5,15 @@ export const useAlbums = (language) => {
   const data = useStaticQuery(
     graphql`
       query AlbumsQuery {
-        allAlbumsCsv {
-          ...AlbumsDataEdges
+        allAlbumCsv {
+          ...AlbumCsvEdges
         }
       }
     `
   )
 
-  const { allAlbumsCsv } = data
+  const { allAlbumCsv } = data
 
-  // return edgesByLanguage(allAlbumsCsv, language)
-  return allAlbumsCsv
+  // return edgesByLanguage(allAlbumCsv, language)
+  return allAlbumCsv
 }

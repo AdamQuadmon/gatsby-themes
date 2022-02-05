@@ -11,19 +11,19 @@ export const localeEdgesFragment = graphql`
     }
   }
 `
-export const placesEdgesFragment = graphql`
-  fragment PlacesEdges on PageConnection {
+// used by pageNav (name and slug)
+export const basePagesEdgesFragment = graphql`
+  fragment BasePagesEdges on PageConnection {
     edges {
       node {
         ...BasePageNode
-        ...ContentPageNode
-        ...PlacesMeta
       }
     }
   }
 `
 export const pageEdgesFragment = graphql`
   fragment PageEdges on PageConnection {
+    totalCount
     edges {
       node {
         ...PageNode
@@ -34,218 +34,197 @@ export const pageEdgesFragment = graphql`
 export const pageNodeFragment = graphql`
   fragment PageNode on Page {
     ...BasePageNode
-    ...ContentPageNode
-    ...DataPageNode
     ...PageMeta
+    mdx {
+      ...MdxMetaNode
+    }
   }
 `
+
 export const basePageNodeFragment = graphql`
   fragment BasePageNode on Page {
-    lang
+    type
     slug
-    order
-  }
-`
-export const contentPageNodeFragment = graphql`
-  fragment ContentPageNode on Page {
-    excerpt
-    body
-  }
-`
-export const dataPageNodeFragment = graphql`
-  fragment DataPageNode on Page {
-    date(formatString: "MMM DD, YYYY")
-    updatedAt
-    timeToRead
-    tableOfContents
+    headline
+    language
+    tags {
+      name
+    }
   }
 `
 export const pageMetaFragment = graphql`
   fragment PageMeta on Page {
-    meta {
-      title
-      metaTitle
-      description
-      order
-      ...CoverFields
-    }
-  }
-`
-
-export const placesMetaFragment = graphql`
-  fragment PlacesMeta on Page {
-    meta {
-      title
-      description
-      order
-      address
-      city
-      cap
-      region
-      places
-      ...CoverFields
-    }
-  }
-`
-export const navPagesEdgesFragment = graphql`
-  fragment NavPagesEdges on BlogPostConnection {
-    edges {
-      node {
-        ...BasePageNode
-      }
-    }
-  }
-`
-export const postsEdgesFragment = graphql`
-  fragment PostsEdges on BlogPostConnection {
-    totalCount
-    edges {
-      node {
-        ...PostNode
-      }
-    }
-  }
-`
-export const areaFragment = graphql`
-  fragment AreaGroup on BlogPostConnection {
-    totalCount
-    group(field: area) {
-      fieldValue
-      totalCount
-    }
-  }
-`
-export const topicFragment = graphql`
-  fragment TopicGroup on BlogPostConnection {
-    totalCount
-    group(field: topic) {
-      fieldValue
-      totalCount
-    }
-  }
-`
-export const postNodeFragment = graphql`
-  fragment PostNode on BlogPost {
-    ...BasePageNode
-    ...ContentPageNode
-    ...DataPageNode
     type
+    published
+    order
     area
     topic
+    language
+    i18nPath
+    slug
+    # generated
+    url
+    contentUrl
+    imagePath
+    image {
+      ...ImageCsvMinNode
+    }
+    # date
+    dateCreated
+    dateModified
+    datePublished
+    # meta
+    name
+    headline
+    description
+    abstract
+    author
+    contentLocation
+    genre
     tags {
       name
     }
-    ...PageMeta
+    # MetaCsv
+    navPage
+    noCover
   }
 `
-
-export const pagesDataEdgesFragment = graphql`
-  fragment PagesDataEdges on PagesCsvConnection {
-    edges {
-      node {
-        slug
-        title
-        published
-        folder
-        cover
-      }
+export const metaCsvNodeFragment = graphql`
+  fragment MetaCsvNode on MetaCsv {
+    published
+    order
+    area
+    topic
+    language
+    i18nPath
+    slug
+    description
+    name
+    tags
+    abstract
+    author
+    contentLocation
+    dateCreated
+    dateModified
+    datePublished
+    genre
+    headline
+    type
+    image
+    navPage
+    noCover
+    mdx {
+      ...MdxMetaNode
     }
   }
 `
+export const contentPageNodeFragment = graphql`
+  fragment MdxMetaNode on Mdx {
+    excerpt
+    body
+    timeToRead
+    tableOfContents
+  }
+`
+export const albumDataNodeFragment = graphql`
+  fragment AlbumCsvNode on AlbumCsv {
+    published
+    order
+    area
+    topic
+    language
+    i18nPath
+    slug
+    description
+    name
+    tags
+    abstract
+    author
+    contentLocation
+    dateCreated
+    dateModified
+    datePublished
+    genre
+    headline
+    pageUrl
+    pageLabel
+    imagesLength
+    image {
+      ...ImageCsvMinNode
+    }
+  }
+`
+
+// Min params needed for Image rendering
+export const imageCsvMinNodeFragment = graphql`
+  fragment ImageCsvMinNode on ImageCsv {
+    contentUrl
+    description
+    name
+    width
+    height
+    # maybe not needed
+    order
+    slug
+    area
+    topic
+    headline
+  }
+`
+
+export const imageDataNodeFragment = graphql`
+  fragment ImageCsvNode on ImageCsv {
+    published
+    order
+    area
+    topic
+    language
+    i18nPath
+    slug
+    description
+    name
+    tags
+    abstract
+    author
+    contentLocation
+    dateCreated
+    dateModified
+    datePublished
+    genre
+    headline
+    # additional fields
+    folder
+    file
+    imagePath
+    contentUrl
+    width
+    height
+    account
+    domain
+    zone
+    subject
+    season
+    month
+    daytime
+  }
+`
+
 export const imagesDataEdgesFragment = graphql`
-  fragment ImagesDataEdges on ImagesCsvConnection {
+  fragment ImageCsvEdges on ImageCsvConnection {
     edges {
       node {
-        ...ImageDataNode
+        ...ImageCsvNode
       }
     }
   }
 `
 
 export const albumsDataEdgesFragment = graphql`
-  fragment AlbumsDataEdges on AlbumsCsvConnection {
+  fragment AlbumCsvEdges on AlbumCsvConnection {
     edges {
       node {
-        ...AlbumDataNode
+        ...AlbumCsvNode
       }
     }
-  }
-`
-
-export const albumDataNodeFragment = graphql`
-  fragment AlbumDataNode on AlbumsCsv {
-    section
-    order
-    album
-    title
-    page
-    pageTitle
-  }
-`
-export const imageDataNodeFragment = graphql`
-  fragment ImageDataNode on ImagesCsv {
-    account
-    domain
-    section
-    folder
-    album
-    file
-    order
-    area
-    zone
-    season
-    month
-    daytime
-    alt
-    title
-    format
-    size
-    width
-    height
-    vratio
-    hratio
-    # space
-    # channels
-    # depth
-    # density
-    # chromaSubsampling
-    # compression
-    # isProgressive
-    # hasProfile
-    # hasAlpha
-    # orientation
-  }
-`
-export const pageDataNodeFragment = graphql`
-  fragment PageDataNode on PagesCsv {
-    file
-    slug
-    title
-    metaTitle
-    description
-    published
-    order
-    navPage
-    ...CoverFields
-    album
-    pax
-    region
-    city
-    cap
-    address
-    cell
-    places
-    facebook
-    instagram
-    web
-  }
-`
-
-export const coverFieldsFragment = graphql`
-  fragment CoverFields on PagesCsv {
-    cover
-    ogImage
-    folder
-    noCover
   }
 `

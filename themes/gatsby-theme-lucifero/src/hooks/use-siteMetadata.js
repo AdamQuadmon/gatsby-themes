@@ -14,6 +14,7 @@ export const useSiteMetadata = () => {
             keywords
             icon
             language
+            languages
             mainKeyword
             ogImage
             shortTitle

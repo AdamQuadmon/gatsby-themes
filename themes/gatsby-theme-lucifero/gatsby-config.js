@@ -26,6 +26,7 @@ module.exports = (userConfig) => {
       config, // Make the merged configuration available via GraphQL
       ...config.website,
       language: defaultLanguage,
+      languages,
       siteUrl,
       keywords: config.keywords,
       organization: config.organization,

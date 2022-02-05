@@ -47,9 +47,7 @@ export const basePageNodeFragment = graphql`
     slug
     headline
     language
-    tags {
-      name
-    }
+    tags
   }
 `
 export const pageMetaFragment = graphql`
@@ -81,9 +79,7 @@ export const pageMetaFragment = graphql`
     author
     contentLocation
     genre
-    tags {
-      name
-    }
+    tags
     # MetaCsv
     navPage
     noCover

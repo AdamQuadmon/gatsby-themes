@@ -5,7 +5,6 @@ import moment from 'moment'
 import { Helmet } from 'gatsby-plugin-react-i18next'
 import { NormalizerIt, TokenizerIt, StopwordsIt } from '@nlpjs/lang-it'
 
-// import { makeTitle } from '../../utils/images'
 import { useSiteMetadata } from '../../hooks/use-siteMetadata'
 
 import SchemaOrg from './SchemaOrg'

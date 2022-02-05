@@ -47,9 +47,13 @@ const getPage = (options) => {
         resolve: (source) => source.name || source.headline,
       },
       tags: {
-        type: '[Tag]',
-        extensions: { link: { by: 'name' } },
-        resolve: (source) => (source.tags && source.tags.split(',')) || [],
+        type: '[String!]',
+        resolve: (source) => {
+          tags = (source.tags && source.tags.split(',')) || []
+          tags = tags.map((tag) => tag.trim())
+
+          return tags
+        },
       },
       abstract: {
         type: 'String',

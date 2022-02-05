@@ -1,11 +1,10 @@
 const _createProxyNode = (gatsbyNodeHelpers, fieldData, type, index) => {
   const { node, actions, createNodeId, createContentDigest } = gatsbyNodeHelpers
   const { createNode, createParentChildLink } = actions
-  const contentDigest =
-    type !== 'Tag'
-      ? node.internal.contentDigest
-      : createContentDigest(fieldData)
-  const id = type !== 'Tag' ? node.id : `${node.id}${index}`
+  const contentDigest = node.internal.contentDigest
+  // const contentDigest = createContentDigest(fieldData)
+  // const id = `${node.id}${index}`
+  const id = node.id
 
   const proxyNode = {
     ...fieldData,
@@ -26,25 +25,6 @@ const _createProxyNode = (gatsbyNodeHelpers, fieldData, type, index) => {
 const createPageProxy = (gatsbyNodeHelpers, type) => {
   const fieldData = getFieldsData(gatsbyNodeHelpers, type)
   _createProxyNode(gatsbyNodeHelpers, fieldData, 'Page')
-}
-
-const createTagProxy = (gatsbyNodeHelpers) => {
-  const { node } = gatsbyNodeHelpers
-  const { tags } = node
-
-  // creating a Tag node for every entry in an Page tag array
-  // TODO: check that this is needed and not creating duplicates
-  tags &&
-    tags.forEach((tag, i) => {
-      const fieldData = {
-        name: tag,
-        type: 'tag',
-        path: slugify(tag),
-        postPublished: node.published === undefined ? true : node.published,
-      }
-
-      _createProxyNode(gatsbyNodeHelpers, fieldData, 'Tag', i)
-    })
 }
 
 const getFieldsData = (gatsbyNodeHelpers, type) => {
@@ -110,5 +90,4 @@ const getTypeFields = (node, type) => {
 
 module.exports = {
   createPageProxy,
-  createTagProxy,
 }

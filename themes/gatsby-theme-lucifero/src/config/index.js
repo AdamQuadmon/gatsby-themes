@@ -58,6 +58,7 @@ const getImageSlug = (node, replaceText) => {
 
 const slugify = (str) => {
   const slug = str
+    .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, `-`)
     .replace(/(^-|-\$)+/g, ``)
@@ -93,6 +94,4 @@ module.exports = {
   withBasePath,
   withDefaults,
   withThemePath,
-  fieldResolver,
-  getParentNode,
 }

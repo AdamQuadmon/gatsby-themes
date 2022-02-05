@@ -20,10 +20,10 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@chakra-ui/gatsby-plugin": "^2.0.2",
-    "@chakra-ui/icons": "^1.1.1",
-    "@chakra-ui/react": "^1.7.4",
-    "@chakra-ui/system": "^1.9.1",
+    "@chakra-ui/gatsby-plugin": "^2.0.3",
+    "@chakra-ui/icons": "^1.1.5",
+    "@chakra-ui/react": "^1.8.3",
+    "@chakra-ui/system": "^1.10.3",
     "@changesets/cli": "^2.19.0",
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.7.1",
@@ -111,12 +111,12 @@
     "directory": "themes/gatsby-theme-lucifero"
   },
   "engines": {
-    "node": ">=v14.18.2"
+    "node": ">=v14.19"
   },
   "devDependencies": {
     "eslint": "^8.7.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-react": "^7.27.1"
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-react": "^7.28.0"
   }
 }

@@ -117,16 +117,6 @@ module.exports = `#graphql
     routed: Boolean
   }
 
-  """
-  Extend childOf types with every type of source as they are added
-  """
-  type Tag implements Node @dontInfer @childOf(types: ["Page"]) {
-    id: ID!
-    name: String!
-    slug: String!
-    postPublished: Boolean
-  }
-
   type PlaceCsv implements Node {
     id: ID!
     published: Boolean @defaultFalse

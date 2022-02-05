@@ -8,12 +8,12 @@ const {
 } = require('./src/config/fieldExtensions')
 
 const typeDefinitions = require('./src/config/typeDefinitions')
-const { getMetaCsv } = require('./src/config/models/MetaCsv')
 const { getPage } = require('./src/config/models/Page')
+const { getMetaCsv } = require('./src/config/models/MetaCsv')
 const { getAlbumCsv } = require('./src/config/models/AlbumCsv')
 const { getImageCsv } = require('./src/config/models/ImageCsv')
 
-const { createPageProxy, createTagProxy } = require('./src/config/proxy')
+const { createPageProxy } = require('./src/config/proxy')
 const { createPagesTypes } = require('./src/config/pages')
 const { createThemePaths } = require('./src/config/index')
 
@@ -58,7 +58,7 @@ const onCreateNode = ({ node, actions, createNodeId, createContentDigest }) => {
       break
     }
     case 'Page': {
-      createTagProxy(gatsbyNodeHelpers)
+      // createTagProxy(gatsbyNodeHelpers)
       break
     }
   }

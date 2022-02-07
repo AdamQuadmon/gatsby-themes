@@ -1,43 +1,35 @@
 import React from 'react'
 import { Box, Button, Stack, Text } from '@chakra-ui/react'
-import {
-  I18nextContext,
-  useI18next,
-  useTranslation,
-} from 'gatsby-plugin-react-i18next'
+import { useTranslation } from 'gatsby-plugin-react-i18next'
 import ReactCountryFlag from 'react-country-flag'
-import { LinkTranslated } from './Link'
+import { Link } from './Link'
 
-const LangSelector = ({ showLabel, ...props }) => {
+const LangSelector = ({ showLabel, alternatePages, ...props }) => {
   const { t } = useTranslation()
-  const { languages, originalPath } = useI18next()
-  const { language } = React.useContext(I18nextContext)
 
   return (
     <Stack className="lang_selector" direction={'row'} spacing={3} {...props}>
-      {showLabel && languages.length > 1 && (
+      {showLabel && alternatePages.length && (
         <Text as="span">{t('languages')}</Text>
       )}
-      {languages.map(
-        (lng) =>
-          lng !== language && (
-            <Box key={lng}>
-              <Button
-                as={LinkTranslated}
-                to={originalPath}
-                language={lng}
-                size="sm"
-              >
-                <ReactCountryFlag
-                  key={lng}
-                  countryCode={lng === 'en' ? 'gb' : lng}
-                  aria-label={t('translateIn', { lng })}
-                  svg
-                />
-              </Button>
-            </Box>
-          )
-      )}
+      {alternatePages.map((page) => (
+        <Box key={page.language}>
+          <Button
+            as={Link}
+            to={page.slug}
+            language={page.language}
+            title={page.headline}
+            size="sm"
+          >
+            <ReactCountryFlag
+              key={page.language}
+              countryCode={page.language === 'en' ? 'gb' : page.language}
+              aria-label={t('translateIn', { lng: page.language })}
+              svg
+            />
+          </Button>
+        </Box>
+      ))}
     </Stack>
   )
 }

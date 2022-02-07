@@ -6,7 +6,10 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa'
 import Image, { ImageLink } from '../Image'
 import { Link, LinkTranslated } from '../Link'
 
-const ImageContent = ({ album, page, images, variant, ...rest }) => {
+const ImageContent = ({ pageData, variant, ...rest }) => {
+  const {
+    data: { page, album, images },
+  } = pageData
   const styles = useStyleConfig('ImageContent', { variant })
   const { image } = page
   const { prev, next } = getSiblings(page, images)

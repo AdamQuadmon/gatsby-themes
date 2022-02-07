@@ -6,7 +6,7 @@ import MDXWrapper from '../MDXWrapper'
 
 const PageContent = ({ page, variant, ...rest }) => {
   const styles = useStyleConfig('Page', { variant })
-  const { headline, image, noCover, mdx } = page
+  const { description, headline, image, noCover, mdx } = page
   const body = mdx ? mdx.body : description
 
   const boxClass = image ? 'has_cover' : 'no_cover'

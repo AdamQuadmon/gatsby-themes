@@ -10,7 +10,7 @@ export const useNavPages = (language) => {
           filter: { type: { eq: "page" }, navPage: { eq: true } }
           sort: { fields: [order] }
         ) {
-          ...BasePagesEdges
+          ...BasePageEdges
         }
       }
     `

@@ -1,23 +1,21 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-
 import { Box, useStyleConfig } from '@chakra-ui/react'
 
 import Layout from '../components/LayoutContainer'
-import Breadcrumbs from '../components/Breadcrumbs'
 import PageContent from '../components/Content/PageContent'
 import TableOfContents from '../components/Blog/toc'
 
-export default function PostTemplate({ data, pageContext }) {
-  const { page } = data
+export default function PostTemplate(pageData) {
+  const {
+    data: { page },
+  } = pageData
   const { tableOfContents } = page
-  const { breadcrumb /*, previous, next*/ } = pageContext
   const hasToc = !!tableOfContents?.items
   const variant = hasToc ? 'toc' : null
   const styles = useStyleConfig('PostPage', { variant })
   return (
-    <Layout page={page} crumbs={breadcrumb.crumbs}>
-      <Breadcrumbs breadcrumb={breadcrumb} />
+    <Layout pageData={pageData}>
       <Box __css={styles}>
         {hasToc && (
           <Box className="toc">
@@ -33,24 +31,19 @@ export default function PostTemplate({ data, pageContext }) {
     </Layout>
   )
 }
-/*
-TODO: implement
-$prev: String!
-$next: String!
-prev: page(id: { eq: $prev }) {
-  ...PageNode
-}
-next: page(id: { eq: $next }) {
-  ...PageNode
-}
-*/
+
 export const pageQuery = graphql`
-  query PostQuery($id: String, $language: String!) {
+  query PostQuery($id: String!, $i18nPath: String, $language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
     page: page(id: { eq: $id }) {
       ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: $i18nPath }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
   }
 `

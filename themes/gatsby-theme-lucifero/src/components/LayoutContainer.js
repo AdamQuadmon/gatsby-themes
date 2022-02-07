@@ -2,31 +2,45 @@ import React from 'react'
 
 import { Box, Container, Flex } from '@chakra-ui/react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { I18nextContext } from 'gatsby-plugin-react-i18next'
 
 import Seo from '../components/Seo/Seo'
 import NavBar from '../components/NavBar/NavBar'
 import Footer from '../components/Footer'
+import Breadcrumbs from '../components/Breadcrumbs'
 import ErrorFallback from '../components/ErrorFallback'
 import CookieConsent from '../components/CookieConsent'
 
 import { useNavItems } from '../hooks/use-navItems'
 import { useSiteMetadata } from '../hooks/use-siteMetadata'
 
-const LayoutContainer = ({ children, ...rest }) => {
-  const { language } = React.useContext(I18nextContext)
+const LayoutContainer = ({ pageData, children, ...rest }) => {
+  const { data, pageContext } = pageData
+  const { page, alternatePages } = data
+  const { breadcrumb, language } = pageContext
+  const { crumbs } = breadcrumb
   const navItems = useNavItems(language)
-  const data = useSiteMetadata()
+  const site = useSiteMetadata()
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Seo {...rest} />
+      <Seo page={page} crumbs={crumbs} {...rest} />
       <Flex flexDirection="column" minHeight="100vh">
-        <NavBar navItems={navItems} data={data} />
+        <NavBar
+          navItems={navItems}
+          site={site}
+          alternatePages={alternatePages.nodes}
+        />
         <Box as="main" flex="1 1 auto">
-          <Container maxW="container.lg">{children}</Container>
+          <Container maxW="container.lg">
+            <Breadcrumbs breadcrumb={breadcrumb} />
+            {children}
+          </Container>
         </Box>
-        <Footer data={data} navItems={navItems} />
+        <Footer
+          site={site}
+          navItems={navItems}
+          alternatePages={alternatePages.nodes}
+        />
         <CookieConsent />
       </Flex>
     </ErrorBoundary>

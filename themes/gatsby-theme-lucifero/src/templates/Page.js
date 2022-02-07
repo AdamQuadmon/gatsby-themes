@@ -3,27 +3,31 @@ import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
 import PageContent from '../components/Content/PageContent'
-import Breadcrumbs from '../components/Breadcrumbs'
 
-export default function PageTemplate({ data, pageContext }) {
-  const { page } = data
-  const { breadcrumb /*, previous, next*/ } = pageContext
+export default function PageTemplate(pageData) {
+  const {
+    data: { page },
+  } = pageData
 
   return (
-    <Layout page={page} crumbs={breadcrumb.crumbs}>
-      <Breadcrumbs breadcrumb={breadcrumb} removeStart />
+    <Layout pageData={pageData}>
       <PageContent className="speakable-wrapper" page={page} />
     </Layout>
   )
 }
 
 export const pageQuery = graphql`
-  query PageQuery($id: String, $language: String!) {
+  query PageQuery($id: String!, $i18nPath: String!, $language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
     page: page(id: { eq: $id }) {
       ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: $i18nPath }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
   }
 `

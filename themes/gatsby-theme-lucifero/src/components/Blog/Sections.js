@@ -10,8 +10,10 @@ import Title from './Title'
 import PostCount, { getCounted } from './PostCount'
 import PostsContainer from './PostsContainer'
 
-const Sections = ({ data, page, variant }) => {
-  const { sections, published, future, latest } = data
+const Sections = ({ pageData, variant }) => {
+  const {
+    data: { page, sections, published, future, latest },
+  } = pageData
 
   if (!page) {
     return null

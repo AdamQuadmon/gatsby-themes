@@ -2,20 +2,14 @@ import React from 'react'
 import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
-import Breadcrumbs from '../components/Breadcrumbs'
 import Sections from '../components/Blog/Sections'
 
-const AreaPage = ({ data, pageContext }) => {
-  let { breadcrumb } = pageContext
-  const { section } = data
-
+const AreaPage = (pageData) => {
   return (
-    <Layout page={section} crumbs={breadcrumb.crumbs}>
-      <Breadcrumbs breadcrumb={breadcrumb} />
+    <Layout pageData={pageData}>
       <Sections
         className="speakable-wrapper"
-        data={data}
-        page={section}
+        pageData={pageData}
         field="topic"
       />
     </Layout>
@@ -25,17 +19,27 @@ const AreaPage = ({ data, pageContext }) => {
 export default AreaPage
 
 export const query = graphql`
-  query AreaQuery($slug: String!, $area: String!, $language: String!) {
+  query AreaQuery(
+    $id: String!
+    $i18nPath: String!
+    $language: String!
+    $area: String!
+  ) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    section: page(slug: { eq: $slug }) {
+    page: page(id: { eq: $id }) {
       ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: $i18nPath }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
     sections: allPage(
       filter: {
-        area: { eq: $area }
         type: { eq: "topic" }
+        area: { eq: $area }
         language: { eq: $language }
       }
       sort: { fields: timestamp, order: ASC }
@@ -44,10 +48,10 @@ export const query = graphql`
     }
     latest: allPage(
       filter: {
-        published: { eq: true }
         type: { eq: "post" }
         area: { eq: $area }
         language: { eq: $language }
+        published: { eq: true }
       }
       sort: { fields: timestamp, order: ASC }
     ) {
@@ -55,23 +59,23 @@ export const query = graphql`
     }
     published: allPage(
       filter: {
-        published: { eq: true }
         type: { eq: "post" }
         area: { eq: $area }
         language: { eq: $language }
+        published: { eq: true }
       }
     ) {
       ...PageEdges
     }
     future: allPage(
       filter: {
-        published: { eq: false }
         type: { eq: "post" }
         area: { eq: $area }
         language: { eq: $language }
+        published: { eq: false }
       }
     ) {
-      ...BasePagesEdges
+      ...BasePageEdges
     }
   }
 `

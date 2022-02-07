@@ -10,6 +10,8 @@ const Breadcrumbs = ({ breadcrumb, variant }) => {
   const { languages } = useSiteMetadata()
   const { crumbs } = breadcrumb
 
+  if (crumbs.length < 2) return ''
+
   crumbs[0].crumbLabel = <ImHome />
 
   if (crumbs[1] && languages.includes(crumbs[1].crumbLabel)) {

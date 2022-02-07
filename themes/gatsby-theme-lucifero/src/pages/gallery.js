@@ -3,18 +3,17 @@ import { graphql } from 'gatsby'
 
 import { Box, Flex, Heading } from '@chakra-ui/layout'
 import Layout from '../components/LayoutContainer'
-import Breadcrumbs from '../components/Breadcrumbs'
 import Album from '../components/Images/Album'
 
 // TODO add collections meta
-const GalleryPage = ({ data, pageContext }) => {
-  const { breadcrumb } = pageContext
-  const { page, albums } = data
+const GalleryPage = (pageData) => {
+  const {
+    data: { albums },
+  } = pageData
 
   const areas = getAreasAlbums(albums.edges)
   return (
-    <Layout page={page} crumbs={breadcrumb.crumbs}>
-      <Breadcrumbs breadcrumb={breadcrumb} />
+    <Layout pageData={pageData}>
       {areas.map((area) => (
         <GallerySection
           key={area.name}
@@ -39,8 +38,13 @@ export const query = graphql`
     ) {
       ...AlbumCsvEdges
     }
-    page(type: { eq: "gallery" }, language: { eq: $language }) {
+    page: page(i18nPath: { eq: "/gallery" }, language: { eq: $language }) {
       ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: "/gallery" }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
   }
 `

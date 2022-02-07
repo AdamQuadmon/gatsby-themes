@@ -3,27 +3,32 @@ import { graphql } from 'gatsby'
 
 import Layout from '../components/LayoutContainer'
 import AlbumContent from '../components/Content/AlbumContent'
-import Breadcrumbs from '../components/Breadcrumbs'
 
-export default function AlbumTemplate({ data, pageContext }) {
-  const { page, album, images } = data
-  const { breadcrumb /*, previous, next*/ } = pageContext
-
+export default function AlbumTemplate(pageData) {
   return (
-    <Layout page={page} crumbs={breadcrumb.crumbs}>
-      <Breadcrumbs breadcrumb={breadcrumb} />
-      <AlbumContent album={album} page={page} images={images} />
+    <Layout pageData={pageData}>
+      <AlbumContent pageData={pageData} />
     </Layout>
   )
 }
 
 export const pageQuery = graphql`
-  query AlbumQuery($id: String, $language: String!, $topic: String) {
+  query AlbumQuery(
+    $id: String!
+    $i18nPath: String
+    $language: String!
+    $topic: String
+  ) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
     page: page(id: { eq: $id }) {
       ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: $i18nPath }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
     album: albumCsv(topic: { eq: $topic }) {
       ...AlbumCsvNode

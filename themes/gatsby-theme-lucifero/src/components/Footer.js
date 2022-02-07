@@ -17,9 +17,9 @@ import LangSelector from './LangSelector'
 import { getPlaceAddress } from './Seo/Schema/PlacesAndOrganizations'
 
 // https://chakra-templates.dev/page-sections/footer
-const Footer = ({ data, navItems, variant }) => {
+const Footer = ({ site, navItems, alternatePages, variant }) => {
   const styles = useStyleConfig('Footer', { variant })
-  const { organization, socials } = data
+  const { organization, socials } = site
   const { legalName, address, vatID, copyright } = organization
   const { streetAddress } = address
   const addressPlace = getPlaceAddress(address)
@@ -30,7 +30,7 @@ const Footer = ({ data, navItems, variant }) => {
           <Logo title={legalName} w="full" />
           <Spacer />
           <Stack direction={['column', 'row']} alignItems="end">
-            <LangSelector showLabel />
+            <LangSelector showLabel alternatePages={alternatePages} />
             <Text as="span">
               <Trans>socials</Trans>
             </Text>

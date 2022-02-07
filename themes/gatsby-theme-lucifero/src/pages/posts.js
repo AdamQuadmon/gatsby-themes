@@ -63,8 +63,16 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
+    page: page(i18nPath: { eq: "/posts" }, language: { eq: $language }) {
+      ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: "/posts" }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
+    }
     posts: allPage(
-      filter: { type: { eq: "post" } }
+      filter: { type: { eq: "post" }, language: { eq: $language } }
       sort: { fields: [slug], order: ASC }
     ) {
       ...PageEdges

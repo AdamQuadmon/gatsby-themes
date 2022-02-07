@@ -8,12 +8,14 @@ import Title from './Title'
 import Wordcloud, { countTags } from './Wordcloud'
 import PostsContainer from './PostsContainer'
 
-const Topic = ({ data, variant }) => {
+const Topic = ({ pageData, variant }) => {
   const {
-    section: { headline, description, image, noCover },
-    published,
-    future,
-  } = data
+    data: {
+      page: { headline, description, image, noCover },
+      published,
+      future,
+    },
+  } = pageData
 
   const tags = [...countTags(published), ...countTags(future)]
 

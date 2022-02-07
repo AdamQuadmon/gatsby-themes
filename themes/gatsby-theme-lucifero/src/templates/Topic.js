@@ -1,18 +1,13 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import Breadcrumbs from '../components/Breadcrumbs'
 
 import Layout from '../components/LayoutContainer'
 import Topic from '../components/Blog/Topic'
 
-const TopicPage = ({ data, pageContext }) => {
-  let { section } = data
-  let { breadcrumb } = pageContext
-
+const TopicPage = (pageData) => {
   return (
-    <Layout page={section} crumbs={breadcrumb.crumbs}>
-      <Breadcrumbs breadcrumb={breadcrumb} />
-      <Topic data={data} className="speakable-wrapper" />
+    <Layout pageData={pageData}>
+      <Topic pageData={pageData} className="speakable-wrapper" />
     </Layout>
   )
 }
@@ -20,12 +15,22 @@ const TopicPage = ({ data, pageContext }) => {
 export default TopicPage
 
 export const query = graphql`
-  query TopicQuery($slug: String!, $topic: String!, $language: String!) {
+  query TopicQuery(
+    $id: String!
+    $i18nPath: String!
+    $topic: String!
+    $language: String!
+  ) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    section: page(slug: { eq: $slug }) {
+    page: page(id: { eq: $id }) {
       ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: $i18nPath }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
     published: allPage(
       filter: { topic: { eq: $topic }, published: { eq: true } }
@@ -37,7 +42,7 @@ export const query = graphql`
       filter: { topic: { eq: $topic }, published: { eq: false } }
       sort: { fields: timestamp, order: ASC }
     ) {
-      ...BasePagesEdges
+      ...BasePageEdges
     }
   }
 `

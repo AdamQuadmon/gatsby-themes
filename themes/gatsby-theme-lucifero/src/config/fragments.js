@@ -12,8 +12,8 @@ export const localeEdgesFragment = graphql`
   }
 `
 // used by pageNav (name and slug)
-export const basePagesEdgesFragment = graphql`
-  fragment BasePagesEdges on PageConnection {
+export const basePageEdgesFragment = graphql`
+  fragment BasePageEdges on PageConnection {
     edges {
       node {
         ...BasePageNode
@@ -21,6 +21,17 @@ export const basePagesEdgesFragment = graphql`
     }
   }
 `
+export const pageAlternateNodesFragment = graphql`
+  fragment PageAlternateNodes on PageConnection {
+    nodes {
+      slug
+      description
+      headline
+      language
+    }
+  }
+`
+
 export const pageEdgesFragment = graphql`
   fragment PageEdges on PageConnection {
     totalCount

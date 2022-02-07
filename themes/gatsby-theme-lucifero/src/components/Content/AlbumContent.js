@@ -5,8 +5,11 @@ import { Box, Button, Flex, Heading, useStyleConfig } from '@chakra-ui/react'
 import { Link, LinkTranslated } from '../Link'
 import Image from '../Image'
 
-const AlbumContent = ({ album, page, images, variant, ...rest }) => {
+const AlbumContent = ({ pageData, variant, ...rest }) => {
   const styles = useStyleConfig('AlbumContent', { variant })
+  const {
+    data: { album, images },
+  } = pageData
 
   return (
     <Box __css={styles} {...rest}>

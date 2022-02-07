@@ -16,14 +16,19 @@ import ThemeSwitcher from './ThemeSwitcher'
 import NavMobile from './NavMobile'
 import NavBarTop from './NavBarTop'
 
-const NavBar = ({ variant, navItems, data, ...rest }) => {
+const NavBar = ({ variant, navItems, site, alternatePages, ...rest }) => {
   const styles = useStyleConfig('NavBar', { variant })
   const mobileNav = useDisclosure()
   const btnRef = React.useRef()
-  const { name } = data.organization
+  const { name } = site.organization
+
   return (
     <>
-      <NavBarTop data={data} mobileNav={mobileNav} />
+      <NavBarTop
+        site={site}
+        mobileNav={mobileNav}
+        alternatePages={alternatePages}
+      />
       <chakra.header __css={styles} {...rest}>
         <Flex
           className="nav-container"

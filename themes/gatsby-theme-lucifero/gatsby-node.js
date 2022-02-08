@@ -114,7 +114,7 @@ const onPostBuild = () => {
 module.exports = {
   onPreBootstrap,
   onCreateNode,
+  onPostBuild,
   createSchemaCustomization,
   createPages,
-  onPostBuild,
 }

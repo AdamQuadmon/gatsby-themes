@@ -12,20 +12,19 @@ const Breadcrumbs = ({ breadcrumb, variant }) => {
 
   if (crumbs.length < 2) return ''
 
-  crumbs[0].crumbLabel = <ImHome />
-
   if (crumbs[1] && languages.includes(crumbs[1].crumbLabel)) {
+    if (crumbs.length < 3) return ''
     crumbs[0].pathname = crumbs[1].pathname
     crumbs.splice(1, 1)
   }
 
-  const customCrumbLabel =
-    crumbs.length > 1 &&
-    crumbs[crumbs.length - 1].crumbLabel
-      .toLowerCase()
-      .replaceAll('-', ' ')
-      .split('/')
-      .pop()
+  crumbs[0].crumbLabel = <ImHome />
+
+  const customCrumbLabel = crumbs[crumbs.length - 1].crumbLabel
+    .toLowerCase()
+    .replaceAll('-', ' ')
+    .split('/')
+    .pop()
 
   return (
     <Box __css={styles}>

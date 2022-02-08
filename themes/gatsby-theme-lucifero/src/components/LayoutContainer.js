@@ -17,7 +17,7 @@ const LayoutContainer = ({ pageData, children, ...rest }) => {
   const { data, pageContext } = pageData
   const { page, alternatePages } = data
   const { breadcrumb, language } = pageContext
-  const { crumbs } = breadcrumb
+  const crumbs = breadcrumb ? breadcrumb.crumbs : []
   const navItems = useNavItems(language)
   const site = useSiteMetadata()
 
@@ -32,7 +32,7 @@ const LayoutContainer = ({ pageData, children, ...rest }) => {
         />
         <Box as="main" flex="1 1 auto">
           <Container maxW="container.lg">
-            <Breadcrumbs breadcrumb={breadcrumb} />
+            {breadcrumb && <Breadcrumbs breadcrumb={breadcrumb} />}
             {children}
           </Container>
         </Box>

@@ -19,11 +19,11 @@ export const query = graphql`
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
     }
-    page: page(type: { eq: "blog" }, language: { eq: $language }) {
+    page: page(i18nPath: { eq: "/" }, language: { eq: $language }) {
       ...PageNode
     }
     alternatePages: allPage(
-      filter: { type: { eq: "blog" }, language: { ne: $language } }
+      filter: { i18nPath: { eq: "/" }, language: { ne: $language } }
     ) {
       ...PageAlternateNodes
     }

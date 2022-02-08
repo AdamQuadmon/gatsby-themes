@@ -5,11 +5,11 @@ import { Trans, useTranslation } from 'gatsby-plugin-react-i18next'
 import Layout from '../components/LayoutContainer'
 import { LinkTranslated } from '../components/Link'
 
-const NotFoundPage = () => {
+// TODO add 404 meta
+const NotFoundPage = (pageData) => {
   const { t } = useTranslation()
-  // TODO add 404 meta
   return (
-    <Layout page={{ headline: t('404notFound'), name: '404' }}>
+    <Layout pageData={pageData}>
       <Heading>
         <Trans>404notFound</Trans>
       </Heading>
@@ -33,6 +33,14 @@ export const query = graphql`
   query ($language: String!) {
     locales: allLocale(filter: { language: { eq: $language } }) {
       ...LocaleEdges
+    }
+    page: page(i18nPath: { eq: "/404" }, language: { eq: $language }) {
+      ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: "/404" }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
     }
   }
 `

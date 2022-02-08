@@ -56,15 +56,6 @@ const getImageSlug = (node, replaceText) => {
   return `gallery/${node.album}/${fileName}`
 }
 
-const slugify = (str) => {
-  const slug = str
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, `-`)
-    .replace(/(^-|-\$)+/g, ``)
-  return slug
-}
-
 // TODO: Move to a custom directive
 const stringToBoolean = (string) => {
   const value =
@@ -89,7 +80,6 @@ module.exports = {
   createThemePaths,
   getImageSlug,
   splitPath,
-  slugify,
   stringToBoolean,
   withBasePath,
   withDefaults,

@@ -13,7 +13,7 @@ module.exports = {
     themeColor: '#44403C', // Used for setting manifest and progress theme colors.
     author: 'Luciano Amodio',
     ogImage: '/astarte.jpg',
-    dateCreated: '2012-04-10',
+    dateCreated: '2019-04-10',
     mainKeyword: 'webmarketing',
     url: 'http://localhost:8000',
   },
@@ -77,7 +77,24 @@ module.exports = {
   embeddedVideoWidth: 992, // MDX embedded video width in pixels
 
   // basePath: undefined, // Base path for mounting pages. Allows for multiple themes to be used in a single website
-  i18nPages: [],
+  i18nPages: [
+    {
+      matchPath: '/',
+      getLanguageFromPath: false,
+    },
+    {
+      matchPath: '/:lang?/404',
+      getLanguageFromPath: false,
+    },
+    {
+      matchPath: '/:lang?/gallery',
+      getLanguageFromPath: false,
+    },
+    {
+      matchPath: '/:lang?/:uid*',
+      getLanguageFromPath: true,
+    },
+  ],
   imgix: false,
   disallowBlogHomeMdx: true,
   imagesReplaceText: 'Lucifero-',

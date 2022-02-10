@@ -87,6 +87,9 @@ export const getOrganizationSchema = (organization) => {
   } = organization
   const photo = getImageSchema(image)
 
+  // https://stackoverflow.com/a/38243869/198056
+  if (!address.contactType) address.contactType = 'reservations' // sales, customer support
+
   const schema = {
     '@context': 'http://schema.org',
     '@type': type || 'Organization',

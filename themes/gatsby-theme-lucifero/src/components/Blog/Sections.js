@@ -12,7 +12,7 @@ import PostsContainer from './PostsContainer'
 
 const Sections = ({ pageData, variant }) => {
   const {
-    data: { page, sections, published, future, latest },
+    data: { page, sections, future, latest, totals },
   } = pageData
 
   if (!page) {
@@ -22,7 +22,8 @@ const Sections = ({ pageData, variant }) => {
   const { headline, description, mdx } = page
   const body = mdx ? mdx.body : description
 
-  // const counts = getCounted(published, future)
+  const counts = getCounted(totals)
+  console.log(counts)
   const { t } = useTranslation()
   const styles = useStyleConfig('Sections', { variant })
   const posts = sections.edges ? sections.edges : sections

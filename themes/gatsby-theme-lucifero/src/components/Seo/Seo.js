@@ -16,7 +16,7 @@ const Seo = ({ site, page, crumbs }) => {
   const titleTemplate = site.website.titleTemplate
 
   return (
-    <React.Fragment>
+    <>
       <Helmet
         title={headline}
         titleTemplate={titleTemplate}
@@ -24,7 +24,7 @@ const Seo = ({ site, page, crumbs }) => {
         meta={metaTags}
       />
       <SchemaOrg site={site} page={page} crumbs={crumbs} />
-    </React.Fragment>
+    </>
   )
 }
 

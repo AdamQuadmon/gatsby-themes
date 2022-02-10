@@ -9,6 +9,8 @@ import {
 } from '@chakra-ui/react'
 import { SiGooglemaps } from 'react-icons/si'
 import { Link, LinkOverlay, LinkExternal } from './Link'
+import { SchemaContainer } from './Seo/SchemaOrg'
+import { getCarouselSchema } from './Seo/Schema/Carousel'
 import Image from './Image'
 
 import Card from '../components/Card'
@@ -24,6 +26,8 @@ const Cards = ({
   ...rest
 }) => {
   const styles = useStyleConfig('Cards', { variant })
+  const schema = getCarouselSchema(nodes)
+  const subTitleAs = titleAs === 'h2' ? 'h3' : 'h4'
   return (
     <Box className="cards" __css={styles} {...rest}>
       {title && (
@@ -32,8 +36,9 @@ const Cards = ({
         </Heading>
       )}
       <Flex className="cards_box">
+        <SchemaContainer schema={schema} />
         {nodes.map(({ node }) => (
-          <CardBox key={node.slug} node={node} />
+          <CardBox key={node.slug} node={node} titleAs={subTitleAs} />
         ))}
       </Flex>
     </Box>

@@ -3,23 +3,28 @@ import React from 'react'
 import { useTranslation } from 'gatsby-plugin-react-i18next'
 import { Box, Text } from '@chakra-ui/react'
 
-const initCount = (count, posts) => {
-  posts.map((v) => (count[v.fieldValue] = { published: 0, future: 0 }))
-}
-
-const addCount = (counts, posts, field) => {
-  posts.map((v) => (counts[v.fieldValue][field] = v.totalCount))
-}
-
-export const getCounted = (published, future) => {
+export const getCounted = (totals) => {
   let count = {}
 
-  initCount(count, published)
-  initCount(count, future)
-  addCount(count, published, 'published')
-  addCount(count, future, 'future')
+  totals.group.forEach((element) => {
+    count[element.fieldValue] = {
+      count: element.totalCount,
+      group: element.group
+        ? element.group.reduce(
+            acc,
+            (g) => {
+              acc[g.fieldValue] = g.totalCount
+            },
+            {}
+          )
+        : null,
+    }
+  })
 
-  return count
+  return {
+    total: totals.totalCount,
+    groups: count,
+  }
 }
 
 const Count = ({ count }) => {

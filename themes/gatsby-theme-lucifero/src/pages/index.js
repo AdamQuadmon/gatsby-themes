@@ -33,24 +33,42 @@ export const query = graphql`
     ) {
       ...PageEdges
     }
+    totals: allPage(
+      filter: {
+        type: { eq: "article" }
+        language: { eq: $language }
+        published: { eq: true }
+      }
+      sort: { fields: timestamp, order: ASC }
+    ) {
+      totalCount
+      group(field: area) {
+        fieldValue
+        totalCount
+        group(field: topic) {
+          fieldValue
+          totalCount
+        }
+      }
+    }
     latest: allPage(
+      limit: 6
       filter: {
         type: { eq: "post" }
         language: { eq: $language }
         published: { eq: true }
       }
       sort: { fields: timestamp, order: ASC }
-      limit: 3
     ) {
       ...PageEdges
     }
     future: allPage(
+      limit: 6
       filter: {
         type: { eq: "post" }
         language: { eq: $language }
         published: { eq: false }
       }
-      limit: 3
     ) {
       ...BasePageEdges
     }

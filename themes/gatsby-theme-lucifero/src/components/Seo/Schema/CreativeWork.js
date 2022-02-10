@@ -62,11 +62,9 @@ export const getWebPageSchema = (entity) => {
   return schema
 }
 
-// https://developers.google.com/search/docs/advanced/structured-data/logo
-// https://developers.google.com/search/docs/advanced/structured-data/image-license-metadata
-export const getImageSchema = (image, options) => {
+export const getImageUrl = (image, options) => {
   if (!image) return null
-  if (image['@type']) return image
+  if (image.contentUrl) image = image.contentUrl
 
   if (options) {
     if (options.resize) {
@@ -77,8 +75,16 @@ export const getImageSchema = (image, options) => {
     }
   }
 
+  return image
+}
+// https://developers.google.com/search/docs/advanced/structured-data/logo
+// https://developers.google.com/search/docs/advanced/structured-data/image-license-metadata
+export const getImageSchema = (image, options) => {
+  if (!image) return null
+  if (image['@type']) return image
+
   // for an ImageObject contentUrl refers to the image file
-  const contentUrl = isString(image) ? image : image.contentUrl
+  const contentUrl = getImageUrl(image, options)
   if (!contentUrl) return null
 
   const caption = image.description || image.headline
@@ -87,11 +93,14 @@ export const getImageSchema = (image, options) => {
     '@context': 'http://schema.org',
     '@type': 'ImageObject',
     contentUrl,
+    url: contentUrl,
   }
 
   // for an ImageObject url refers to the image page
+  // but for Google it only matter `contentUrl` and `url` is an alias
+  // https://developers.google.com/search/docs/advanced/structured-data/image-license-metadata#structured-data-type-definitions
+  // addParam(schema, 'url', image.page)
   addParam(schema, 'caption', caption)
-  addParam(schema, 'url', image.page)
   addImageSize(schema, image)
   addLicense(schema, image)
 
@@ -139,7 +148,7 @@ const getCreativeWorkParams = (organization, page) => {
     inLanguage: language,
     publisher: person,
     image: getImageSchema(image),
-    thumbnailUrl: getImageSchema(image, { thumbnail: true }),
+    thumbnailUrl: getImageUrl(image, { thumbnail: true }),
   }
 
   const optionalParams = {
@@ -165,8 +174,6 @@ const getCreativeWorkParams = (organization, page) => {
   if ('article' === type) {
     addArticleParams(schema, page)
   }
-
-  console.log(schema)
 
   return schema
 }

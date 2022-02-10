@@ -17,7 +17,9 @@ export const getBreadcrumbSchema = (siteUrl, crumbs) => {
         }
 
         const url = `${siteUrl}${pathname}`
-        const name = crumbLabel
+        // TODO home crumbLabel is a Component
+        // maybe better to check for String
+        const name = pathname === '/' ? 'Home' : crumbLabel
 
         return {
           '@context': 'https://schema.org',

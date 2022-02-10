@@ -32,15 +32,25 @@ export const query = graphql`
     ) {
       ...PageAlternateNodes
     }
-    published: allPage(
-      filter: { topic: { eq: $topic }, published: { eq: true } }
+    totals: allPage(
+      filter: {
+        topic: { eq: $topic }
+        language: { eq: $language }
+        published: { eq: true }
+      }
       sort: { fields: timestamp, order: ASC }
+    ) {
+      totalCount
+    }
+    latest: allPage(
+      filter: { topic: { eq: $topic }, published: { eq: true } }
+      sort: { fields: [timestamp], order: ASC }
     ) {
       ...PageEdges
     }
     future: allPage(
       filter: { topic: { eq: $topic }, published: { eq: false } }
-      sort: { fields: timestamp, order: ASC }
+      sort: { fields: [timestamp], order: ASC }
     ) {
       ...BasePageEdges
     }

@@ -42,11 +42,27 @@ export const query = graphql`
         area: { eq: $area }
         language: { eq: $language }
       }
-      sort: { fields: timestamp, order: ASC }
+      sort: { fields: [order], order: ASC }
     ) {
       ...PageEdges
+    }
+    totals: allPage(
+      filter: {
+        type: { eq: "article" }
+        area: { eq: $area }
+        language: { eq: $language }
+        published: { eq: true }
+      }
+      sort: { fields: timestamp, order: ASC }
+    ) {
+      totalCount
+      group(field: topic) {
+        fieldValue
+        totalCount
+      }
     }
     latest: allPage(
+      limit: 6
       filter: {
         type: { eq: "post" }
         area: { eq: $area }
@@ -54,20 +70,11 @@ export const query = graphql`
         published: { eq: true }
       }
       sort: { fields: timestamp, order: ASC }
-    ) {
-      ...PageEdges
-    }
-    published: allPage(
-      filter: {
-        type: { eq: "post" }
-        area: { eq: $area }
-        language: { eq: $language }
-        published: { eq: true }
-      }
     ) {
       ...PageEdges
     }
     future: allPage(
+      limit: 6
       filter: {
         type: { eq: "post" }
         area: { eq: $area }

@@ -1,6 +1,6 @@
-import { upperFirst } from 'lodash'
 import { getGatsbyImageData } from '@imgix/gatsby'
-import { useSiteMetadata } from '../hooks/use-siteMetadata'
+import { useUi } from '../hooks/use-ui'
+import { pickFirst, addParams } from './utils'
 
 // TODO unify with getImageParams
 // <ImageLink /> component cal this to get next/prev image preloading
@@ -93,9 +93,9 @@ export const getImageParams = (props) => {
 }
 
 const getBaseParams = (props) => {
-  const { file, image, addCaption } = props
+  const { image, addCaption } = props
   const imageParams = ['description', 'name', 'headline']
-  let imageAlt = pickFirst(image, imageParams) || makeTitle(file)
+  let imageAlt = pickFirst(image, imageParams)
   let alt = props.alt || imageAlt
   let caption = props.caption || (addCaption && (imageAlt || props.alt))
   let data = {
@@ -111,7 +111,7 @@ const getSizeParams = (props) => {
   let { image } = props
   let params = getSizePropsParams(props)
   if (!params.aspectRatio) {
-    if (image && !params.width && !params.height) {
+    if (image.width && !params.width && !params.height) {
       addParams(image, params, [
         { s: 'width', d: 'sourceWidth' },
         { s: 'height', d: 'sourceHeight' },
@@ -159,12 +159,8 @@ export const getSrc = (props) => {
   if (image && isValidHttpUrl(image.contentUrl)) return image.contentUrl
 
   if (!source) {
-    const {
-      config: {
-        imgix: { source: imgixSource },
-      },
-    } = useSiteMetadata()
-    source = imgixSource
+    const { imgix } = useUi()
+    source = imgix
   }
 
   if (!file) {
@@ -186,9 +182,10 @@ export const getSrc = (props) => {
   return src
 }
 
+// TODO unify with the other in models/Page
 const isValidHttpUrl = (string) => {
   let url
-
+  if (!string) return false
   try {
     url = new URL(string)
   } catch (_) {
@@ -196,40 +193,4 @@ const isValidHttpUrl = (string) => {
   }
 
   return url.protocol === 'http:' || url.protocol === 'https:'
-}
-
-export const makeTitle = (fileName) => {
-  if (!fileName) return ''
-
-  const {
-    config: { imagesReplaceText },
-  } = useSiteMetadata()
-
-  const fileParts = fileName.split('.')
-  fileParts.pop()
-
-  const cleanFileName = fileParts
-    .join('.')
-    .replace(imagesReplaceText, '')
-    .replaceAll('-', ' ')
-    .replaceAll('/', ' ')
-
-  return upperFirst(cleanFileName)
-}
-
-// maybe better in other file
-const pickFirst = (item, properties) => {
-  if (!item) return null
-  const property = properties.find((property) => item[property])
-  return property && item[property]
-}
-
-const addParams = (source, dest, properties) => {
-  properties.forEach((property) => {
-    if (property.s) {
-      if (source[property.s]) dest[property.d] = source[property.s]
-    } else {
-      if (source[property]) dest[property] = source[property]
-    }
-  })
 }

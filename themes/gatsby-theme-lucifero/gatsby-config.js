@@ -1,5 +1,4 @@
 //github.com/gatsbyjs/gatsby/discussions/31599#discussioncomment-1239988
-const urljoin = require('url-join')
 const { withDefaults } = require('./src/config/index.js')
 const remarkA11yEmoji = require('@fec/remark-a11y-emoji')
 const rehypeSlug = require('rehype-slug')
@@ -10,28 +9,29 @@ const { NODE_ENV, CONTEXT: NETLIFY_ENV = NODE_ENV } = process.env
 const { GA_TRACKING_ID, TM_TRACKING_ID, FB_PIXEL_ID, TT_PIXEL_ID, HOTJAR_ID } =
   process.env
 module.exports = (userConfig) => {
-  // Merge user and default configurations
   const config = withDefaults(userConfig)
+  const {
+    ui: { imgix, embedWidth },
+    website: { themeColor, siteUrl },
+    defaultLanguage,
+    languages,
+    pagesPath,
+    dataPath,
+    localesPath,
+    i18nPages,
+  } = config
 
-  // Make sure that pathPrefix is not empty
-  const validatedPathPrefix = config.pathPrefix === '' ? '/' : config.pathPrefix
-
-  const { languages, defaultLanguage } = config
-
-  const siteUrl = urljoin(config.website.url, config.pathPrefix)
+  const meta = config.organization.meta
+  if (meta) {
+    config.organization.meta = Object.keys(meta).map((name) => {
+      return { name, value: `${meta[name]}` }
+    })
+  }
 
   return {
-    pathPrefix: validatedPathPrefix,
+    trailingSlash: 'never',
     siteMetadata: {
-      config, // Make the merged configuration available via GraphQL
-      ...config.website,
-      language: defaultLanguage,
-      languages,
-      siteUrl,
-      keywords: config.keywords,
-      organization: config.organization,
-      socials: config.socials,
-      maps: config.maps,
+      ...config,
     },
     plugins: [
       'gatsby-plugin-lodash',
@@ -39,58 +39,33 @@ module.exports = (userConfig) => {
         resolve: 'gatsby-source-filesystem',
         options: {
           name: 'pages',
-          path: config.pagesPath,
+          path: pagesPath,
         },
       },
       {
         resolve: 'gatsby-source-filesystem',
         options: {
           name: 'data',
-          path: config.dataPath,
+          path: dataPath,
         },
       },
       {
         resolve: 'gatsby-source-filesystem',
         options: {
-          path: config.localesPath,
+          path: localesPath,
           name: 'locale',
         },
       },
       {
         resolve: `@imgix/gatsby`,
         options: {
-          // This is the domain of your imgix source, which can be created at
           // https://dashboard.imgix.com/.
-          // Only "Web Proxy" imgix sources can be used for this configuration.
-          domain: `${config.imgix.source}.imgix.net`,
-
-          // This is the source's secure token. Can be found under the "Security"
-          // heading in your source's configuration page, and revealed by tapping
-          // "Show Token".
-          // secureURLToken: config.imgix.token,
-
-          // This configures the plugin to work in proxy mode.
-          // sourceType: ImgixSourceType.WebProxy,
-
-          // These are some default imgix parameters to set for each image. It is
-          // recommended to have at least this minimal configuration.
+          domain: `${imgix}.imgix.net`,
           defaultImgixParams: { auto: ['compress', 'format'] },
           disableIxlibParam: true,
-
-          // This configures which nodes to modify.
-          fields: [
-            // Add an object to this array for each node type you want to modify. Follow the instructions below for this.
-          ],
         },
       },
       'gatsby-plugin-mdx-embed',
-      // {
-      //   resolve: 'gatsby-source-filesystem',
-      //   options: {
-      //     path: config.imagesPath,
-      //     name: 'images',
-      //   },
-      // },
       {
         resolve: `gatsby-plugin-mdx`,
         options: {
@@ -101,19 +76,11 @@ module.exports = (userConfig) => {
             {
               resolve: 'gatsby-remark-embed-video',
               options: {
-                width: config.embeddedVideoWidth,
+                width: embedWidth,
               },
             },
             {
               resolve: 'gatsby-remark-responsive-iframe',
-            },
-            {
-              resolve: 'gatsby-remark-images',
-              options: {
-                maxWidth: config.embeddedImageWidth,
-                showCaptions: ['title', 'alt'],
-                linkImagesToOriginal: false,
-              },
             },
             {
               resolve: 'remark-codesandbox/gatsby',
@@ -157,7 +124,7 @@ module.exports = (userConfig) => {
       {
         resolve: 'gatsby-plugin-nprogress',
         options: {
-          color: config.website.themeColor,
+          color: themeColor,
         },
       },
       {
@@ -218,12 +185,6 @@ module.exports = (userConfig) => {
         options: {
           prettier: true, // use prettier to format JS code output (default)
           svgo: true, // use svgo to optimize SVGs (default)
-          // svgoConfig: {
-          //   plugins: [
-          //     { removeViewBox: true }, // remove viewBox when possible (default)
-          //     { cleanupIDs: true }, // remove unused IDs and minify remaining IDs (default)
-          //   ],
-          // },
         },
       },
       {
@@ -240,22 +201,15 @@ module.exports = (userConfig) => {
           languages,
           defaultLanguage,
           siteUrl,
-          // If true `/` or `/page-2`
-          // will redirect to user language
-          // e.g.: `/es` or `/es/page-2`.
-          // Otherwise, the pages will render
-          // defaultLangugage language.
           redirect: false,
           i18nextOptions: {
-            //debug: true,
-            // lowerCaseLng: true,
             interpolation: {
               escapeValue: false,
             },
             keySeparator: false,
             nsSeparator: false,
           },
-          pages: config.i18nPages,
+          pages: i18nPages,
         },
       },
       {
@@ -303,7 +257,9 @@ module.exports = (userConfig) => {
           query: `{
             site {
               siteMetadata{
-                siteUrl
+                website {
+                  siteUrl
+                }
               }
             }
             allPage {
@@ -327,7 +283,7 @@ module.exports = (userConfig) => {
             }
           }`,
           resolvePages: ({ site, allPage, allSitePage }) => {
-            const { siteUrl } = site.siteMetadata
+            const { siteUrl } = site.siteMetadata.website
 
             const pages = {
               bySlug: [],

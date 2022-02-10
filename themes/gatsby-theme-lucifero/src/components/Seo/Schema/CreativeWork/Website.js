@@ -1,7 +1,8 @@
 import { getOrganizationId } from '../PlacesAndOrganizations'
 
-export const getWebSiteSchema = (site) => {
-  const { alternateName, description, organization, title } = site
+export const getWebSiteSchema = (website, organization) => {
+  const { alternateName, description, title } = website
+
   const orgId = getOrganizationId(organization)
 
   const schema = {

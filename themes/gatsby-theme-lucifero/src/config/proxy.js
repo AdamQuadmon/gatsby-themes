@@ -46,17 +46,20 @@ const getBaseFields = (node) => {
     language,
     i18nPath,
     slug,
-    description,
+    // meta
     name,
+    headline,
+    alternativeHeadline,
+    description,
     tags,
     abstract,
-    author,
-    contentLocation,
+    location,
+    award,
+    discussionUrl,
     dateCreated,
     dateModified,
     datePublished,
-    genre,
-    headline,
+    author,
   } = node)
 }
 

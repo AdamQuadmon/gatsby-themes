@@ -98,7 +98,7 @@ used in `NavItemSub` component as shorter version of `description`.
 
 ### Other Meta fields
 
-- contentLocation
+- location
 - genre
 - tags: to [Tag!]
 

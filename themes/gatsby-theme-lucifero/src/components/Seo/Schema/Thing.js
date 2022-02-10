@@ -4,8 +4,7 @@ import { getImageSchema, getWebPageSchema } from './CreativeWork'
 // about, mainEntity: article.about = [topic, event, store], article.mainEntity = topic
 // subjectOf, mainEntityOfPage: product.subjectOf[article, review, comment], mainE
 // sameAs: wiki, manufacturer
-export const getThingParams = (site, page) => {
-  const { siteUrl } = site
+export const getThingParams = (siteUrl, page) => {
   let { description, name, url, slug } = page
 
   if (!url) {
@@ -24,7 +23,7 @@ export const getThingParams = (site, page) => {
 
 // Type checker Helper for sub types with default
 export const getType = (type, types, defaultValue) => {
-  return (type && types[type]) || defaultValue
+  return types[type] ? types[type] : types[defaultValue]
 }
 
 // Add schema param if value is defined

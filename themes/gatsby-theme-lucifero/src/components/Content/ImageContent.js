@@ -10,9 +10,10 @@ const ImageContent = ({ pageData, variant, ...rest }) => {
   const {
     data: { page, album, images },
   } = pageData
+
   const styles = useStyleConfig('ImageContent', { variant })
   const { image } = page
-  const { prev, next } = getSiblings(page, images)
+  const { prev, next } = getSiblings(page, images.edges)
   const direction = getDirection(next, window)
 
   const onDragEnd = (e, { offset, velocity }) => {
@@ -27,7 +28,7 @@ const ImageContent = ({ pageData, variant, ...rest }) => {
 
   return (
     <Box __css={styles} {...rest}>
-      <Heading as="h1" size="2xl">
+      <Heading as="h1" size="2xl" lineHeight="1.2">
         {image.heading}
       </Heading>
       <Flex className="nav-container" justifyContent="space-between" mx="auto">

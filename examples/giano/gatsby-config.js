@@ -1,29 +1,66 @@
-const website = {
-  titleTemplate: '%s · Giano Web',
-  title: 'Giano - a go(o)d beginning', // Homepage title
-  shortTitle: 'Giano', // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation
-  description: 'two languages website', // Website description used for RSS feeds/meta description tag
-  copyright: '© Copyright 2021', // Copyright string for the footer of the website and RSS feed.
-  bgColor: '#A8A29E', // Used for setting manifest background color.
-  themeColor: '#44403C', // Used for setting manifest and progress theme colors.
-  author: 'Luciano Amodio',
-  ogImage: '/lucifero.jpg',
-  dateCreated: '2012-04-10',
-  mainKeyword: 'gatsbyjs theme',
-  url: 'http://localhost:8000',
-}
-const icon = 'src/images/lucifero-logo.png'
+const { getManifestOptions } = require('@adamquadmon/gatsby-theme-lucifero')
 const languages = ['en', 'it']
 const defaultLanguage = 'en'
-const localizeData = [
+const siteUrl = 'http://localhost:8000'
+const baseOgImage =
+  'https://ik.imagekit.io/adamquadmon/lucifero/lucifero-logo_OdnZnen7n3G.png'
+
+const translations = [
   {
-    start_url: 'it',
-    lang: 'it',
-    name: 'Giano',
-    short_name: 'Giano',
-    description: 'sito web in due lingue',
+    language: 'en',
+    titleTemplate: '%s · Giano Web',
+    title: 'Giano - a go(o)d beginning',
+    shortTitle: 'Giano',
+    alternateName: 'Two Languages Website',
+    description: 'two languages website',
+    url: siteUrl,
+    mainKeyword: 'gatsbyjs theme',
+  },
+  {
+    language: 'it',
+    titleTemplate: '%s · Giano Web',
+    title: 'Giano - a go(o)d beginning',
+    shortTitle: 'Giano',
+    alternateName: 'Two Languages Website',
+    description: 'two languages website',
+    url: `${siteUrl}/it`,
+    mainKeyword: 'gatsbyjs theme',
   },
 ]
+
+const website = {
+  copyright: '© Copyright 2021',
+  author: 'Luciano Amodio',
+  bgColor: '#A8A29E',
+  themeColor: '#44403C',
+  ogImage: baseOgImage,
+  dateCreated: '2019-04-10',
+  siteUrl,
+  translations,
+}
+
+const organization = {
+  name: 'The Hell',
+  url: 'https://github.com/adamquadmon/gatsby-theme-lucifer',
+  logo: 'https://ik.imagekit.io/adamquadmon/lucifero/lucifero-logo_OdnZnen7n3G.png',
+  slogan: 'feels like home',
+  mapUrl:
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14269.67524521046!2d10.878507979290722!3d63.44444673008852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d17ad4b6f81c7%3A0xc32c3fc048fd812!2sHell%20-%20Gods%20Expedition!5e0!3m2!1sit!2sit!4v1635759088068!5m2!1sit!2sit',
+  socials: {
+    facebook: 'luciferotheme',
+    instagram: 'luciferotheme',
+    whatsapp: '1666142857',
+  },
+  address: {
+    streetAddress: '666, Sunset Bl.',
+    addressLocality: 'Hell',
+    addressRegion: '',
+    postalCode: '7517',
+    addressCountry: '',
+  },
+  vatID: '0123456789',
+  telephone: '+1 666 142857',
+}
 
 module.exports = {
   plugins: [
@@ -31,61 +68,18 @@ module.exports = {
       resolve: `@adamquadmon/gatsby-theme-lucifero`,
       options: {
         website,
-        // Organization information used for SEO
-        organization: {
-          name: 'The Hell',
-          url: 'https://github.com/adamquadmon/gatsby-theme-lucifer',
-          logo: 'https://ik.imagekit.io/adamquadmon/lucifero/lucifero-logo_OdnZnen7n3G.png',
-          slogan: 'feels like home',
-          address: {
-            streetAddress: '666, Sunset Bl.',
-            addressLocality: 'Hell',
-            addressRegion: '',
-            postalCode: '7517',
-            addressCountry: '',
-          },
-          vatID: '0123456789',
-          telephone: '+1 666 142857',
-        },
-        socials: {
-          facebook: 'luciferotheme',
-          instagram: 'luciferotheme',
-          whatsapp: '1666142857',
-        },
-        maps: {
-          src: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14269.67524521046!2d10.878507979290722!3d63.44444673008852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d17ad4b6f81c7%3A0xc32c3fc048fd812!2sHell%20-%20Gods%20Expedition!5e0!3m2!1sit!2sit!4v1635759088068!5m2!1sit!2sit',
-          address: 'Hell - Gods Expedition',
-          lat: 63.446709091321495,
-          lng: 10.899881621452812,
-          zoom: 12,
-        },
-        keywords: ['i18n', 'mdx', 'pages'],
-
-        languages,
+        organization,
         defaultLanguage,
-        localizeData,
-        i18nPages: [
-          {
-            matchPath: '/services/:uid',
-            // getLanguageFromPath: true,
-          },
-          {
-            matchPath: '/:lang?/servizi/:uid',
-            getLanguageFromPath: true,
-          },
-          {
-            matchPath: '/:lang?/:uid',
-            getLanguageFromPath: true,
-          },
-        ],
+        languages,
       },
     },
+    'gatsby-plugin-offline',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: website.title,
-        short_name: website.shortTitle,
-        description: website.description,
+        name: translations[0].title,
+        short_name: translations[0].shortTitle,
+        description: translations[0].description,
         start_url: '/',
         background_color: website.bgColor,
         theme_color: website.themeColor,
@@ -93,15 +87,6 @@ module.exports = {
         cache_busting_mode: 'none',
         icon,
         lang: defaultLanguage,
-        localize: localizeData,
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-offline',
-      options: {
-        workboxConfig: {
-          globPatterns: ['**/assets*'],
-        },
       },
     },
   ],

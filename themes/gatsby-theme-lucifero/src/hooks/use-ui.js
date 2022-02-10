@@ -3,13 +3,13 @@ import { useStaticQuery, graphql } from 'gatsby'
 export const useUi = () => {
   const data = useStaticQuery(
     graphql`
-      query UiQuery {
+      query SiteUiQuery {
         site {
           siteMetadata {
-            config {
-              ui {
-                home
-              }
+            ui {
+              home
+              imgix
+              embedWidth
             }
           }
         }
@@ -17,5 +17,5 @@ export const useUi = () => {
     `
   )
 
-  return data.site.siteMetadata.config.ui
+  return data.site.siteMetadata.ui
 }

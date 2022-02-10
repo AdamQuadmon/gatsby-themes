@@ -1,69 +1,68 @@
 module.exports = `#graphql
   type SiteSiteMetadata {
-    config: SiteConfig!
-    ogImage: String
-    icon: String
-    maps: MapsData
-    socials: SocialsData
-    organization: OrganizationData
-  }
-
-  type SiteConfig {
-    website: WebsiteData!
-    socials: SocialsData!
-    maps: MapsData
-
-    keywords: [String!]!
-    languages: [String!]!
+    ui: UiData
     defaultLanguage: String!
-
-    pathPrefix: String!
-
+    languages: [String!]!
+    website: WebsiteData!
+    organization: OrganizationData
     pagesPath: String
     dataPath: String
     localesPath: String
-
-    embeddedImageWidth: Int!
-    embeddedVideoWidth: Int!
-
     basePath: String
     i18nPages: [I18PagesData!]!
-    imgix: ImgixConfig
-    imagesReplaceText: String
-    allowBlogTypePage: Boolean!
+  }
+
+  type UiData {
+    imgix: String
+    home: [String]
+    embedWidth: String
   }
 
   type WebsiteData {
     author: String!
-    alternateName: String!
-    bgColor: String!
     copyright: String!
     dateCreated: String!
-    description: String!
-    mainKeyword: String!
+    icon: String
     ogImage: String
-    shortTitle: String!
+    bgColor: String!
     themeColor: String!
+    translations: [TranslationData!]
+  }
+
+  type TranslationData {
     titleTemplate: String!
     title: String!
+    shortTitle: String!
+    alternateName: String!
+    description: String!
     url: String!
+    mainKeyword: String!
+    keywords: [String!]
   }
 
   type OrganizationData {
     type: String!
     name: String!
+    legalName: String
+    slogan: String
     description: String!
     url: String!
     logo: String!
+    image: String!
+    vatID: String
     telephone: String
-    hasMap: String
+    mapUrl: String
     alternateName: [String]
+    socials: SocialsData!
     address: AddressData
     geo: GeoData
-    vatID: String
-    slogan: String
-    legalName: String
+    meta: [MetaData!]
   }
+  type MetaData {
+    name: String
+    value: String
+  }
+
   type GeoData {
     latitude: String
     longitude: String
@@ -77,17 +76,9 @@ module.exports = `#graphql
   }
 
   type SocialsData {
-    facebook: String!
-    instagram: String!
-    whatsapp: String!
-  }
-
-  type MapsData {
-    src: String
-    address: String
-    lat: Float
-    lng: Float
-    zoom: String
+    facebook: String
+    instagram: String
+    whatsapp: String
   }
 
   type I18PagesData {
@@ -97,55 +88,33 @@ module.exports = `#graphql
     languages: [String!]!
   }
 
-  type ImgixConfig {
-    source: String
-    token: String
-  }
-
-  type SitePage implements Node {
-    context: SitePageContext
-  }
-
-  type SitePageContext {
-    i18n: I18n
-  }
-
-  type I18n {
-    defaultLanguage: String
-    languages: [String]
-    originalPath: String
-    routed: Boolean
-  }
-
   type PlaceCsv implements Node {
     id: ID!
     published: Boolean @defaultFalse
+    order: Int @defaultNumber(n: 999)
     area: String
     topic: String
+    language: String
     # i18nPath: String
     # slug: String
-    #
-    # Thing Schema
-    #
-    description: String
-    image: String
+    # meta
     name: String
-    #
-    # CreativeWork Schema
+    headline: String
+    alternativeHeadline: String
+    description: String
     tags: String
     abstract: String
-    author: String
-    contentLocation: String
+    location: String
+    award: String
+    discussionUrl: String
     dateCreated: Date @dateformat
     dateModified: Date @dateformat
     datePublished: Date @dateformat
-    genre: String
-    headline: String
-    language: String
-    order: Int @defaultNumber(n: 999)
+    author: String
     #
     # Other fields
     #
+    image: String
     pax: Int
     region: String
     city: String

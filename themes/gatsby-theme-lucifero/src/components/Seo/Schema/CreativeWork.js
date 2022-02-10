@@ -1,19 +1,36 @@
 import moment from 'moment'
 
 import { isString, words } from 'lodash'
-import { getKeywords } from '../Seo'
 import { addParam, getThingParams, getType } from './Thing'
 import { getOrganizationId } from './PlacesAndOrganizations'
 
-const types = {
+// https://schema.org/WebPage
+const pageTypes = {
+  home: 'WebPage',
+  about: 'AboutPage',
+  album: 'ImageGallery',
   article: 'Article',
-  work: 'CreativeWork',
+  checkout: 'CheckoutPage',
+  collection: 'CollectionPage', // -> MediaGallery -> ImageGallery
+  contact: 'ContactPage',
+  gallery: 'CollectionPage',
+  // A listing that describes one or more real-estate Offers
+  // (whose businessFunction is typically to lease out, or to sell).
+  // The RealEstateListing type itself represents the overall listing,
+  // as manifested in some WebPage
+  // properties: datePosted, leaseLength
+  listing: 'RealEstateListing',
+  item: 'ItemPage', // a single item, such as a particular product or hotel.
+  faq: 'FAQPage', // collection of Frequenly Questions and Answers.
+  qa: 'QAPage', // A Question and Answers
+  profile: 'ProfilePage',
+  search: 'SearchResultsPage',
 }
 
-const defaultType = 'work'
+const defaultPageType = 'item'
 
 // https://developers.google.com/search/docs/advanced/structured-data/article
-export const getPageSchema = (site, page) => {
+export const getPageSchema = (siteUrl, organization, page) => {
   const { type } = page
 
   if (type === 'website') {
@@ -23,8 +40,8 @@ export const getPageSchema = (site, page) => {
   const schema = {
     '@context': 'http://schema.org',
     '@type': 'Article',
-    ...getThingParams(site, page),
-    ...getCreativeWorkParams(site, page),
+    ...getThingParams(siteUrl, page),
+    ...getCreativeWorkParams(organization, page),
   }
 
   // TODO: add images
@@ -61,7 +78,7 @@ export const getImageSchema = (image, options) => {
   }
 
   // for an ImageObject contentUrl refers to the image file
-  const contentUrl = (isString(image) && image) || image.contentUrl
+  const contentUrl = isString(image) ? image : image.contentUrl
   if (!contentUrl) return null
 
   const caption = image.description || image.headline
@@ -70,9 +87,10 @@ export const getImageSchema = (image, options) => {
     '@context': 'http://schema.org',
     '@type': 'ImageObject',
     contentUrl,
-    caption,
   }
+
   // for an ImageObject url refers to the image page
+  addParam(schema, 'caption', caption)
   addParam(schema, 'url', image.page)
   addImageSize(schema, image)
   addLicense(schema, image)
@@ -80,83 +98,90 @@ export const getImageSchema = (image, options) => {
   return schema
 }
 
-const getCreativeWorkParams = (site, page) => {
+const getCreativeWorkParams = (organization, page) => {
   if (!page) return null
   let {
     type,
-    order,
-    topic,
-    image,
-    abstract,
-    author,
+    // order,
+    language,
+    name,
+    headline,
+    alternativeHeadline,
     description,
+    tags,
+    abstract,
+    location,
+    award,
+    discussionUrl,
     dateCreated,
     dateModified,
     datePublished,
-    contentLocation,
-    genre,
-    headline,
-    tags,
-    language,
-    mdx,
-    // alternativeHeadline,
-    // award,
-    // discussionUrl,
+    author,
+    image,
   } = page
-  const body = mdx ? mdx.body : description || name
-  const timeToRead = mdx ? mdx.timeToRead : 0
-  abstract = abstract || mdx ? mdx.excerpt : description || name
-
-  const { organization, keywords } = site
 
   const orgId = getOrganizationId(organization)
-
   const person = getAuthor(author, orgId)
   const copyrightYear = moment(datePublished).format('YYYY')
 
   const schema = {
     '@context': 'http://schema.org',
-    '@type': getType(type, types, defaultType),
+    '@type': getType(type, pageTypes, defaultPageType),
     author: person,
-    abstract,
-    creator: person,
     copyrightHolder: person,
     copyrightYear,
+    creator: person,
     dateCreated,
-    dateModified,
     datePublished,
+    name,
+    description,
     headline,
     inLanguage: language,
-    keywords: getKeywords(tags, body, keywords),
     publisher: person,
+    image: getImageSchema(image),
     thumbnailUrl: getImageSchema(image, { thumbnail: true }),
-    timeRequired: timeToRead,
   }
 
   const optionalParams = {
-    contentLocation,
-    genre,
-    about: tags,
-    position: order,
+    // a page about a Thing (subjectOf this CreativeWork or Event)
+    // about: Place, Organization, Product, etc
+    // TODO, generate analizing tags pointing to entities
+    // about,
+    abstract,
+    alternativeHeadline,
+    award,
+    dateModified,
+    contentLocation: location,
+    discussionUrl,
+    keywords: tags.length ? tags : null,
+    // this is needed only in lists
+    // position: order === 666 ? null : order,
   }
 
   Object.keys(optionalParams).forEach((param) =>
     addParam(schema, param, optionalParams[param])
   )
 
-  if (body) {
-    addArticleParams(schema, body, topic)
+  if ('article' === type) {
+    addArticleParams(schema, page)
   }
+
+  console.log(schema)
 
   return schema
 }
 
-const addArticleParams = (schema, body, topic) => {
+const addArticleParams = (schema, page) => {
+  const { topic, mdx } = page
+  if (!mdx) return null
+  const { timeToRead = 0, body } = mdx
+
   const params = {
     articleBody: body,
     articleSection: topic,
     speakable: getSpeakable(),
     wordcount: words(body),
+    timeRequired: timeToRead,
     // for a TechArticle (HowTo)
     // dependencies,
     // proficiencyLevel,

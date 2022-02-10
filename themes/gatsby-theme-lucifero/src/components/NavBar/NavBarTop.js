@@ -14,10 +14,15 @@ import { getPlaceAddressShort } from '../Seo/Schema/PlacesAndOrganizations'
 import Hamburger from './Hamburger'
 import ThemeSwitcher from './ThemeSwitcher'
 
-const NavBarTop = ({ variant, mobileNav, site, alternatePages, ...rest }) => {
+const NavBarTop = ({
+  variant,
+  mobileNav,
+  organization,
+  alternatePages,
+  ...rest
+}) => {
   const styles = useStyleConfig('NavBarTop', { variant })
-  const { organization, socials } = site
-  const { address, telephone } = organization
+  const { address, telephone, socials } = organization
   const { streetAddress } = address
   const addressPlace = getPlaceAddressShort(address)
   const { whatsapp } = socials

@@ -14,7 +14,7 @@ const AlbumContent = ({ pageData, variant, ...rest }) => {
   return (
     <Box __css={styles} {...rest}>
       <Flex justifyContent="space-between" mx="auto">
-        <Heading as="h1" size="2xl">
+        <Heading as="h1" size="2xl" lineHeight="1.2">
           {album.name}
         </Heading>
         {album.pageUrl && (

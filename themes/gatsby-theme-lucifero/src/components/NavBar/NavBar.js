@@ -16,16 +16,22 @@ import ThemeSwitcher from './ThemeSwitcher'
 import NavMobile from './NavMobile'
 import NavBarTop from './NavBarTop'
 
-const NavBar = ({ variant, navItems, site, alternatePages, ...rest }) => {
+const NavBar = ({
+  variant,
+  navItems,
+  organization,
+  alternatePages,
+  ...rest
+}) => {
   const styles = useStyleConfig('NavBar', { variant })
   const mobileNav = useDisclosure()
   const btnRef = React.useRef()
-  const { name } = site.organization
+  const { name } = organization
 
   return (
     <>
       <NavBarTop
-        site={site}
+        organization={organization}
         mobileNav={mobileNav}
         alternatePages={alternatePages}
       />

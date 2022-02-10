@@ -65,6 +65,8 @@ const Image = ({ variant, image, caption, ...rest }) => {
   const styles = useStyleConfig('Image', { variant })
   if (!image) return null
   const imageParams = getImageParams({ image, caption, ...rest })
+  // console.log(imageParams)
+  if (!imageParams.src) return null
 
   return (
     <Box as="figure" w="100%">

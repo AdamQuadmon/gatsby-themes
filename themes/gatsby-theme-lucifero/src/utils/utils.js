@@ -20,3 +20,20 @@ export const initParams = (properties, first, second) => {
 
   return data
 }
+
+// maybe better in other file
+export const pickFirst = (item, properties) => {
+  if (!item) return null
+  const property = properties.find((property) => item[property])
+  return property && item[property]
+}
+
+export const addParams = (source, dest, properties) => {
+  properties.forEach((property) => {
+    if (property.s) {
+      if (source[property.s]) dest[property.d] = source[property.s]
+    } else {
+      if (source[property]) dest[property] = source[property]
+    }
+  })
+}

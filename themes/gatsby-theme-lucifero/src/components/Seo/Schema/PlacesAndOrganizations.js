@@ -68,21 +68,22 @@ export const getBrandSchema = (brand) => {
   return schema
 }
 
-export const getOrganizationSchema = (site) => {
-  const { organization, socials, image } = site
+export const getOrganizationSchema = (organization) => {
   const orgId = getOrganizationId(organization)
   const {
-    address,
-    alternateName,
+    type,
+    name,
+    url,
     legalName,
     logo,
-    meta,
-    name,
-    slogan,
     telephone,
-    type,
-    url,
+    slogan,
     vatID,
+    image,
+    alternateName,
+    socials,
+    address,
+    meta,
   } = organization
   const photo = getImageSchema(image)
 
@@ -91,7 +92,7 @@ export const getOrganizationSchema = (site) => {
     '@type': type || 'Organization',
     '@id': orgId,
     additionalType: 'Organization',
-    address: getAddressSchema(address, 'site'),
+    address: getAddressSchema(address),
     alternateName,
     legalName,
     logo: getImageSchema(logo),
@@ -103,7 +104,6 @@ export const getOrganizationSchema = (site) => {
     telephone,
     url,
     vatID,
-    ...meta,
     // TODO implement
     // ...getThingParams(site, page),
     // ...getOrganizationParams(place),
@@ -113,16 +113,9 @@ export const getOrganizationSchema = (site) => {
     // ...getLodgingBusinessParams(place),
   }
 
-  // TODO remove if ...meta is working
-  // This can add other specific metas
-  // if (meta) {
-  //   Object.keys(meta).forEach((metaKey) => {
-  //     const value = organization.meta
-  //     if (value) {
-  //       organizationSchema[metaKey] = value
-  //     }
-  //   })
-  // }
+  meta.forEach((m) => {
+    schema[m.name] = m.value
+  })
 
   return schema
 }

@@ -28,7 +28,9 @@ const CustomLink = (props) => {
 // For style images use MDXProvider `figure` and `figcaption` html elements
 // as we use gatsby-remark-images plugin to render MDX images
 // https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-images
-const h1 = (props) => <Heading as="h1" variant="mdx" {...props} />
+const h1 = (props) => (
+  <Heading as="h1" variant="mdx" {...props} lineHeight="1.2" />
+)
 const h2 = (props) => <Heading as="h2" variant="mdx" {...props} />
 const h3 = (props) => <Heading as="h3" variant="mdx" {...props} />
 const h4 = (props) => <Heading as="h4" variant="mdx" {...props} />

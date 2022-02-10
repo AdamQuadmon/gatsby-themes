@@ -1,13 +1,11 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import { Heading, Text } from '@chakra-ui/react'
-import { Trans, useTranslation } from 'gatsby-plugin-react-i18next'
+import { Trans } from 'gatsby-plugin-react-i18next'
 import Layout from '../components/LayoutContainer'
 import { LinkTranslated } from '../components/Link'
 
-// TODO add 404 meta
 const NotFoundPage = (pageData) => {
-  const { t } = useTranslation()
   return (
     <Layout pageData={pageData}>
       <Heading>

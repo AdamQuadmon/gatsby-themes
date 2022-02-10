@@ -8,7 +8,7 @@ const Hero = ({ variant }) => {
   const styles = useStyleConfig('Hero', { variant })
   return (
     <VStack __css={styles}>
-      <Heading as="h1">
+      <Heading as="h1" lineHeight="1.2">
         <Trans>heroTitle</Trans>
         <Text as={'span'}>
           <Trans>heroTitleHighlight</Trans>

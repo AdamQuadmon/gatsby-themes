@@ -1,9 +1,9 @@
 // https://developers.google.com/search/docs/advanced/structured-data/breadcrumb
-export const getBreadcrumbSchema = (site, crumbs) => {
-  const baseDomain = site.organization.url
+export const getBreadcrumbSchema = (siteUrl, crumbs) => {
   if (!crumbs || !crumbs.length) {
-    return []
+    return null
   }
+
   const schema = [
     {
       '@context': 'https://schema.org',
@@ -11,8 +11,14 @@ export const getBreadcrumbSchema = (site, crumbs) => {
       // name,
       // description,
       itemListElement: crumbs.map((crumb, index) => {
-        const url = `${baseDomain}/${crumb.pathname}`
-        const name = crumb.crumbLabel
+        let { pathname, crumbLabel } = crumb
+        if (pathname.length > 2 && pathname[pathname.length - 1] === '/') {
+          pathname = pathname.slice(0, -1)
+        }
+
+        const url = `${siteUrl}${pathname}`
+        const name = crumbLabel
+
         return {
           '@context': 'https://schema.org',
           '@type': 'ListItem',

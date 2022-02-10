@@ -6,21 +6,27 @@ export const useSiteMetadata = () => {
       query SiteMetadataQuery {
         site {
           siteMetadata {
-            alternateName
-            author
-            copyright
-            dateCreated
-            description
-            keywords
-            icon
-            language
+            defaultLanguage
             languages
-            mainKeyword
-            ogImage
-            shortTitle
-            siteUrl
-            title
-            titleTemplate
+            website {
+              siteUrl
+              author
+              copyright
+              dateCreated
+              icon
+              ogImage
+              translations {
+                language
+                titleTemplate
+                title
+                shortTitle
+                alternateName
+                description
+                url
+                mainKeyword
+                keywords
+              }
+            }
             organization {
               type
               name
@@ -29,10 +35,16 @@ export const useSiteMetadata = () => {
               legalName
               logo
               telephone
-              hasMap
+              mapUrl
               slogan
               vatID
+              image
               alternateName
+              socials {
+                facebook
+                instagram
+                whatsapp
+              }
               address {
                 streetAddress
                 addressLocality
@@ -44,15 +56,9 @@ export const useSiteMetadata = () => {
                 latitude
                 longitude
               }
-            }
-            socials {
-              facebook
-              instagram
-              whatsapp
-            }
-            config {
-              imgix {
-                source
+              meta {
+                name
+                value
               }
             }
           }

@@ -9,12 +9,25 @@ import { getOrganizationSchema } from './Schema/PlacesAndOrganizations'
 import { getPageSchema } from './Schema/CreativeWork'
 
 export default React.memo(({ site, page, crumbs }) => {
+  const { website, organization } = site
+  const { siteUrl } = website
+
   const schema = [
-    getWebSiteSchema(site),
-    getOrganizationSchema(site),
-    getBreadcrumbSchema(site, crumbs),
-    getPageSchema(site, page),
+    getWebSiteSchema(website, organization),
+    getOrganizationSchema(organization),
+    getBreadcrumbSchema(siteUrl, crumbs),
+    getPageSchema(siteUrl, organization, page),
   ]
+
+  // TODO: handle special page types, eg.
+  // - event: Event
+  // - poi: TouristAttraction part of TouristTrip
+  // amenity: 'ItemPage',
+  // image: 'ItemPage',
+  // product: 'ItemPage',
+  // region: 'ItemPage',
+  // restaurant: 'ItemPage',
+  // work: 'ItemPage',
 
   const stringified = stringify(schema)
 

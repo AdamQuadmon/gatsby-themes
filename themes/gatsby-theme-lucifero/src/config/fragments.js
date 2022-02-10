@@ -63,60 +63,62 @@ export const basePageNodeFragment = graphql`
 `
 export const pageMetaFragment = graphql`
   fragment PageMeta on Page {
-    type
     published
     order
+    type
     area
     topic
     language
     i18nPath
     slug
-    # generated
-    url
-    contentUrl
-    imagePath
-    image {
-      ...ImageCsvMinNode
-    }
-    # date
-    dateCreated
-    dateModified
-    datePublished
     # meta
     name
     headline
+    alternativeHeadline
     description
-    abstract
-    author
-    contentLocation
-    genre
     tags
-    # MetaCsv
+    abstract
+    location
+    award
+    discussionUrl
+    dateCreated
+    dateModified
+    datePublished
+    author
     navPage
     noCover
+    # generated
+    url
+    image {
+      ...ImageCsvMinNode
+    }
+    imagePath
+    contentUrl
   }
 `
 export const metaCsvNodeFragment = graphql`
   fragment MetaCsvNode on MetaCsv {
     published
     order
+    type
     area
     topic
     language
     i18nPath
     slug
-    description
     name
+    headline
+    alternativeHeadline
+    description
     tags
     abstract
-    author
-    contentLocation
+    location
+    award
+    discussionUrl
     dateCreated
     dateModified
     datePublished
-    genre
-    headline
-    type
+    author
     image
     navPage
     noCover
@@ -142,17 +144,19 @@ export const albumDataNodeFragment = graphql`
     language
     i18nPath
     slug
-    description
     name
+    headline
+    alternativeHeadline
+    description
     tags
     abstract
-    author
-    contentLocation
+    location
+    award
+    discussionUrl
     dateCreated
     dateModified
     datePublished
-    genre
-    headline
+    author
     pageUrl
     pageLabel
     imagesLength
@@ -166,8 +170,8 @@ export const albumDataNodeFragment = graphql`
 export const imageCsvMinNodeFragment = graphql`
   fragment ImageCsvMinNode on ImageCsv {
     contentUrl
-    description
     name
+    description
     width
     height
     # maybe not needed
@@ -188,17 +192,19 @@ export const imageDataNodeFragment = graphql`
     language
     i18nPath
     slug
-    description
     name
+    headline
+    alternativeHeadline
+    description
     tags
     abstract
-    author
-    contentLocation
+    location
+    award
+    discussionUrl
     dateCreated
     dateModified
     datePublished
-    genre
-    headline
+    author
     # additional fields
     folder
     file

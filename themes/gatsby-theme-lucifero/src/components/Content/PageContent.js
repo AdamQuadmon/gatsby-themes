@@ -12,7 +12,7 @@ const PageContent = ({ page, variant, ...rest }) => {
   const boxClass = image ? 'has_cover' : 'no_cover'
   return (
     <Box __css={styles} {...rest}>
-      <Heading as="h1" size="2xl">
+      <Heading as="h1" size="2xl" lineHeight="1.2">
         {headline}
       </Heading>
       <Box className={boxClass}>

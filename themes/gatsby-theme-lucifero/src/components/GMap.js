@@ -1,12 +1,8 @@
 import React from 'react'
 import { Box } from '@chakra-ui/react'
 
-import { useMap } from '../hooks/use-map'
-
-const GMap = () => {
-  const map = useMap()
-
-  if (!map || !map.src) {
+const GMap = ({ map }) => {
+  if (!map) {
     return null
   }
 
@@ -15,7 +11,7 @@ const GMap = () => {
     <Box height="450" width="100%">
       <div className="google-map-code">
         <iframe
-          src={map.src}
+          src={map}
           width="100%"
           height="450"
           frameBorder="0"

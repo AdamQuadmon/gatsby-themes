@@ -9,8 +9,8 @@ import { getOrganizationSchema } from './Schema/PlacesAndOrganizations'
 import { getPageSchema } from './Schema/CreativeWork'
 
 const SchemaOrg = React.memo(({ site, page, crumbs }) => {
-  const { website, organization } = site
-  const { siteUrl } = website
+  const { siteUrl, website, organization } = site
+
   const schema = [
     getWebSiteSchema(website, organization),
     getOrganizationSchema(organization),

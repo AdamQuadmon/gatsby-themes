@@ -2,8 +2,6 @@ import React from 'react'
 import { merge } from 'lodash'
 import { Box, Container, Flex } from '@chakra-ui/react'
 import { ErrorBoundary } from 'react-error-boundary'
-// TODO: Move this kind of stuff to node script for MetaCsv
-import { NormalizerIt, TokenizerIt, StopwordsIt } from '@nlpjs/lang-it'
 
 import Seo from '../components/Seo/Seo'
 import NavBar from '../components/NavBar/NavBar'
@@ -16,20 +14,24 @@ import { useNavItems } from '../hooks/use-navItems'
 import { useSiteMetadata } from '../hooks/use-siteMetadata'
 
 const LayoutContainer = ({ pageData, children, ...rest }) => {
+  let {
+    data: { page },
+  } = pageData
   const {
-    data: { page, alternatePages },
+    data: { alternatePages },
     pageContext: { breadcrumb, language },
   } = pageData
 
   const site = useSiteMetadata()
   const { organization, languages } = site
+  const { location } = breadcrumb
   const crumbs = getCrumbs(breadcrumb, languages)
   const navItems = useNavItems(language)
 
   const translation = getTranslation(site, page)
   merge(site.website, translation)
 
-  withDefaultMeta(site, page, crumbs)
+  page = withDefaultMeta(site, page, crumbs, location)
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -85,23 +87,15 @@ const getTranslation = (site, page) => {
 }
 
 // name is the minimum needed page param
-const withDefaultMeta = (site, page, crumbs) => {
+const withDefaultMeta = (site, page, crumbs, location) => {
   const {
-    website: {
-      author,
-      ogImage,
-      language,
-      title,
-      shortTitle,
-      description,
-      url,
-      keywords,
-    },
+    siteUrl,
+    website: { author, ogImage, language, title, shortTitle, description },
   } = site
 
   const crumb = crumbs && crumbs[crumbs.length - 1]
 
-  page = page || getDefaultPage(crumb, shortTitle)
+  page = page || getDefaultPage(crumb, shortTitle, location)
 
   if (!page.language) page.language = language
   if (!page.author) page.author = author
@@ -110,15 +104,14 @@ const withDefaultMeta = (site, page, crumbs) => {
   if (!page.headline) page.headline = page.name || title
   if (!page.name) page.name = shortTitle
   if (!page.abstract) page.abstract = page.description
-  if (!page.url) page.url = page.slug === '/' ? url : `${url}/${page.slug}`
-  if (!page.tags.length) page.tags = getKeywords(page.body, keywords)
+  if (!page.url)
+    page.url = page.slug === '/' ? siteUrl : `${siteUrl}/${page.slug}`
 
   return page
 }
 
-const getDefaultPage = (crumb, defaultName) => {
+const getDefaultPage = (crumb, defaultName, location) => {
   const name = (crumb && crumb.crumbLabel) || defaultName
-  const pathname = crumb ? crumb.pathname : '/'
   return {
     published: true,
     order: 666,
@@ -126,12 +119,12 @@ const getDefaultPage = (crumb, defaultName) => {
     area: null,
     topic: null,
     language: null,
-    i18nPath: pathname,
-    slug: pathname,
+    i18nPath: location.replace(/^\/(en|es)\//i, '/'),
+    slug: location,
     name,
     headline: null,
     alternativeHeadline: null,
-    description,
+    description: '',
     tags: [],
     abstract: null,
     location: null,
@@ -147,17 +140,4 @@ const getDefaultPage = (crumb, defaultName) => {
     url: null,
     mdx: null,
   }
-}
-// TODO: this should be language specific
-const getKeywords = (body, siteKeywords) => {
-  if (body) {
-    const normalizer = new NormalizerIt()
-    const tokenizer = new TokenizerIt()
-    const stopwords = new StopwordsIt()
-    const normalized = normalizer.normalize(body)
-    const tokenized = tokenizer.tokenize(normalized)
-    return stopwords.removeStopwords(tokenized)
-  }
-
-  return siteKeywords
 }

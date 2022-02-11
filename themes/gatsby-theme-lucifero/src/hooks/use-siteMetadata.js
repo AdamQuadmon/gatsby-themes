@@ -8,8 +8,8 @@ export const useSiteMetadata = () => {
           siteMetadata {
             defaultLanguage
             languages
+            siteUrl
             website {
-              siteUrl
               author
               copyright
               dateCreated

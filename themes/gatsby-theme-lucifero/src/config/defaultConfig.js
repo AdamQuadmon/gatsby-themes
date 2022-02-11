@@ -27,7 +27,6 @@ const website = {
   ogImage: baseOgImage,
   dateCreated: '2021-11-11',
   icon: './src/images/lucifero-logo.png',
-  siteUrl,
   translations,
 }
 
@@ -67,17 +66,15 @@ const organization = {
 }
 
 module.exports = {
+  ui: { home: ['hero', 'sections'], embedWidth: 992, imgix: false },
+  languages,
+  defaultLanguage,
+  siteUrl,
   website,
   organization,
-  defaultLanguage,
-  languages,
-  ui: { home: ['hero', 'sections'], embedWidth: 992, imgix: false },
-
   pagesPath: path.resolve('pages'), // Directory for MDX posts
   dataPath: path.resolve('data'), // Directory for other data
   localesPath: path.resolve('locales'), // Directory for locales
-
-  // basePath: undefined, // Base path for mounting pages. Allows for multiple themes to be used in a single website
   i18nPages: [
     {
       matchPath: '/',
@@ -89,6 +86,10 @@ module.exports = {
     },
     {
       matchPath: '/:lang?/gallery',
+      getLanguageFromPath: false,
+    },
+    {
+      matchPath: '/:lang?/posts',
       getLanguageFromPath: false,
     },
     {

@@ -35,7 +35,6 @@ const website = {
   themeColor: '#44403C',
   ogImage: baseOgImage,
   dateCreated: '2019-04-10',
-  siteUrl,
   translations,
 }
 
@@ -67,10 +66,11 @@ module.exports = {
     {
       resolve: `@adamquadmon/gatsby-theme-lucifero`,
       options: {
+        languages,
+        defaultLanguage,
+        siteUrl,
         website,
         organization,
-        defaultLanguage,
-        languages,
       },
     },
     'gatsby-plugin-offline',

@@ -1,8 +1,9 @@
 module.exports = `#graphql
   type SiteSiteMetadata {
     ui: UiData
-    defaultLanguage: String!
     languages: [String!]!
+    defaultLanguage: String!
+    siteUrl: String!
     website: WebsiteData!
     organization: OrganizationData
     pagesPath: String

@@ -12,9 +12,10 @@ module.exports = (userConfig) => {
   const config = withDefaults(userConfig)
   const {
     ui: { imgix, embedWidth },
-    website: { themeColor, siteUrl },
-    defaultLanguage,
     languages,
+    defaultLanguage,
+    siteUrl,
+    website: { themeColor },
     pagesPath,
     dataPath,
     localesPath,
@@ -252,85 +253,64 @@ module.exports = (userConfig) => {
       {
         resolve: 'gatsby-plugin-sitemap',
         options: {
-          excludes: [`/__generated/*`, '/**/404', '/**/404.html'],
-          // TODO check if we can simplify this with the new Meta models
-          query: `{
-            site {
-              siteMetadata{
-                website {
-                  siteUrl
-                }
-              }
-            }
-            allPage {
-              edges {
-                node {
-                  language
-                  slug
-                  i18nPath
-                }
-              }
-            }
-            allSitePage( filter: { context: { i18n: { routed: { eq: false } } } } ) {
-              nodes {
-                path
-                context {
-                  i18n {
-                    originalPath
+          excludes: [
+            '/__generated/*',
+            '/**/404',
+            '/**/404.html',
+            '/informativa-cookies',
+          ],
+          query: `
+            {
+              allPage(
+                filter: { published: { eq: true } }
+                sort: { fields: [i18nPath], order: ASC }
+              ) {
+                group(field: i18nPath) {
+                  nodes {
+                    language
+                    slug
+                    url
+                    dateModified
                   }
                 }
               }
             }
-          }`,
-          resolvePages: ({ site, allPage, allSitePage }) => {
-            const { siteUrl } = site.siteMetadata.website
+          `,
+          // filterPages: () => true,
+          // resolvePagePath: (page) => page.path,
+          resolveSiteUrl: () => siteUrl,
+          resolvePages: ({ allPage }) => {
+            const pages = allPage.group.map(({ nodes }) => {
+              let defaultNode,
+                translations = []
 
-            const pages = {
-              bySlug: [],
-              byPath: [],
-            }
-            languages.forEach((language) => {
-              pages.bySlug[language] = {}
-              pages.byFile[language] = {}
-            })
-
-            allPage.edges.forEach(({ node }) => {
-              const { language, slug, i18nPath } = node
-              pages.bySlug[language][slug] = i18nPath
-              pages.byFile[language][i18nPath] = slug
-            })
-
-            return allSitePage.nodes.map((page) => {
-              const { originalPath } = page.context.i18n
-              const url = siteUrl + originalPath
-              const links = [
-                { lang: defaultLanguage, url },
-                { lang: 'x-default', url },
-              ]
-              languages.forEach((language) => {
-                let slug
-                if (language === defaultLanguage) return
-                if (originalPath === '/') {
-                  slug = `/${language}`
+              nodes.forEach((node) => {
+                const { language, url } = node
+                if (language === defaultLanguage) {
+                  defaultNode = node
                 } else {
-                  const path = pages.bySlug[defaultLanguage][originalPath]
-                  slug = pages.byFile[language][path]
+                  translations.push({
+                    lang: language,
+                    url,
+                  })
                 }
-
-                slug && links.push({ lang: language, url: `${siteUrl}${slug}` })
               })
+              const { slug, url, dateModified } = defaultNode
+
               return {
-                ...page,
-                priority: originalPath === '/' ? 1.0 : 0.7,
-                links,
+                url,
+                path: slug,
+                lastmod: dateModified,
+                links: [
+                  { lang: defaultLanguage, url },
+                  { lang: 'x-default', url },
+                  ...translations,
+                ],
               }
             })
+            return pages
           },
-          serialize: ({ path, priority, links }) => ({
-            url: path,
-            priority,
-            links,
-          }),
+          serialize: (page) => page,
         },
       },
     ],

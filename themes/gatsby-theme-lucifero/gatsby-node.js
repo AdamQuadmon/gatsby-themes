@@ -67,7 +67,9 @@ const onCreateNode = ({ node, actions, createNodeId, createContentDigest }) => {
 const createPages = async ({ graphql, actions, reporter }, userConfig) => {
   const result = await graphql(`
     query {
-      allPage(filter: { published: { eq: true }, type: { ne: "meta" } }) {
+      allPage(
+        filter: { published: { eq: true }, type: { nin: ["gallery", "home"] } }
+      ) {
         edges {
           node {
             id

@@ -14,7 +14,7 @@ const ImageContent = ({ pageData, variant, ...rest }) => {
   const styles = useStyleConfig('ImageContent', { variant })
   const { image } = page
   const { prev, next } = getSiblings(page, images.edges)
-  const direction = getDirection(next, window)
+  const direction = getDirection(next)
 
   const onDragEnd = (e, { offset, velocity }) => {
     const swipe = swipePower(offset.x, velocity.x)
@@ -122,7 +122,9 @@ const getSiblings = (page, images) => {
   }
 }
 
-const getDirection = (next, window) => {
+const getDirection = (next) => {
   // this SMELLS, try a react way for it
-  return window && next && window.oldLocation === next.slug ? 0 : 1
+  return isBrowser() && next && window.oldLocation === next.slug ? 0 : 1
 }
+
+const isBrowser = () => typeof window !== 'undefined'

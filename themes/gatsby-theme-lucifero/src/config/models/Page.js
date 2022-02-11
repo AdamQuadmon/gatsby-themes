@@ -5,10 +5,11 @@ const { stringToBoolean } = require('../index')
 const getPage = (options) => {
   const {
     defaultLanguage,
+    siteUrl,
     website,
     ui: { imgix },
   } = options
-  const { siteUrl, ogImage, author } = website
+  const { ogImage, author } = website
 
   const Page = {
     name: 'Page',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Container, useStyleConfig } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, useStyleConfig } from '@chakra-ui/react'
 import { IoIosArrowDown } from 'react-icons/io'
 
 import { Link } from '../Link'
@@ -13,6 +13,7 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
       <Button
         as={Link}
         to={href}
+        className="label"
         activeClassName={'active'}
         partiallyActive
         rightIcon={children && <IoIosArrowDown />}
@@ -29,7 +30,7 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
           zIndex="2"
           _groupHover={{ display: 'block' }}
         >
-          <Container maxW="container.lg" display="flex">
+          <Container maxW="container.lg" as={Flex} gap="2">
             {children.map(({ node }) => (
               <NavItemSub item={node} key={node.slug} />
             ))}

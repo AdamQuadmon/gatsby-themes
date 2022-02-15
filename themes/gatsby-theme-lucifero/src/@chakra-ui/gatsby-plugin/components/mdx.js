@@ -1,9 +1,6 @@
 export const mdx = {
+  // This refers to all content
   MDXWrapper: {
-    baseStyle: ({ colorMode }) => ({
-      figure: {
-        my: 8,
-      },
-    }),
+    baseStyle: ({ colorMode }) => ({}),
   },
 }

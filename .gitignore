@@ -8,4 +8,4 @@ node_modules
 csv/
 TODO.md
 /themes/gatsby-theme-lucifero/src/components/Unused/
-/scripts/translate*
+/scripts/*

@@ -1,24 +1,21 @@
 import React from 'react'
-import { Box, Heading, useStyleConfig } from '@chakra-ui/react'
+import { Box, LinkBox, useStyleConfig } from '@chakra-ui/react'
 import Image from '../Image'
 
-import { Link } from '../Link'
+import { LinkOverlay } from '../Link'
 
 const NavItemSub = ({ variant, item, ...rest }) => {
   const styles = useStyleConfig('NavItemSub', { variant })
 
-  const { slug, abstract, image, name, headline, description, mdx } = item
-
-  const content = abstract || mdx ? mdx.excerpt : description
+  const { slug, abstract, image, name, headline } = item
   return (
-    <Box __css={styles} {...rest}>
-      <Link to={slug}>
-        <Heading as="h4" size="md" className="item_header">
-          {name}
-        </Heading>
-        {image && <Image image={image} alt={headline} aspectRatio={16 / 9} />}
-        <Box className="item_content">{content}</Box>
-      </Link>
+    <Box as={LinkBox} __css={styles} {...rest}>
+      <LinkOverlay data-peer to={slug} className="item_header">
+        {name}
+      </LinkOverlay>
+
+      {image && <Image image={image} alt={headline} height="180px" />}
+      <Box className="item_content">{abstract}</Box>
     </Box>
   )
 }

@@ -11,7 +11,7 @@ export const cards = {
       '.cards_box': {
         w: '100%',
         dispaly: 'flex',
-        gap: 4,
+        gap: 2,
         flexWrap: 'wrap',
         justifyContent: 'space-between',
       },
@@ -60,7 +60,7 @@ export const cards = {
     variants: {
       set: {},
       home: {
-        pt: { base: 2, md: 4, lg: 8 },
+        pt: { base: 2, md: 4, lg: 4 },
       },
     },
   },

@@ -68,11 +68,10 @@ const Places = ({ places, address, city }) => {
 }
 
 const CardBox = ({ node, titleAs, size }) => {
-  const { slug, headline, image, abstract, mdx } = node
-  const excerpt = mdx ? mdx.excerpt : abstract
+  const { slug, headline, image, abstract } = node
   // const hasPlaces = !!places || !!address || !!city
   return (
-    <LinkBox as={Card} className="card_box">
+    <Card as={LinkBox} className="card_box">
       <Image className="image" image={image} alt={headline} height="200px" />
 
       <Box className="content">
@@ -80,9 +79,9 @@ const CardBox = ({ node, titleAs, size }) => {
         <Heading as={titleAs} size={size} className="card_title">
           <LinkOverlay to={slug}>{headline}</LinkOverlay>
         </Heading>
-        <Box className="card_content">{excerpt}</Box>
+        <Box className="card_content">{abstract}</Box>
       </Box>
-    </LinkBox>
+    </Card>
   )
 }
 

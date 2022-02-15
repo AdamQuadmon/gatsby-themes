@@ -31,11 +31,11 @@ const CustomLink = (props) => {
 const h1 = (props) => (
   <Heading as="h1" variant="mdx" {...props} lineHeight="1.2" />
 )
-const h2 = (props) => <Heading as="h2" variant="mdx" {...props} />
-const h3 = (props) => <Heading as="h3" variant="mdx" {...props} />
-const h4 = (props) => <Heading as="h4" variant="mdx" {...props} />
-const h5 = (props) => <Heading as="h5" variant="mdx" {...props} />
-const h6 = (props) => <Heading as="h6" variant="mdx" {...props} />
+const h2 = (props) => <Heading as="h2" size="3xl" variant="mdx" {...props} />
+const h3 = (props) => <Heading as="h3" size="2xl" variant="mdx" {...props} />
+const h4 = (props) => <Heading as="h4" size="xl" variant="mdx" {...props} />
+const h5 = (props) => <Heading as="h5" size="lg" variant="mdx" {...props} />
+const h6 = (props) => <Heading as="h6" size="md" variant="mdx" {...props} />
 const p = (props) => <Text variant="mdx" {...props} />
 const ul = (props) => <UnorderedList variant="mdx" {...props} />
 const ol = (props) => <OrderedList variant="mdx" {...props} />

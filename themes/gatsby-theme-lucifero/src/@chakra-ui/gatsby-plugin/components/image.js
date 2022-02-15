@@ -7,6 +7,9 @@ export const image = {
         colorMode === 'dark' ? 'colors.gray.600' : 'colors.gray.300',
       '--swiper-pagination-color':
         colorMode === 'dark' ? 'colors.gray.600' : 'colors.gray.300',
+      '.swiper-wrapper': {
+        alignItems: 'center',
+      },
     }),
   },
   Image: {

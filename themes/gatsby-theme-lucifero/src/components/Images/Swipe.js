@@ -40,15 +40,15 @@ SwiperCore.use([
   Thumbs,
 ])
 
-const checkNode = (node, filters, filter) => {
-  const shouldFilter = filters[filter]
-  return !shouldFilter ? true : filters[filter] === node[filter]
+const shouldReturnNode = (node, filters, key) => {
+  const keyIsEmpty = !filters[key]
+  return keyIsEmpty ? true : filters[key] === node[key]
 }
 
 const filterImages = (images, filters) => {
   const filtersKeys = Object.keys(filters)
   let filtered = images.edges.filter(({ node }) => {
-    return filtersKeys.reduce((c, f) => c && checkNode(node, filters, f))
+    return filtersKeys.reduce((r, k) => r && shouldReturnNode(node, filters, k))
   })
   return filtered.sort((a, b) => a.node.order - b.node.order)
 }
@@ -59,14 +59,14 @@ const filterImages = (images, filters) => {
 // React.cloneElement workaround is created to assign a key to each `SwiperSlider`
 // TODO This workaround should be removed when this issue
 // https://github.com/nolimits4web/swiper/issues/4413 is resolved
-const Swipe = ({ album, area, zone, variant }) => {
+const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
   const styles = useStyleConfig('Swipe', { variant })
-  const images = filterImages(useImages(), { album, area, zone })
+  const images = filterImages(useImages(), { area, topic, zone, subject })
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
   return (
-    <Box __css={styles}>
-      <Box w="100%" height="300">
+    <Box __css={styles} {...rest}>
+      <Box>
         <Swiper
           modules={[Navigation, Keyboard, A11y, Thumbs]}
           thumbs={{ swiper: thumbsSwiper }}
@@ -76,24 +76,28 @@ const Swipe = ({ album, area, zone, variant }) => {
           keyboard={{ enabled: true }}
           mousewheel={{ releaseOnEdges: true }}
           grabCursor
-          autoHeight
           navigation
+          // autoHeight
           // lazy
           // onSlideChange={() => console.log('slide change')}
           // onSwiper={(swiper) => console.log(swiper)}
         >
           {images.map(({ node }, index) => (
-            <SwiperSlide key={`slide_${index}_${node.file}`}>
+            <SwiperSlide key={`slide_${index}_${node.slug}`}>
               {React.cloneElement(
                 <Link to={node.slug}>
-                  <Image key={node.file} image={node} className="swiper-lazy" />
+                  <Image
+                    key={node.contentUrl}
+                    image={node}
+                    className="swiper-lazy"
+                  />
                 </Link>
               )}
             </SwiperSlide>
           ))}
         </Swiper>
       </Box>
-      <Box w="100%" height="100">
+      <Box w="100%" mt="3" height="100">
         <Swiper
           modules={[Thumbs]}
           spaceBetween={10}
@@ -107,12 +111,11 @@ const Swipe = ({ album, area, zone, variant }) => {
           onSwiper={setThumbsSwiper}
         >
           {images.map(({ node }, index) => (
-            <SwiperSlide key={`thumb_${index}_${node.file}`}>
+            <SwiperSlide key={`thumb_${index}_${node.slug}`}>
               {React.cloneElement(
                 <Image
-                  key={node.file}
-                  file={node.file}
-                  folder={node.folder}
+                  key={node.contentUrl}
+                  image={node}
                   aspectRatio={16 / 9}
                 />
               )}

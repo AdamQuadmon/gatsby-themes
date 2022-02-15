@@ -1,9 +1,11 @@
 export const navItem = {
   NavItem: {
     baseStyle: ({ colorMode }) => ({
-      textTransform: 'uppercase',
       w: 'full',
       color: colorMode === 'dark' ? 'gray.200' : 'gray.500',
+      '.label': {
+        textTransform: 'uppercase',
+      },
       '.chakra-button': {
         fontSize: { base: 'sm', lg: 'md' },
         height: { base: '28px', lg: '32px' },
@@ -20,12 +22,13 @@ export const navItem = {
         color: colorMode === 'dark' ? 'gray.50' : 'gray.700',
       },
       '.sub_box': {
-        bg: colorMode === 'dark' ? 'gray.700' : 'gray.200',
+        bg: colorMode === 'dark' ? 'gray.700' : 'gray.300',
         color: colorMode === 'dark' ? 'gray.300' : 'gray.600',
         borderTopColor: colorMode === 'dark' ? 'gray.800' : 'gray.300',
-        borderBottomColor: colorMode === 'dark' ? 'gray.800' : 'gray.400',
+        borderBottomColor: colorMode === 'dark' ? 'gray.800' : 'gray.300',
         borderWidth: '1px',
         borderStyle: 'solid',
+        boxShadow: 'lg',
       },
     }),
   },

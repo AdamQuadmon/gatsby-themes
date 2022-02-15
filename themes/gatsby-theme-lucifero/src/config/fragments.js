@@ -174,11 +174,13 @@ export const imageCsvMinNodeFragment = graphql`
     description
     width
     height
-    # maybe not needed
-    order
-    slug
     area
     topic
+    zone
+    order
+    subject
+    # maybe not needed
+    slug
     headline
   }
 `
@@ -226,7 +228,7 @@ export const imagesDataEdgesFragment = graphql`
   fragment ImageCsvEdges on ImageCsvConnection {
     edges {
       node {
-        ...ImageCsvNode
+        ...ImageCsvMinNode
       }
     }
   }

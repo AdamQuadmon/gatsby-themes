@@ -26,7 +26,7 @@ const Cards = ({
   ...rest
 }) => {
   const styles = useStyleConfig('Cards', { variant })
-  const schema = getCarouselSchema(nodes)
+  const carouselSchema = getCarouselSchema(nodes)
   const subTitleAs = titleAs === 'h2' ? 'h3' : 'h4'
   return (
     <Box className="cards" __css={styles} {...rest}>
@@ -36,7 +36,7 @@ const Cards = ({
         </Heading>
       )}
       <Flex className="cards_box">
-        <SchemaContainer schema={schema} />
+        <SchemaContainer schema={carouselSchema} />
         {nodes.map(({ node }) => (
           <CardBox key={node.slug} node={node} titleAs={subTitleAs} />
         ))}
@@ -50,6 +50,29 @@ Cards.defaultProps = {
 }
 
 export default Cards
+
+const CardBox = ({ node, titleAs, size }) => {
+  const { slug, name, headline, image, abstract } = node
+  // const hasPlaces = !!places || !!address || !!city
+  return (
+    <Card as={LinkBox} className="card_box">
+      <Image className="image" image={image} alt={headline} height="200px" />
+
+      <Box className="content">
+        {/* {hasPlaces && <Places places={places} address={address} city={city} />} */}
+        <Heading as={titleAs} size={size} className="card_title">
+          <LinkOverlay to={slug}>{name}</LinkOverlay>
+        </Heading>
+        <Box className="card_content">{abstract}</Box>
+      </Box>
+    </Card>
+  )
+}
+
+CardBox.defaultProps = {
+  titleAs: 'h4',
+  size: 'xs',
+}
 
 const Places = ({ places, address, city }) => {
   return (
@@ -65,27 +88,4 @@ const Places = ({ places, address, city }) => {
       </Button>
     </LinkExternal>
   )
-}
-
-const CardBox = ({ node, titleAs, size }) => {
-  const { slug, headline, image, abstract } = node
-  // const hasPlaces = !!places || !!address || !!city
-  return (
-    <Card as={LinkBox} className="card_box">
-      <Image className="image" image={image} alt={headline} height="200px" />
-
-      <Box className="content">
-        {/* {hasPlaces && <Places places={places} address={address} city={city} />} */}
-        <Heading as={titleAs} size={size} className="card_title">
-          <LinkOverlay to={slug}>{headline}</LinkOverlay>
-        </Heading>
-        <Box className="card_content">{abstract}</Box>
-      </Box>
-    </Card>
-  )
-}
-
-CardBox.defaultProps = {
-  titleAs: 'h4',
-  size: 'xs',
 }

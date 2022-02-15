@@ -13,7 +13,7 @@ export const cards = {
         dispaly: 'flex',
         gap: 2,
         flexWrap: 'wrap',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
       },
       '.card_box': {
         display: 'flex',

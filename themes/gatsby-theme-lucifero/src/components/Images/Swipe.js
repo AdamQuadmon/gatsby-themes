@@ -97,32 +97,34 @@ const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
           ))}
         </Swiper>
       </Box>
-      <Box w="100%" mt="3" height="100">
-        <Swiper
-          modules={[Thumbs]}
-          spaceBetween={10}
-          slidesPerView={4}
-          mousewheel
-          grabCursor
-          autoHeight
-          freeMode
-          navigation
-          watchSlidesProgress
-          onSwiper={setThumbsSwiper}
-        >
-          {images.map(({ node }, index) => (
-            <SwiperSlide key={`thumb_${index}_${node.slug}`}>
-              {React.cloneElement(
-                <Image
-                  key={node.contentUrl}
-                  image={node}
-                  aspectRatio={16 / 9}
-                />
-              )}
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
+      {images.length > 1 && (
+        <Box w="100%" mt="3" height="100">
+          <Swiper
+            modules={[Thumbs]}
+            spaceBetween={10}
+            slidesPerView={4}
+            mousewheel
+            grabCursor
+            autoHeight
+            freeMode
+            navigation
+            watchSlidesProgress
+            onSwiper={setThumbsSwiper}
+          >
+            {images.map(({ node }, index) => (
+              <SwiperSlide key={`thumb_${index}_${node.slug}`}>
+                {React.cloneElement(
+                  <Image
+                    key={node.contentUrl}
+                    image={node}
+                    aspectRatio={16 / 9}
+                  />
+                )}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
+      )}
     </Box>
   )
 }

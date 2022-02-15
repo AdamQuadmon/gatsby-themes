@@ -19,7 +19,7 @@ const Sections = ({ pageData, variant }) => {
     return null
   }
 
-  const { headline, description, mdx } = page
+  const { name, description, mdx } = page
   const body = mdx ? mdx.body : description
 
   const counts = getCounted(totals)
@@ -30,7 +30,7 @@ const Sections = ({ pageData, variant }) => {
 
   return (
     <Box __css={styles}>
-      <Title title={headline} subtitle={description}></Title>
+      <Title title={name} subtitle={description}></Title>
       <FlexContainer>
         {posts.map(({ node }) => {
           const { id, fields } = node

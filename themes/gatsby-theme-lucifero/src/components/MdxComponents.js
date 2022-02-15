@@ -29,13 +29,13 @@ const CustomLink = (props) => {
 // as we use gatsby-remark-images plugin to render MDX images
 // https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-images
 const h1 = (props) => (
-  <Heading as="h1" variant="mdx" {...props} lineHeight="1.2" />
+  <Heading as="h1" variant="mdx" size="4xl" {...props} lineHeight="1.2" />
 )
-const h2 = (props) => <Heading as="h2" size="3xl" variant="mdx" {...props} />
-const h3 = (props) => <Heading as="h3" size="2xl" variant="mdx" {...props} />
-const h4 = (props) => <Heading as="h4" size="xl" variant="mdx" {...props} />
-const h5 = (props) => <Heading as="h5" size="lg" variant="mdx" {...props} />
-const h6 = (props) => <Heading as="h6" size="md" variant="mdx" {...props} />
+const h2 = (props) => <Heading as="h2" size="2xl" variant="mdx" {...props} />
+const h3 = (props) => <Heading as="h3" size="xl" variant="mdx" {...props} />
+const h4 = (props) => <Heading as="h4" size="lg" variant="mdx" {...props} />
+const h5 = (props) => <Heading as="h5" size="md" variant="mdx" {...props} />
+const h6 = (props) => <Heading as="h6" size="sm" variant="mdx" {...props} />
 const p = (props) => <Text variant="mdx" {...props} />
 const ul = (props) => <UnorderedList variant="mdx" {...props} />
 const ol = (props) => <OrderedList variant="mdx" {...props} />

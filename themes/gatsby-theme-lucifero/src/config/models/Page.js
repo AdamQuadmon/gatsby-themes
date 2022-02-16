@@ -1,5 +1,5 @@
 const moment = require('moment')
-const { toNumber, isString } = require('lodash')
+const { toNumber, isString, startCase } = require('lodash')
 const { stringToBoolean } = require('../index')
 
 const getPage = (options) => {
@@ -44,11 +44,17 @@ const getPage = (options) => {
       // meta fields
       name: {
         type: 'String',
-        resolve: (source) => source.name || source.headline,
+        resolve: (source) =>
+          source.name ||
+          source.headline ||
+          startCase(source.slug.split('/').pop()),
       },
       headline: {
         type: 'String',
-        resolve: (source) => source.headline || source.name,
+        resolve: (source) =>
+          source.headline ||
+          source.name ||
+          startCase(source.slug.split('/').pop()),
       },
       alternativeHeadline: 'String',
       description: {
@@ -69,7 +75,19 @@ const getPage = (options) => {
         type: 'String',
         resolve: (source) => source.abstract || source.description,
       },
-      location: 'String',
+      location: {
+        type: 'PlaceCsv',
+        resolve: async (source, args, context) => {
+          const { location } = source
+
+          return await context.nodeModel.findOne({
+            query: {
+              filter: { slug: { eq: location } },
+            },
+            type: 'PlaceCsv',
+          })
+        },
+      },
       award: 'String',
       discussionUrl: 'String',
       dateCreated: {
@@ -97,7 +115,7 @@ const getPage = (options) => {
       },
       noCover: {
         type: 'Boolean',
-        resolve: (source) => stringToBoolean(source.navPage),
+        resolve: (source) => stringToBoolean(source.noCover),
       },
       // generated fields
       mdx: {

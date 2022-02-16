@@ -78,7 +78,9 @@ export const pageMetaFragment = graphql`
     description
     tags
     abstract
-    location
+    location {
+      ...PlaceCsvNode
+    }
     award
     discussionUrl
     dateCreated
@@ -241,5 +243,24 @@ export const albumsDataEdgesFragment = graphql`
         ...AlbumCsvNode
       }
     }
+  }
+`
+
+export const placeCsvNodeFragment = graphql`
+  fragment PlaceCsvNode on PlaceCsv {
+    published
+    order
+    type
+    itineraries
+    slug
+    region
+    city
+    cap
+    address
+    cell
+    places
+    facebook
+    instagram
+    web
   }
 `

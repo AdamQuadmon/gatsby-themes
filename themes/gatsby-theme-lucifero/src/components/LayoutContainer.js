@@ -1,5 +1,5 @@
 import React from 'react'
-import { merge } from 'lodash'
+import { merge, capitalize } from 'lodash'
 import { Box, Container, Flex } from '@chakra-ui/react'
 import { ErrorBoundary } from 'react-error-boundary'
 
@@ -31,11 +31,11 @@ const LayoutContainer = ({ pageData, children, ...rest }) => {
   const translation = getTranslation(site, page)
   merge(site.website, translation)
 
-  page = withDefaultMeta(site, page, crumbs, location)
+  const pageMeta = withDefaultMeta(site, page, crumbs, location)
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Seo page={page} site={site} crumbs={crumbs} {...rest} />
+      <Seo page={pageMeta} site={site} crumbs={crumbs} {...rest} />
       <Flex flexDirection="column" minHeight="100vh">
         <NavBar
           navItems={navItems}
@@ -95,14 +95,14 @@ const withDefaultMeta = (site, page, crumbs, location) => {
 
   const crumb = crumbs && crumbs[crumbs.length - 1]
 
-  page = page || getDefaultPage(crumb, shortTitle, location)
+  page = { ...page } || getDefaultPage(crumb, shortTitle, location)
 
   if (!page.language) page.language = language
   if (!page.author) page.author = author
   if (!page.image) page.image = ogImage
+  if (!page.name) page.name = capitalize(page.slug.split('/').pop())
   if (!page.description) page.description = description
   if (!page.headline) page.headline = page.name || title
-  if (!page.name) page.name = shortTitle
   if (!page.abstract) page.abstract = page.description
   if (!page.url)
     page.url = page.slug === '/' ? siteUrl : `${siteUrl}/${page.slug}`

@@ -88,43 +88,4 @@ module.exports = `#graphql
     excludeLanguages: [String!]!
     languages: [String!]!
   }
-
-  type PlaceCsv implements Node {
-    id: ID!
-    published: Boolean @defaultFalse
-    order: Int @defaultNumber(n: 999)
-    area: String
-    topic: String
-    language: String
-    # i18nPath: String
-    # slug: String
-    # meta
-    name: String
-    headline: String
-    alternativeHeadline: String
-    description: String
-    tags: String
-    abstract: String
-    location: String
-    award: String
-    discussionUrl: String
-    dateCreated: Date @dateformat
-    dateModified: Date @dateformat
-    datePublished: Date @dateformat
-    author: String
-    #
-    # Other fields
-    #
-    image: String
-    pax: Int
-    region: String
-    city: String
-    cap: String
-    address: String
-    cell: String
-    places: String
-    web: String
-    facebook: String
-    instagram: String
-  }
 `

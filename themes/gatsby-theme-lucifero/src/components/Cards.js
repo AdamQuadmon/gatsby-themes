@@ -1,19 +1,11 @@
 import React from 'react'
-import {
-  Box,
-  Flex,
-  Heading,
-  Button,
-  LinkBox,
-  useStyleConfig,
-} from '@chakra-ui/react'
-import { SiGooglemaps } from 'react-icons/si'
-import { Link, LinkOverlay, LinkExternal } from './Link'
+import { Box, Flex, Heading, LinkBox, useStyleConfig } from '@chakra-ui/react'
 import { SchemaContainer } from './Seo/SchemaOrg'
 import { getCarouselSchema } from './Seo/Schema/Carousel'
+import { Link, LinkOverlay } from './Link'
+import Card from './Card'
 import Image from './Image'
-
-import Card from '../components/Card'
+import Place from './Place'
 
 const Cards = ({
   title,
@@ -52,14 +44,13 @@ Cards.defaultProps = {
 export default Cards
 
 const CardBox = ({ node, titleAs, size }) => {
-  const { slug, name, headline, image, abstract } = node
-  // const hasPlaces = !!places || !!address || !!city
+  const { slug, name, headline, image, abstract, location } = node
   return (
     <Card as={LinkBox} className="card_box">
       <Image className="image" image={image} alt={headline} height="200px" />
 
       <Box className="content">
-        {/* {hasPlaces && <Places places={places} address={address} city={city} />} */}
+        {location && <Place place={location} />}
         <Heading as={titleAs} size={size} className="card_title">
           <LinkOverlay to={slug}>{name}</LinkOverlay>
         </Heading>
@@ -72,20 +63,4 @@ const CardBox = ({ node, titleAs, size }) => {
 CardBox.defaultProps = {
   titleAs: 'h4',
   size: 'xs',
-}
-
-const Places = ({ places, address, city }) => {
-  return (
-    <LinkExternal
-      href={places}
-      isExternal
-      className="card_places"
-      maxWidth="200px"
-    >
-      <Button size="xs" aria-label={'Google Maps'} leftIcon={<SiGooglemaps />}>
-        {address}
-        {city && ` - ${city}`}
-      </Button>
-    </LinkExternal>
-  )
 }

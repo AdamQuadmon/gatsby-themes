@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { customComponents } from './MdxCustomComponents'
 import Image from './Image'
+import Places from './Places'
 import Swipe from './Images/Swipe'
 import { Link, LinkTranslated, LinkExternal } from './Link'
 
@@ -56,5 +57,6 @@ export const baseComponents = {
   Image,
   Swipe,
   Link,
+  Places,
 }
 export const mdxComponents = { ...baseComponents, ...customComponents }

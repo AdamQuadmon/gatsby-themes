@@ -1,45 +1,67 @@
 import React from 'react'
 import { IconButton, Stack, Link } from '@chakra-ui/react'
-import { FaInstagram, FaFacebook, FaWhatsapp } from 'react-icons/fa'
+// import { LinkExternal } from './Link'
+import { FaHome, FaInstagram, FaFacebook, FaWhatsapp } from 'react-icons/fa'
 
-const SocialButtons = ({ socials }) => {
-  const { whatsapp, instagram, facebook } = socials
-  // const buttonSize = { base: 'sm', md: 'xs' }
-  // const buttonSize = { base: 'sm', md: 'xs' }
-  const buttonSize = 'sm'
+const SocialButtons = ({ socials, children, size }) => {
+  const { whatsapp, cell, instagram, facebook, web } = socials
+  const tel = whatsapp || cell
+
   return (
     <Stack direction={'row'} spacing={3}>
-      <IconButton
-        as={Link}
-        href={`https://wa.me/${whatsapp}`}
-        isExternal
-        colorScheme="whatsapp"
-        size={buttonSize}
-        aria-label={'WhatsApp'}
-        icon={<FaWhatsapp />}
-      />
+      {children}
+      {web && (
+        <IconButton
+          as={Link}
+          isExternal
+          size={size}
+          href={web}
+          colorScheme="orange"
+          aria-label={'WWW'}
+          icon={<FaHome />}
+        />
+      )}
+      {tel && (
+        <IconButton
+          as={Link}
+          isExternal
+          size={size}
+          href={`https://wa.me/${tel}`}
+          colorScheme="whatsapp"
+          aria-label={'WhatsApp'}
+          icon={<FaWhatsapp />}
+        />
+      )}
 
-      <IconButton
-        as={Link}
-        href={`https://instagram.com/${instagram}`}
-        isExternal
-        colorScheme="red"
-        size={buttonSize}
-        aria-label={'Instagram'}
-        icon={<FaInstagram />}
-      />
+      {instagram && (
+        <IconButton
+          as={Link}
+          isExternal
+          size={size}
+          href={`https://instagram.com/${instagram}`}
+          colorScheme="red"
+          aria-label={'Instagram'}
+          icon={<FaInstagram />}
+        />
+      )}
 
-      <IconButton
-        as={Link}
-        href={`https://facebook.com/${facebook}`}
-        isExternal
-        colorScheme="facebook"
-        size={buttonSize}
-        aria-label={'Facebook'}
-        icon={<FaFacebook />}
-      />
+      {facebook && (
+        <IconButton
+          as={Link}
+          isExternal
+          size={size}
+          href={`https://facebook.com/${facebook}`}
+          colorScheme="facebook"
+          aria-label={'Facebook'}
+          icon={<FaFacebook />}
+        />
+      )}
     </Stack>
   )
 }
 
 export default SocialButtons
+
+SocialButtons.defaultProps = {
+  size: 'sm',
+}

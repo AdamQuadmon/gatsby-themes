@@ -12,6 +12,7 @@ const { getPage } = require('./src/config/models/Page')
 const { getMetaCsv } = require('./src/config/models/MetaCsv')
 const { getAlbumCsv } = require('./src/config/models/AlbumCsv')
 const { getImageCsv } = require('./src/config/models/ImageCsv')
+const { getPlaceCsv } = require('./src/config/models/PlaceCsv')
 
 const { createPageProxy } = require('./src/config/proxy')
 const { createPagesTypes } = require('./src/config/pages')
@@ -33,6 +34,7 @@ const createSchemaCustomization = ({ actions, schema }, userConfig) => {
   createTypes(typeDefinitions)
   createTypes(buildObjectType(getAlbumCsv(userConfig)))
   createTypes(buildObjectType(getImageCsv(userConfig)))
+  createTypes(buildObjectType(getPlaceCsv(userConfig)))
   createTypes(buildObjectType(getMetaCsv(userConfig)))
   createTypes(buildObjectType(getPage(userConfig)))
 }
@@ -49,16 +51,8 @@ const onCreateNode = ({ node, actions, createNodeId, createContentDigest }) => {
       createPageProxy(gatsbyNodeHelpers, 'image')
       break
     }
-    case 'PlaceCsv': {
-      // createPageProxy(gatsbyNodeHelpers, 'place')
-      break
-    }
     case 'MetaCsv': {
       createPageProxy(gatsbyNodeHelpers, 'page')
-      break
-    }
-    case 'Page': {
-      // createTagProxy(gatsbyNodeHelpers)
       break
     }
   }

@@ -10,16 +10,16 @@ export default function PostTemplate(pageData) {
   const {
     data: { page },
   } = pageData
-  const { tableOfContents } = page
-  const hasToc = !!tableOfContents?.items
-  const variant = hasToc ? 'toc' : null
+  const { mdx, hasToc } = page
+  const displayToc = hasToc && !!mdx?.tableOfContents?.items
+  const variant = displayToc ? 'toc' : null
   const styles = useStyleConfig('PostPage', { variant })
   return (
     <Layout pageData={pageData}>
       <Box __css={styles}>
-        {hasToc && (
+        {displayToc && (
           <Box className="toc">
-            <TableOfContents tableOfContents={tableOfContents} />
+            <TableOfContents tableOfContents={mdx.tableOfContents} />
           </Box>
         )}
         <PageContent

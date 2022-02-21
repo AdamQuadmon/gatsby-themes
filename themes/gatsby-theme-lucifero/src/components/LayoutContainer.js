@@ -1,6 +1,6 @@
 import React from 'react'
 import { merge, capitalize } from 'lodash'
-import { Box, Container, Flex } from '@chakra-ui/react'
+import { Box, Container, Flex, useStyleConfig } from '@chakra-ui/react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import Seo from '../components/Seo/Seo'
@@ -13,7 +13,8 @@ import CookieConsent from '../components/CookieConsent'
 import { useNavItems } from '../hooks/use-navItems'
 import { useSiteMetadata } from '../hooks/use-siteMetadata'
 
-const LayoutContainer = ({ pageData, children, ...rest }) => {
+const LayoutContainer = ({ pageData, variant, children, ...rest }) => {
+  const styles = useStyleConfig('Layout', { variant })
   let {
     data: { page },
   } = pageData
@@ -36,17 +37,19 @@ const LayoutContainer = ({ pageData, children, ...rest }) => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Seo page={pageMeta} site={site} crumbs={crumbs} {...rest} />
-      <Flex flexDirection="column" minHeight="100vh">
-        <NavBar
-          navItems={navItems}
-          organization={organization}
-          alternatePages={alternatePages.nodes}
-        />
-        <Box as="main" flex="1 1 auto">
+      <Flex __css={styles}>
+        <Box className="top">
+          <NavBar
+            navItems={navItems}
+            organization={organization}
+            alternatePages={alternatePages.nodes}
+          />
           <Container maxW="container.lg">
             {!!crumbs.length && <Breadcrumbs crumbs={crumbs} />}
-            {children}
           </Container>
+        </Box>
+        <Box as="main" flex="1 1 auto">
+          <Container maxW="container.lg">{children}</Container>
         </Box>
         <Footer
           organization={organization}

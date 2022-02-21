@@ -1,7 +1,8 @@
 const { withDefaults, withThemePath } = require('./index')
 
 const templates = {
-  page: 'Page',
+  // page: 'Page',
+  page: 'Post',
   article: 'Post',
   area: 'Area',
   topic: 'Topic',

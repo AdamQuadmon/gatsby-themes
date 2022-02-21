@@ -16,10 +16,6 @@ export const link = {
         fontWeight: 'black',
         textTransform: 'uppercase',
       },
-      active_toc: {
-        fontWeight: '800',
-        color: 'red',
-      },
       mdx: ({ colorMode }) => ({
         fontWeight: '800',
         color: colorMode === 'dark' ? 'gray.300' : 'gray.700',

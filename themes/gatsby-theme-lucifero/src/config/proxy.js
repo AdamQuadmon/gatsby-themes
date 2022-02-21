@@ -87,7 +87,7 @@ const getTypeFields = (node, type) => {
         // daytime,
       } = node)
     default:
-      return ({ image, navPage, noCover, mdx } = node)
+      return ({ image, navPage, noCover, hasToc, mdx } = node)
   }
 }
 

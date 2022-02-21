@@ -19,10 +19,10 @@ export const navItemSub = {
         p: 2,
       },
       'a.chakra-linkbox__overlay::before': {
-        zIndex: 2,
+        zIndex: 15,
       },
       'a[href]:not(.chakra-linkbox__overlay), abbr[title]': {
-        zIndex: 3,
+        zIndex: 16,
       },
     }),
   },

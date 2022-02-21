@@ -51,17 +51,16 @@ export const blog = {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-
         '.post': {
           flexDirection: 'column-reverse',
-          w: { base: '100%', md: '74%' },
+          w: { base: '100%', lg: '74%' },
         },
         '.toc': {
           position: 'sticky',
-          top: '2rem',
+          zIndex: 19,
+          top: '107px',
           alignSelf: 'start',
-          ml: 4,
-          w: { base: '100%', md: '24%' },
+          w: { base: '100%', lg: '24%' },
         },
       },
     },

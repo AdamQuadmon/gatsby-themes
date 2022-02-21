@@ -101,7 +101,7 @@ const variants = {
     }
   },
   center: {
-    zIndex: 1,
+    zIndex: 5,
     x: 0,
     opacity: 1,
   },

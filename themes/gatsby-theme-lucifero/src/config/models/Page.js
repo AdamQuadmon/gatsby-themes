@@ -11,6 +11,8 @@ const getPage = (options) => {
   } = options
   const { ogImage, author } = website
 
+  const typesWithToc = ['town', 'listing']
+
   const Page = {
     name: 'Page',
     interfaces: ['Node'],
@@ -116,6 +118,15 @@ const getPage = (options) => {
       noCover: {
         type: 'Boolean',
         resolve: (source) => stringToBoolean(source.noCover),
+      },
+      hasToc: {
+        type: 'Boolean',
+        resolve: (source) => {
+          const { type, hasToc } = source
+          if (typesWithToc.includes(type)) return true
+
+          return stringToBoolean(hasToc)
+        },
       },
       // generated fields
       mdx: {

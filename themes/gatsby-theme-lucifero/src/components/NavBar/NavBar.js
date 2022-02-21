@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   Box,
+  Container,
   chakra,
   Flex,
   HStack,
@@ -36,28 +37,26 @@ const NavBar = ({
         alternatePages={alternatePages}
       />
       <chakra.header __css={styles} {...rest}>
-        <Flex
-          className="nav-container"
-          justifyContent="space-between"
-          mx="auto"
-        >
-          <Logo title={name} variant="navbar" />
-          <HStack
-            className="nav-items"
-            display={{ base: 'none', md: 'inline-flex' }}
-            spacing={1}
-            alignSelf="flex-end"
-          >
-            {navItems.map((navItem) => (
-              <NavItem key={navItem.href} {...navItem} />
-            ))}
-          </HStack>
-          <Spacer />
-          <Box display="flex" alignItems="center">
-            <ThemeSwitcher d={{ base: 'none', md: 'flex' }} />
-            <ActionButtons />
-          </Box>
-        </Flex>
+        <Container maxW="container.xl">
+          <Flex className="nav-container">
+            <Logo title={name} variant="navbar" />
+            <HStack
+              className="nav-items"
+              display={{ base: 'none', md: 'inline-flex' }}
+              spacing={1}
+              alignSelf="flex-end"
+            >
+              {navItems.map((navItem) => (
+                <NavItem key={navItem.href} {...navItem} />
+              ))}
+            </HStack>
+            <Spacer />
+            <Box display="flex" alignItems="center">
+              <ThemeSwitcher d={{ base: 'none', md: 'flex' }} />
+              <ActionButtons />
+            </Box>
+          </Flex>
+        </Container>
         <NavMobile mobileNav={mobileNav} btnRef={btnRef} navItems={navItems} />
       </chakra.header>
     </>

@@ -89,6 +89,7 @@ export const pageMetaFragment = graphql`
     author
     navPage
     noCover
+    hasToc
     # generated
     url
     image {
@@ -124,6 +125,7 @@ export const metaCsvNodeFragment = graphql`
     image
     navPage
     noCover
+    hasToc
     mdx {
       ...MdxMetaNode
     }

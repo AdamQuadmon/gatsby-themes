@@ -27,7 +27,7 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
           left={0}
           w="full"
           display="none"
-          zIndex="2"
+          zIndex="14"
           _groupHover={{ display: 'block' }}
         >
           <Container maxW="container.lg" as={Flex} gap="2">

@@ -14,5 +14,34 @@ const theme = {
     outline: '0 0 0 3px rgba(252, 211, 77, 0.6)',
   },
   ...components,
+  styles: {
+    global: ({ colorMode }) => ({
+      blockquote: {
+        background: colorMode === 'dark' ? 'gray.900' : 'gray.100',
+        borderRight: '10px solid',
+        borderRightColor: colorMode === 'dark' ? 'gray.700' : 'gray.300',
+        ml: 10,
+        mt: 10,
+        mb: 5,
+        pr: 2,
+        quotes: `"“" "”" "‘" "’"`,
+        '&::before': {
+          fontFamily: 'heading',
+          color: colorMode === 'dark' ? 'gray.700' : 'gray.300',
+          content: 'open-quote',
+          fontSize: '15em',
+          lineHeight: '0.7em',
+          position: 'absolute',
+        },
+        'p.chakra-text': {
+          ml: 28,
+          textIndent: 0,
+        },
+        cite: {
+          display: 'block',
+        },
+      },
+    }),
+  },
 }
 export default extendTheme(theme)

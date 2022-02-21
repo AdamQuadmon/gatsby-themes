@@ -17,6 +17,7 @@ export const usePlaces = (language) => {
         }
         towns: allPage(
           filter: { type: { eq: "town" }, published: { eq: true } }
+          sort: { fields: [order] }
         ) {
           ...PageEdges
         }

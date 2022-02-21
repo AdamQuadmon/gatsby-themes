@@ -166,3 +166,15 @@ Additional fields not available as Page fields:
 - domain: String
 - width: String
 - height: String
+
+## Tutorials
+
+### Add a New Field
+
+To add a new fields we have to add it to several files in the `config` folder:
+
+- `typeDefinitions.js` or `models` if the type has a model
+- `fragments.js`
+- `getTypeFields` function in `proxy.js`
+
+Dont forget to add support for the new field in your ETL scripts like csv converters

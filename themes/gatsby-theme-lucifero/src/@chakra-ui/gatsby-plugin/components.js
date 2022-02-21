@@ -6,6 +6,7 @@ import { cookieConsent } from './components/cookieConsent'
 import { footer } from './components/footer'
 import { heading } from './components/heading'
 import { hero } from './components/hero'
+import { layout } from './components/layout'
 import { link } from './components/link'
 import { list } from './components/list'
 import { logo } from './components/logo'
@@ -19,6 +20,7 @@ import { navItemSub } from './components/navItemSub'
 import { page } from './components/page'
 import { services } from './components/services'
 import { text } from './components/text'
+import { toc } from './components/toc'
 
 export const components = {
   components: {
@@ -30,6 +32,7 @@ export const components = {
     ...footer,
     ...heading,
     ...hero,
+    ...layout,
     ...link,
     ...list,
     ...logo,
@@ -43,5 +46,6 @@ export const components = {
     ...page,
     ...services,
     ...text,
+    ...toc,
   },
 }

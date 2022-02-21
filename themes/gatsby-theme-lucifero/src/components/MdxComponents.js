@@ -30,7 +30,7 @@ const CustomLink = (props) => {
 // as we use gatsby-remark-images plugin to render MDX images
 // https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-images
 const h1 = (props) => (
-  <Heading as="h1" variant="mdx" size="4xl" {...props} lineHeight="1.2" />
+  <Heading as="h1" variant="mdx" size="3xl" {...props} lineHeight="1.2" />
 )
 const h2 = (props) => <Heading as="h2" size="2xl" variant="mdx" {...props} />
 const h3 = (props) => <Heading as="h3" size="xl" variant="mdx" {...props} />

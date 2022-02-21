@@ -2,7 +2,8 @@ export const breadcrumbs = {
   Breadcrumbs: {
     baseStyle: ({ colorMode }) => ({
       textTransform: 'uppercase',
-      my: 1,
+      bg: colorMode === 'dark' ? 'gray.900' : 'white',
+      py: 1,
       //Applied to the breadcrumb title (<span>)
       '.breadcrumb__title': {},
       // Applied to the breadcrumb container (<nav>)

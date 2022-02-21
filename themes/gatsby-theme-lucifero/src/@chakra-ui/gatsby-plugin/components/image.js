@@ -3,6 +3,7 @@ const sizesOffset = { base: -1, sm: -2, md: -3 }
 export const image = {
   Swipe: {
     baseStyle: ({ colorMode }) => ({
+      zIndex: 1,
       '--swiper-navigation-color':
         colorMode === 'dark' ? 'colors.gray.600' : 'colors.gray.300',
       '--swiper-pagination-color':

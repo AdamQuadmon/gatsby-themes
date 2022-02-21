@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Box,
   Center,
+  Container,
   Spacer,
   HStack,
   Text,
@@ -28,25 +29,30 @@ const NavBarTop = ({
   const { whatsapp } = socials
 
   return (
-    <Center __css={styles} {...rest}>
-      <ThemeSwitcher d={{ base: 'flex', md: 'none' }} />
-      <Box className="address">
-        <Text as="span">{streetAddress}</Text>
-        <br />
-        <Text as="span">{addressPlace}</Text>
-      </Box>
-      <Spacer />
-      <LinkExternal className="phoneNumber" href={`https://wa.me/${whatsapp}`}>
-        <Text as="span">{telephone}</Text>
-      </LinkExternal>
-      <Spacer />
-      <HStack>
-        <LangSelector alternatePages={alternatePages} />
-        <SocialButtons socials={socials} />
-      </HStack>
-      <Spacer d={{ base: 'flex', md: 'none' }} />
-      <Hamburger mobileNav={mobileNav} />
-    </Center>
+    <Box __css={styles} {...rest}>
+      <Container as={Center} maxW="container.xl">
+        <ThemeSwitcher d={{ base: 'flex', md: 'none' }} />
+        <Box className="address">
+          <Text as="span">{streetAddress}</Text>
+          <br />
+          <Text as="span">{addressPlace}</Text>
+        </Box>
+        <Spacer />
+        <LinkExternal
+          className="phoneNumber"
+          href={`https://wa.me/${whatsapp}`}
+        >
+          <Text as="span">{telephone}</Text>
+        </LinkExternal>
+        <Spacer />
+        <HStack>
+          <LangSelector alternatePages={alternatePages} />
+          <SocialButtons socials={socials} />
+        </HStack>
+        <Spacer d={{ base: 'flex', md: 'none' }} />
+        <Hamburger mobileNav={mobileNav} />
+      </Container>
+    </Box>
   )
 }
 

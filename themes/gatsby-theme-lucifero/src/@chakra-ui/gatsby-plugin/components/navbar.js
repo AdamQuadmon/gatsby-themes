@@ -9,6 +9,8 @@ export const navbar = {
       },
       '.nav-container': {
         minHeight: 10,
+        justifyContent: 'space-between',
+        mx: 'auto',
       },
       '.nav-items': {
         mt: { base: 2, lg: 1 },

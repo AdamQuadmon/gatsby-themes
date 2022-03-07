@@ -17,6 +17,7 @@ import { BsCaretRightFill } from 'react-icons/bs'
 import { BsDot } from 'react-icons/bs'
 
 import {
+  topMargin,
   useIntersectionObserver,
   useHeadingsData,
 } from '../../hooks/use-intersectionObserver'
@@ -72,6 +73,7 @@ const HeadingLink = ({ heading, activeIndex, children }) => {
   const isActive = activeIndex === heading.index
   const Icon = isActive ? BsCaretRightFill : BsDot
   const className = isActive ? 'active_toc' : null
+
   return (
     <ListItem className={className}>
       <Link
@@ -79,9 +81,10 @@ const HeadingLink = ({ heading, activeIndex, children }) => {
         size="sm"
         onClick={(e) => {
           e.preventDefault()
-          document.querySelector(heading.url).scrollIntoView({
-            behavior: 'smooth',
-          })
+          const element = document.querySelector(heading.url)
+          const offset = window.pageYOffset + topMargin
+          const y = element.getBoundingClientRect().top + offset
+          window.scrollTo({ top: y, behavior: 'smooth' })
         }}
       >
         <ListIcon as={Icon} size="sm" />

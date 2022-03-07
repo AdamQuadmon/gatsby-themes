@@ -17,7 +17,7 @@ export const link = {
         textTransform: 'uppercase',
       },
       mdx: ({ colorMode }) => ({
-        fontWeight: '800',
+        fontWeight: 800,
         color: colorMode === 'dark' ? 'gray.300' : 'gray.700',
         textDecoration: 'underline',
         _hover: {

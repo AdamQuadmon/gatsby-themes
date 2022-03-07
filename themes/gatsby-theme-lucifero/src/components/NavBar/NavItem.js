@@ -21,16 +21,8 @@ const NavItem = ({ label, children, href, variant, ...rest }) => {
         {label}
       </Button>
       {children && (
-        <Box
-          className="sub_box"
-          pos="absolute"
-          left={0}
-          w="full"
-          display="none"
-          zIndex="14"
-          _groupHover={{ display: 'block' }}
-        >
-          <Container maxW="container.lg" as={Flex} gap="2">
+        <Box className="sub_box" _groupHover={{ display: 'block' }}>
+          <Container maxW="container.lg" className="items_box" as={Flex}>
             {children.map(({ node }) => (
               <NavItemSub item={node} key={node.slug} />
             ))}

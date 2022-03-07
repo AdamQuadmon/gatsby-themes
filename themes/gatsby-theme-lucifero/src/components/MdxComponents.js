@@ -11,13 +11,13 @@ import { customComponents } from './MdxCustomComponents'
 import Image from './Image'
 import Places from './Places'
 import Swipe from './Images/Swipe'
-import { Link, LinkTranslated, LinkExternal } from './Link'
+import { Link, LinkExternal } from './Link'
 
 const CustomLink = (props) => {
   const href = props.href
   const isInternalLink = href && (href.startsWith('/') || href.startsWith('#'))
   if (isInternalLink) {
-    return <LinkTranslated to={href} variant="mdx" {...props} />
+    return <Link to={href} variant="mdx" {...props} />
   }
 
   return (

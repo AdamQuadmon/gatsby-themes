@@ -3,6 +3,7 @@ export const breadcrumbs = {
     baseStyle: ({ colorMode }) => ({
       textTransform: 'uppercase',
       bg: colorMode === 'dark' ? 'gray.900' : 'white',
+      opacity: 0.95,
       py: 1,
       //Applied to the breadcrumb title (<span>)
       '.breadcrumb__title': {},

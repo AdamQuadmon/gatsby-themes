@@ -3,6 +3,8 @@ import { colors } from './colors'
 import { components } from './components'
 import { typography } from './typography'
 
+// CSS Print tips to implement
+// https://www.jotform.com/blog/css-perfect-print-stylesheet-98272/
 const theme = {
   ...typography,
   colors: {
@@ -16,15 +18,24 @@ const theme = {
   ...components,
   styles: {
     global: ({ colorMode }) => ({
+      '@media print': {
+        h1: {
+          breakBefore: 'always',
+        },
+        p: {
+          breakInside: 'avoid',
+          pageBreakInside: 'avoid',
+        },
+      },
       blockquote: {
         background: colorMode === 'dark' ? 'gray.900' : 'gray.100',
         borderRight: '10px solid',
         borderRightColor: colorMode === 'dark' ? 'gray.700' : 'gray.300',
-        ml: 10,
+        ml: 0,
         mt: 10,
         mb: 5,
         pr: 2,
-        quotes: `"“" "”" "‘" "’"`,
+        quotes: `"“" "”"`,
         '&::before': {
           fontFamily: 'heading',
           color: colorMode === 'dark' ? 'gray.700' : 'gray.300',
@@ -39,6 +50,8 @@ const theme = {
         },
         cite: {
           display: 'block',
+          fontSize: 'lg',
+          pb: 2,
         },
       },
     }),

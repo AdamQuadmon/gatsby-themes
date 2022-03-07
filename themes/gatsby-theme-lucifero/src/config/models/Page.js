@@ -11,7 +11,7 @@ const getPage = (options) => {
   } = options
   const { ogImage, author } = website
 
-  const typesWithToc = ['town', 'listing']
+  const typesWithToc = ['place', 'listing', 'article']
 
   const Page = {
     name: 'Page',

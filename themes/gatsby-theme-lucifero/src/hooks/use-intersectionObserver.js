@@ -1,6 +1,8 @@
 // https://github.com/emgoto/emgoto.com/blob/master/src/components/table-of-contents/utils.js
 import { useEffect, useState, useRef, useCallback } from 'react'
 
+export const topMargin = -110
+
 export const useIntersectionObserver = (getIndexFromId, setActiveIndex) => {
   const headingElementsRef = useRef({})
   useEffect(() => {
@@ -33,13 +35,10 @@ export const useIntersectionObserver = (getIndexFromId, setActiveIndex) => {
     }
 
     // The IntersectionObserver will notify us when headings appear/disappear
-
-    // Other possible settings
-    // -110px top margin: this accounts for my sticky navigation
-    // -40% bottom margin: I don't make headings "active" if they are still
-    // in the bottom 40% of the page.
-    // const rootMargin = `-110px 0px -40% 0px`
-    const rootMargin = `0% 0% -80% 0%`
+    // `topMargin` for sticky navigation
+    // `bottomMargin`: precentage from page bottom to activate headings
+    const bottomMargin = 80
+    const rootMargin = `${topMargin}px 0% -${bottomMargin}% 0%`
     const observer = new IntersectionObserver(callback, {
       rootMargin,
     })

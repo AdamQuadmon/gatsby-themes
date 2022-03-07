@@ -22,6 +22,11 @@ export const navItem = {
         color: colorMode === 'dark' ? 'gray.50' : 'gray.700',
       },
       '.sub_box': {
+        display: 'none',
+        pos: 'absolute',
+        left: 0,
+        w: 'full',
+        zIndex: '14',
         bg: colorMode === 'dark' ? 'gray.700' : 'gray.300',
         color: colorMode === 'dark' ? 'gray.300' : 'gray.600',
         borderTopColor: colorMode === 'dark' ? 'gray.800' : 'gray.300',
@@ -29,6 +34,9 @@ export const navItem = {
         borderWidth: '1px',
         borderStyle: 'solid',
         boxShadow: 'lg',
+      },
+      '.items_box': {
+        justifyContent: 'space-around',
       },
     }),
   },

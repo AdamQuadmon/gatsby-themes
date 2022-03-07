@@ -1,10 +1,10 @@
 import { useStaticQuery, graphql } from 'gatsby'
 import { edgesByLanguage } from '../utils/utils'
 
-export const usePlaces = (language) => {
+export const useNearby = (language) => {
   const data = useStaticQuery(
     graphql`
-      query PlacesQuery {
+      query NearbyQuery {
         restaurants: allPage(
           filter: { type: { eq: "restaurant" }, published: { eq: true } }
         ) {
@@ -15,8 +15,8 @@ export const usePlaces = (language) => {
         ) {
           ...PageEdges
         }
-        towns: allPage(
-          filter: { type: { eq: "town" }, published: { eq: true } }
+        places: allPage(
+          filter: { type: { eq: "place" }, published: { eq: true } }
           sort: { fields: [order] }
         ) {
           ...PageEdges
@@ -25,11 +25,11 @@ export const usePlaces = (language) => {
     `
   )
 
-  const { restaurants, shops, towns } = data
+  const { restaurants, shops, places } = data
 
   return {
     restaurants: edgesByLanguage(restaurants, language),
     shops: edgesByLanguage(shops, language),
-    towns: edgesByLanguage(towns, language),
+    places: edgesByLanguage(places, language),
   }
 }

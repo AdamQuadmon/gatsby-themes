@@ -1,4 +1,5 @@
 import React from 'react'
+import { cloneDeep } from 'lodash'
 import { Breadcrumb } from 'gatsby-plugin-breadcrumb'
 import { ImHome } from 'react-icons/im'
 import { Box, useStyleConfig } from '@chakra-ui/react'
@@ -6,10 +7,11 @@ import { Box, useStyleConfig } from '@chakra-ui/react'
 // https://github.com/sbardian/gatsby-plugin-breadcrumb
 const Breadcrumbs = ({ crumbs, variant }) => {
   const styles = useStyleConfig('Breadcrumbs', { variant })
+  const clonedCrumbs = cloneDeep(crumbs)
 
-  crumbs[0].crumbLabel = <ImHome />
+  clonedCrumbs[0].crumbLabel = <ImHome />
 
-  const customCrumbLabel = crumbs[crumbs.length - 1].crumbLabel
+  const customCrumbLabel = clonedCrumbs[crumbs.length - 1].crumbLabel
     .toLowerCase()
     .replaceAll('-', ' ')
     .split('/')
@@ -17,7 +19,7 @@ const Breadcrumbs = ({ crumbs, variant }) => {
 
   return (
     <Box __css={styles}>
-      <Breadcrumb crumbs={crumbs} crumbLabel={customCrumbLabel} />
+      <Breadcrumb crumbs={clonedCrumbs} crumbLabel={customCrumbLabel} />
     </Box>
   )
 }

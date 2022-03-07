@@ -19,10 +19,10 @@ export const toc = {
           },
           a: {
             display: { base: 'none', lg: 'inline' },
-            color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
+            color: colorMode === 'dark' ? 'gray.600' : 'gray.400',
             _hover: {
               textDecoration: 'none',
-              fontWeight: 800,
+              color: colorMode === 'dark' ? 'gray.300' : 'gray.700',
             },
             svg: {
               verticalAlign: 'text-top',
@@ -30,7 +30,6 @@ export const toc = {
           },
           '&.active_toc > a': {
             display: 'inline',
-            fontWeight: 800,
             color: colorMode === 'dark' ? 'gray.200' : 'gray.800',
           },
         },

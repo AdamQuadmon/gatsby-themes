@@ -1,6 +1,7 @@
 export const navItemSub = {
   NavItemSub: {
     baseStyle: ({ colorMode }) => ({
+      width: { base: '100%', md: '32%' },
       my: 1,
       borderRadius: 'md',
       bg: colorMode === 'dark' ? 'gray.600' : 'gray.200',
@@ -12,7 +13,10 @@ export const navItemSub = {
         // fontFamily: 'heading',
         fontWeight: 700,
         color: colorMode === 'dark' ? 'gray.200' : 'gray.700',
-        p: 2,
+        px: 2,
+        display: 'block',
+        pt: 4,
+        pb: 1,
       },
       '.item_content': {
         fontSize: 'sm',

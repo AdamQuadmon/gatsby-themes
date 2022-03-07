@@ -2,21 +2,18 @@ import React, { forwardRef } from 'react'
 import {
   Link as ChakraLink,
   LinkOverlay as ChakraLinkOverlay,
-  useStyleConfig,
 } from '@chakra-ui/react'
 import { Link as GatsbyLink } from 'gatsby'
 import { Link as TranslateLink } from 'gatsby-plugin-react-i18next'
 
 const ChakraTranslatedLink = forwardRef(({ variant, ...rest }, ref) => {
-  const styles = useStyleConfig('Link', { variant })
-
-  return <ChakraLink __css={styles} as={TranslateLink} {...rest} />
+  return <ChakraLink variant={variant} as={TranslateLink} {...rest} />
 })
 
 const Link = forwardRef(({ variant, ...rest }, ref) => {
-  const styles = useStyleConfig('Link', { variant })
-
-  return <ChakraLink innerRef={ref} as={GatsbyLink} __css={styles} {...rest} />
+  return (
+    <ChakraLink innerRef={ref} as={GatsbyLink} variant={variant} {...rest} />
+  )
 })
 
 const LinkTranslated = forwardRef((props, ref) => {
@@ -24,22 +21,18 @@ const LinkTranslated = forwardRef((props, ref) => {
 })
 
 const LinkOverlay = forwardRef(({ variant, ...rest }, ref) => {
-  const styles = useStyleConfig('Link', { variant })
-
   return (
     <ChakraLinkOverlay
       innerRef={ref}
       as={GatsbyLink}
-      __css={styles}
+      variant={variant}
       {...rest}
     />
   )
 })
 
 const LinkExternal = ({ variant, ...rest }) => {
-  const styles = useStyleConfig('Link', { variant })
-
-  return <ChakraLink __css={styles} isExternal {...rest} />
+  return <ChakraLink variant={variant} isExternal {...rest} />
 }
 
 export { Link, LinkOverlay, LinkTranslated, LinkExternal }

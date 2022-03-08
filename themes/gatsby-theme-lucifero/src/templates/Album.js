@@ -30,11 +30,11 @@ export const pageQuery = graphql`
     ) {
       ...PageAlternateNodes
     }
-    album: albumCsv(topic: { eq: $topic }) {
+    album: albumCsv(topic: { eq: $topic }, language: { eq: $language }) {
       ...AlbumCsvNode
     }
     images: allImageCsv(
-      filter: { topic: { eq: $topic } }
+      filter: { topic: { eq: $topic }, language: { eq: $language } }
       sort: { fields: [order] }
     ) {
       ...ImageCsvEdges

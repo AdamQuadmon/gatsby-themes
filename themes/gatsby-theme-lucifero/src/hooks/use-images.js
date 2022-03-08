@@ -1,5 +1,5 @@
 import { useStaticQuery, graphql } from 'gatsby'
-// import { edgesByLanguage } from '../utils/utils'
+import { edgesByLanguage } from '../utils/utils'
 
 export const useImages = (language) => {
   const data = useStaticQuery(
@@ -14,6 +14,5 @@ export const useImages = (language) => {
 
   const { allImageCsv } = data
 
-  // return edgesByLanguage(allImageCsv, language)
-  return allImageCsv
+  return edgesByLanguage(allImageCsv, language)
 }

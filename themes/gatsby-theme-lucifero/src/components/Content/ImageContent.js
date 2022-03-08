@@ -1,19 +1,36 @@
 import React from 'react'
+import { findIndex } from 'lodash'
 import { navigate } from 'gatsby'
 import { motion } from 'framer-motion'
-import { Box, Button, Flex, Heading, useStyleConfig } from '@chakra-ui/react'
+import { useTranslation } from 'gatsby-plugin-react-i18next'
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Show,
+  Text,
+  Tooltip,
+  useStyleConfig,
+} from '@chakra-ui/react'
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa'
+import { BiPhotoAlbum, BiLink } from 'react-icons/bi'
 import Image, { ImageLink } from '../Image'
-import { Link, LinkTranslated } from '../Link'
+import { Link } from '../Link'
 
 const ImageContent = ({ pageData, variant, ...rest }) => {
   const {
     data: { page, album, images },
   } = pageData
 
+  const { t } = useTranslation()
+
   const styles = useStyleConfig('ImageContent', { variant })
   const { image } = page
-  const { prev, next } = getSiblings(page, images.edges)
+
+  const index = getIndex(images.edges, image.slug)
+
+  const { prev, next } = getSiblings(index, images.edges)
   const direction = getDirection(next)
 
   const onDragEnd = (e, { offset, velocity }) => {
@@ -44,11 +61,21 @@ const ImageContent = ({ pageData, variant, ...rest }) => {
         <Button>Full Screen</Button>
         */}
         <Button as={Link} to={album.slug}>
-          Back to Album
+          <Tooltip label={t('backToAlbum')}>
+            <span>
+              <BiPhotoAlbum />
+            </span>
+          </Tooltip>
+          <Show above="md">&nbsp;{t('backToAlbum')}</Show>
         </Button>
         {album.pageUrl && (
-          <Button as={LinkTranslated} to={album.pageUrl}>
-            {album.pageLabel}
+          <Button as={Link} to={album.pageUrl}>
+            <Tooltip label={album.pageLabel}>
+              <span>
+                <BiLink />
+              </span>
+            </Tooltip>
+            <Show above="md">&nbsp;{album.pageLabel}</Show>
           </Button>
         )}
         <ImageLink
@@ -58,24 +85,37 @@ const ImageContent = ({ pageData, variant, ...rest }) => {
           keydown="ArrowRight"
         />
       </Flex>
-      <motion.div
-        key={image.file}
-        initial="enter"
-        animate="center"
-        exit="leave"
-        custom={direction}
-        variants={variants}
-        transition={{ type: 'tween', velocity: 2, stiffness: 100 }}
-        drag="x"
-        dragPropagation
-        // dragElastic={1}
-        dragSnapToOrigin
-        whileDrag={{ scale: 0.9 }}
-        onDragEnd={onDragEnd}
-        onMouseDown={(e) => e.preventDefault()}
-      >
-        <Image image={image} />
-      </motion.div>
+      <Flex className="image_container">
+        <Box className="box_image">
+          <motion.div
+            key={image.file}
+            initial="enter"
+            animate="center"
+            exit="leave"
+            custom={direction}
+            variants={variants}
+            transition={{ type: 'tween', velocity: 2, stiffness: 100 }}
+            drag="x"
+            dragPropagation
+            // dragElastic={1}
+            dragSnapToOrigin
+            whileDrag={{ scale: 0.9 }}
+            onDragEnd={onDragEnd}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            <Image image={image} />
+          </motion.div>
+        </Box>
+        <Box className="box_info">
+          <Text>
+            {index + 1}/{images.edges.length}
+          </Text>
+          <Heading as="h1" size="xl" className="box_title">
+            {page.headline}
+          </Heading>
+          <Text>{page.abstract}</Text>
+        </Box>
+      </Flex>
     </Box>
   )
 }
@@ -114,8 +154,11 @@ const variants = {
   },
 }
 
-const getSiblings = (page, images) => {
-  const index = images.findIndex(({ node }) => node.slug === page.slug)
+const getIndex = (images, slug) => {
+  return findIndex(images, ({ node }) => node.slug === slug)
+}
+
+const getSiblings = (index, images) => {
   return {
     prev: index === 0 ? null : images[index - 1].node,
     next: index === images.length - 1 ? null : images[index + 1].node,

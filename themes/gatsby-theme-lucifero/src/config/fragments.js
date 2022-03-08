@@ -184,6 +184,7 @@ export const imageCsvMinNodeFragment = graphql`
     order
     subject
     # maybe not needed
+    language
     slug
     headline
   }

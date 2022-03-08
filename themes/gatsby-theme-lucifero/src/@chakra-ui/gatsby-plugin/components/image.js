@@ -14,15 +14,38 @@ export const image = {
     }),
   },
   Image: {
-    baseStyle: ({ colorMode }) => ({}),
+    baseStyle: {},
   },
   ImageContent: {
     baseStyle: {
       touchAction: 'pan-y',
+      '.image_container': {
+        justifyContent: 'space-between',
+        mx: 'auto',
+        display: { base: 'block', md: 'flex' },
+      },
+      '.box_image': {
+        w: { base: '100%', md: '64%', lg: '74%' },
+        my: 2,
+      },
+      '.box_info': {
+        w: { base: '100%', md: '34%', lg: '25%' },
+      },
+      h1: {
+        mt: 2,
+      },
     },
   },
   AlbumContent: {
     baseStyle: {
+      '.header': {
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        mx: 'auto',
+      },
+      '.description': {
+        mb: 2,
+      },
       '.my-masonry-grid': {
         display: 'flex',
         ml: sizesOffset /* gutter size offset */,
@@ -38,17 +61,32 @@ export const image = {
         display: 'block',
         mb: sizes,
       },
+      '.album_title': {},
+    },
+  },
+  Gallery: {
+    baseStyle: {
+      // TODO: unify with Cards
+      '.albums': {
+        dispaly: 'flex',
+        gap: 2,
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        mb: { base: 8 },
+      },
+      '.album': {
+        width: { base: '100%', md: '32%' },
+        mb: { base: 8, md: 0 },
+      },
     },
   },
   Album: {
     baseStyle: ({ colorMode }) => ({
-      display: 'flex',
-      flexGrow: 0,
-      flexShrink: 1,
-      width: { base: '100%', md: '32%' },
-      mb: { base: 8, md: 0 },
       _hover: {
-        bg: colorMode === 'dark' ? 'gray.600' : 'gray.300',
+        '.album_title': {
+          color: colorMode === 'dark' ? 'gray.100' : 'gray.900',
+          textDecoration: 'underline',
+        },
       },
       button: {
         w: 'full',
@@ -57,9 +95,11 @@ export const image = {
       },
       '.content': {
         w: 'full',
+        px: 2,
       },
       '.album_title': {
         h: { base: '90px', md: '60px', lg: '80px' },
+        mt: 0,
         fontSize: { base: '4xl', md: '2xl', lg: '3xl' },
         lineHeight: { base: 1.2, lg: 1.33 },
       },
@@ -72,7 +112,7 @@ export const image = {
           base: 'xl',
           sm: '2xl',
           md: 'sm',
-          lg: 'lg',
+          lg: 'md',
         },
       },
     }),

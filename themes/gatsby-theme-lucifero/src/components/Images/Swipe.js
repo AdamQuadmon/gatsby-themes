@@ -97,7 +97,18 @@ const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
           ))}
         </Swiper>
       </Box>
-      {images.length > 1 && (
+      <ThumbsContainer images={images} onSwiper={setThumbsSwiper} />
+    </Box>
+  )
+}
+
+export default Swipe
+
+export const ThumbsContainer = ({ images, onSwiper }) => {
+  console.log(images)
+  return (
+    <Box>
+      {images && images.length > 1 && (
         <Box w="100%" mt="3" height="100">
           <Swiper
             modules={[Thumbs]}
@@ -109,7 +120,7 @@ const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
             freeMode
             navigation
             watchSlidesProgress
-            onSwiper={setThumbsSwiper}
+            onSwiper={onSwiper}
           >
             {images.map(({ node }, index) => (
               <SwiperSlide key={`thumb_${index}_${node.slug}`}>
@@ -128,8 +139,6 @@ const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
     </Box>
   )
 }
-
-export default Swipe
 
 // TODO: store grid template
 const GridBox = ({ children }) => {

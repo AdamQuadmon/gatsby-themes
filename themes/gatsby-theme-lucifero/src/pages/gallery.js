@@ -1,12 +1,14 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 
-import { Box, Flex, Heading } from '@chakra-ui/layout'
+import { useTranslation } from 'gatsby-plugin-react-i18next'
+import { Box, Flex, Heading, useStyleConfig } from '@chakra-ui/react'
 import Layout from '../components/LayoutContainer'
 import Album from '../components/Images/Album'
 
 // TODO add collections meta
 const GalleryPage = (pageData) => {
+  const styles = useStyleConfig('Gallery')
   const {
     data: { albums },
   } = pageData
@@ -14,48 +16,31 @@ const GalleryPage = (pageData) => {
   const areas = getAreasAlbums(albums.edges)
   return (
     <Layout pageData={pageData}>
-      {areas.map((area) => (
-        <GallerySection
-          key={area.name}
-          areaName={area.name}
-          albums={area.albums}
-        />
-      ))}
+      <Box __css={styles}>
+        {areas.map((area) => (
+          <GallerySection
+            key={area.name}
+            areaName={area.name}
+            albums={area.albums}
+          />
+        ))}
+      </Box>
     </Layout>
   )
 }
 
 export default GalleryPage
 
-export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: { language: { eq: $language } }) {
-      ...LocaleEdges
-    }
-    albums: allAlbumCsv(
-      filter: { published: { eq: true } }
-      sort: { fields: [order], order: ASC }
-    ) {
-      ...AlbumCsvEdges
-    }
-    page: page(i18nPath: { eq: "/gallery" }, language: { eq: $language }) {
-      ...PageNode
-    }
-    alternatePages: allPage(
-      filter: { i18nPath: { eq: "/gallery" }, language: { ne: $language } }
-    ) {
-      ...PageAlternateNodes
-    }
-  }
-`
-
 const GallerySection = ({ areaName, albums }) => {
+  const { t } = useTranslation()
   return (
     <Box>
-      <Heading as="h2">{areaName}</Heading>
-      <Flex justifyContent="space-between">
+      <Heading as="h2">{t(areaName)}</Heading>
+      <Flex className="albums">
         {albums.map((album) => (
-          <Album key={album.slug} album={album} />
+          <Box key={album.slug} className="album">
+            <Album album={album} />
+          </Box>
         ))}
       </Flex>
     </Box>
@@ -79,3 +64,25 @@ const getAreasAlbums = (albums) => {
   })
   return areas
 }
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      ...LocaleEdges
+    }
+    albums: allAlbumCsv(
+      filter: { published: { eq: true }, language: { eq: $language } }
+      sort: { fields: [order], order: ASC }
+    ) {
+      ...AlbumCsvEdges
+    }
+    page: page(i18nPath: { eq: "/gallery" }, language: { eq: $language }) {
+      ...PageNode
+    }
+    alternatePages: allPage(
+      filter: { i18nPath: { eq: "/gallery" }, language: { ne: $language } }
+    ) {
+      ...PageAlternateNodes
+    }
+  }
+`

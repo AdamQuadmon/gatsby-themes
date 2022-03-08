@@ -1,7 +1,14 @@
 import React from 'react'
 import Masonry from 'react-masonry-css'
 
-import { Box, Button, Flex, Heading, useStyleConfig } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useStyleConfig,
+} from '@chakra-ui/react'
 import { Link, LinkTranslated } from '../Link'
 import Image from '../Image'
 
@@ -13,23 +20,24 @@ const AlbumContent = ({ pageData, variant, ...rest }) => {
 
   return (
     <Box __css={styles} {...rest}>
-      <Flex justifyContent="space-between" mx="auto">
-        <Heading as="h1" size="2xl" lineHeight="1.2">
+      <Flex className="header">
+        <Heading as="h1" size="2xl" className="album_title">
           {album.name}
         </Heading>
         {album.pageUrl && (
-          <Button as={LinkTranslated} to={album.pageUrl}>
+          <Button as={Link} to={album.pageUrl}>
             {album.pageLabel}
           </Button>
         )}
       </Flex>
+      <Text className="description">{album.description}</Text>
       <Masonry
         breakpointCols={3}
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column"
       >
         {images.edges.map(({ node }, index) => (
-          <Link key={node.file} d="inline-block" to={node.slug}>
+          <Link key={index} d="inline-block" to={node.slug}>
             <Image image={node} borderRadius="md" mb={2} />
           </Link>
         ))}

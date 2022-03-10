@@ -153,7 +153,7 @@ export const getPlaceAddress = (address) => {
   const { addressLocality, addressRegion, postalCode, addressCountry } = address
   let addressLocation = [addressLocality, addressRegion, addressCountry]
     .filter(String)
-    .join(',')
+    .join(', ')
   let addressPlace = [postalCode, addressLocation].filter(String).join(' - ')
 
   return addressPlace
@@ -161,7 +161,7 @@ export const getPlaceAddress = (address) => {
 
 export const getPlaceAddressShort = (address) => {
   const { addressLocality, addressRegion } = address
-  return [addressLocality, addressRegion].filter(String).join(',')
+  return [addressLocality, addressRegion].filter(String).join(', ')
 }
 
 const getSameAsFromSocials = (socials) => {

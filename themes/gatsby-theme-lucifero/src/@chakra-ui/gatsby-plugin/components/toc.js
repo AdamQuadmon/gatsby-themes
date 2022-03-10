@@ -1,11 +1,16 @@
 export const toc = {
   Toc: {
     baseStyle: ({ colorMode }) => ({
-      display: { md: 'flex', lg: 'block' },
+      display: { base: 'flex', lg: 'block' },
       alignItems: 'center',
-      bg: colorMode === 'dark' ? 'black' : 'white',
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+      opacity: 0.95,
       zIndex: 14,
       pl: 1,
+      cursor: { base: 'pointer', lg: 'auto' },
+      '.tocOpen ul.toc_list a': {
+        display: 'inline',
+      },
       'ul.toc_list': {
         paddingInlineStart: 0,
         p: 0,

@@ -23,7 +23,6 @@ const Sections = ({ pageData, variant }) => {
   const body = mdx ? mdx.body : description
 
   const counts = getCounted(totals)
-  console.log(counts)
   const { t } = useTranslation()
   const styles = useStyleConfig('Sections', { variant })
   const posts = sections.edges ? sections.edges : sections

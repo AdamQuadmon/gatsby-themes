@@ -42,7 +42,7 @@ const Wordcloud = ({ tags }) => {
 
   let words = []
 
-  console.log(tags)
+  // console.log(tags)
 
   if (!tags.length) {
     return null
@@ -53,12 +53,12 @@ const Wordcloud = ({ tags }) => {
     new Map()
   )
 
-  console.log(tagsMap)
+  // console.log(tagsMap)
 
   for (const [text, value] of tagsMap.entries()) {
     words.push({ text, value })
   }
-  console.log(words)
+  // console.log(words)
 
   return (
     <Box>

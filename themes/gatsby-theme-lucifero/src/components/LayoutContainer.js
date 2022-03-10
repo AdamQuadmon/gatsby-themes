@@ -53,6 +53,7 @@ const LayoutContainer = ({ pageData, variant, children, ...rest }) => {
         </Box>
         <Footer
           organization={organization}
+          website={site.website}
           navItems={navItems}
           alternatePages={alternatePages.nodes}
         />

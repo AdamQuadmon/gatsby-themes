@@ -9,7 +9,7 @@ import {
   Text,
   useStyleConfig,
 } from '@chakra-ui/react'
-import { Link, LinkTranslated } from '../Link'
+import { Link } from '../Link'
 import Image from '../Image'
 
 const AlbumContent = ({ pageData, variant, ...rest }) => {

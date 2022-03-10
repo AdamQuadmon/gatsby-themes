@@ -47,21 +47,26 @@ const shouldReturnNode = (node, filters, key) => {
 
 const filterImages = (images, filters) => {
   const filtersKeys = Object.keys(filters)
-  let filtered = images.edges.filter(({ node }) => {
+  let filtered = images.filter(({ node }) => {
     return filtersKeys.reduce((r, k) => r && shouldReturnNode(node, filters, k))
   })
   return filtered.sort((a, b) => a.node.order - b.node.order)
 }
 
-// `Swiper` to render the slider items requires its children property
+// to render the slider items `Swiper` requires its children property
 // to be a collection of `SwiperSlider`
 // avoiding being able to create reusable slider components.
 // React.cloneElement workaround is created to assign a key to each `SwiperSlider`
 // TODO This workaround should be removed when this issue
 // https://github.com/nolimits4web/swiper/issues/4413 is resolved
-const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
+const Swipe = ({ area, topic, zone, subject, language, variant, ...rest }) => {
   const styles = useStyleConfig('Swipe', { variant })
-  const images = filterImages(useImages(), { area, topic, zone, subject })
+  const images = filterImages(useImages(language), {
+    area,
+    topic,
+    zone,
+    subject,
+  })
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
   return (
@@ -77,6 +82,7 @@ const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
           mousewheel={{ releaseOnEdges: true }}
           grabCursor
           navigation
+          loop={images.length > 3}
           // autoHeight
           // lazy
           // onSlideChange={() => console.log('slide change')}
@@ -105,11 +111,10 @@ const Swipe = ({ area, topic, zone, subject, variant, ...rest }) => {
 export default Swipe
 
 export const ThumbsContainer = ({ images, onSwiper }) => {
-  console.log(images)
   return (
     <Box>
       {images && images.length > 1 && (
-        <Box w="100%" mt="3" height="100">
+        <Box className="thumb_container">
           <Swiper
             modules={[Thumbs]}
             spaceBetween={10}

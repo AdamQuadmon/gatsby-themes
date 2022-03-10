@@ -11,6 +11,15 @@ export const image = {
       '.swiper-wrapper': {
         alignItems: 'center',
       },
+      '.swiper-slide-thumb-active': {
+        border: '5px solid',
+        borderColor: 'dark' ? 'colors.gray.400' : 'colors.gray.600',
+      },
+      '.thumb_container': {
+        w: '100%',
+        mt: '3',
+        height: '80px',
+      },
     }),
   },
   Image: {

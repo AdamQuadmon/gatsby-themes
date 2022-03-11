@@ -4,7 +4,7 @@ import { Box, useStyleConfig } from '@chakra-ui/react'
 
 import Layout from '../components/LayoutContainer'
 import PageContent from '../components/Content/PageContent'
-import TableOfContents from '../components/Blog/toc'
+import TableOfContents from '../components/Blog/Toc'
 
 export default function PostTemplate(pageData) {
   const {

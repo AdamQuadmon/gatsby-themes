@@ -7,7 +7,7 @@ const NavMobileItem = ({ label, children, href }) => {
     <Flex
       py={2}
       as={Link}
-      to={`/${href}`}
+      to={href}
       justify={'space-between'}
       align={'center'}
       w="full"

@@ -10,12 +10,14 @@ import {
   useStyleConfig,
 } from '@chakra-ui/react'
 
+import Logo from '../Logo'
 import NavMobileItem from './NavMobileItem'
 import ActionButtons from '../ActionButtons'
 
-const NavMobile = ({ variant, mobileNav, navItems, btnRef }) => {
+const NavMobile = ({ variant, mobileNav, navItems, organization, btnRef }) => {
   const styles = useStyleConfig('NavMobile', { variant })
   const { isOpen, onClose } = mobileNav
+  const { name } = organization
 
   return (
     <Drawer
@@ -28,7 +30,9 @@ const NavMobile = ({ variant, mobileNav, navItems, btnRef }) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader></DrawerHeader>
+        <DrawerHeader>
+          <Logo title={name} variant="navbar" />
+        </DrawerHeader>
 
         <DrawerBody>
           {navItems.map((navItem) => (

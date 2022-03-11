@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.0.5
+
+### Patch Changes
+
+- Fix NavMobile link and add Logo
+
+## 2.0.4
+
+### Patch Changes
+
+- fix typo in Posts template
+
 ## 2.0.3
 
 ### Patch Changes

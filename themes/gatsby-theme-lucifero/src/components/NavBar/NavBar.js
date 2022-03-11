@@ -57,7 +57,12 @@ const NavBar = ({
             </Box>
           </Flex>
         </Container>
-        <NavMobile mobileNav={mobileNav} btnRef={btnRef} navItems={navItems} />
+        <NavMobile
+          mobileNav={mobileNav}
+          btnRef={btnRef}
+          navItems={navItems}
+          organization={organization}
+        />
       </chakra.header>
     </>
   )

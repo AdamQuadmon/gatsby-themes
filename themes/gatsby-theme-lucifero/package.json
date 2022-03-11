@@ -1,6 +1,6 @@
 {
   "name": "@adamquadmon/gatsby-theme-lucifero",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Luciano Amodio <gatsby@lucianoamodio.it> (@adamquadmon)",
   "description": "Dark/Light Chakra UI theme with MDX and other suff",
   "license": "MIT",
@@ -89,10 +89,10 @@
     "swiper": "^8.0.7",
     "typography": "^0.16.21",
     "url-join": "^4.0.1",
+    "webpack-bundle-analyzer": "^4.5.0",
     "zipkin": "^0.22.0",
     "zipkin-javascript-opentracing": "^3.0.0",
-    "zipkin-transport-http": "^0.22.0",
-    "webpack-bundle-analyzer": "^4.5.0"
+    "zipkin-transport-http": "^0.22.0"
   },
   "keywords": [
     "gatsby",

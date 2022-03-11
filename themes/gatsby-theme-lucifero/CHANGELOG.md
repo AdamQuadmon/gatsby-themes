@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.0.1
+
+### Patch Changes
+
+- Disable svgo
+
+## 2.0.1
+
+### Patch Changes
+
+- Fix deps
+
 ## 2.0.0
 
 ### Major Changes

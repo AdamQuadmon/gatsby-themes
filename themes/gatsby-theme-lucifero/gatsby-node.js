@@ -108,24 +108,24 @@ const onPostBuild = () => {
 }
 
 // https://tjaddison.com/blog/2020/11/monitoring-your-gatsbyjs-bundle-size/
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin =
+//   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-const onCreateWebpackConfig = ({ stage, actions }) => {
-  const analyzerMode = process.env.INTERACTIVE_ANALYZE ? 'server' : 'json'
-  // const analyzerMode = 'server'
+// const onCreateWebpackConfig = ({ stage, actions }) => {
+//   const analyzerMode = process.env.INTERACTIVE_ANALYZE ? 'server' : 'json'
+//   // const analyzerMode = 'server'
 
-  if (stage === 'build-javascript') {
-    actions.setWebpackConfig({
-      plugins: [
-        new BundleAnalyzerPlugin({
-          analyzerMode,
-          reportFileName: `./__build/bundlereport.json`,
-        }),
-      ],
-    })
-  }
-}
+//   if (stage === 'build-javascript') {
+//     actions.setWebpackConfig({
+//       plugins: [
+//         new BundleAnalyzerPlugin({
+//           analyzerMode,
+//           reportFileName: `./__build/bundlereport.json`,
+//         }),
+//       ],
+//     })
+//   }
+// }
 
 module.exports = {
   onPreBootstrap,
@@ -133,5 +133,5 @@ module.exports = {
   onPostBuild,
   createSchemaCustomization,
   createPages,
-  onCreateWebpackConfig,
+  // onCreateWebpackConfig,
 }

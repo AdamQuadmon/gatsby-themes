@@ -2,6 +2,12 @@
 
 ## 2.0.0
 
+### Major Changes
+
+- Gatsby V4 Restyle
+
+Lots of redesign and new features, the following recap is outdated and incomplete
+
 ### Higlights
 
 - add /areas/topic blog posts support and components
@@ -14,12 +20,12 @@
 ### Features
 
 - add dep: gatsby-plugin-breadcrumb, mdx-yaml-full, react-wordcloud, rehype-slug and rehype-sanitize
-- add components: Breadcrumbs, Blog/*
+- add components: Breadcrumbs, Blog/\*
   - Card, FuturePost, Latest, PostCount, PublishedPost,
-  Tags, Toc, Topic, Wordcloud
+    Tags, Toc, Topic, Wordcloud
 - add seo prop to Layout/Seo components
 - add useSeoValues and useSeoDefault hooks
-- add use-navPages, use-areas  and use-homeAreas
+- add use-navPages, use-areas and use-homeAreas
 - add use-intersectionObserver for ToC
 - add defaultTrue fieldExtension
 - add MdxBlogPost model

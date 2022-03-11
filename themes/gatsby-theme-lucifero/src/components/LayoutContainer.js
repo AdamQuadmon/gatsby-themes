@@ -99,7 +99,7 @@ const withDefaultMeta = (site, page, crumbs, location) => {
 
   const crumb = crumbs && crumbs[crumbs.length - 1]
 
-  page = { ...page } || getDefaultPage(crumb, shortTitle, location)
+  page = page ? { ...page } : getDefaultPage(crumb, shortTitle, location)
 
   if (!page.language) page.language = language
   if (!page.author) page.author = author

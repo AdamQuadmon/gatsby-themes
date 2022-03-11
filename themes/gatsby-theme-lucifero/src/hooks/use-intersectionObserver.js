@@ -1,7 +1,7 @@
 // https://github.com/emgoto/emgoto.com/blob/master/src/components/table-of-contents/utils.js
 import { useEffect, useState, useRef, useCallback } from 'react'
 
-export const topMargin = -110
+export const topMargin = -137
 
 export const useIntersectionObserver = (getIndexFromId, setActiveIndex) => {
   const headingElementsRef = useRef({})
@@ -37,8 +37,8 @@ export const useIntersectionObserver = (getIndexFromId, setActiveIndex) => {
     // The IntersectionObserver will notify us when headings appear/disappear
     // `topMargin` for sticky navigation
     // `bottomMargin`: precentage from page bottom to activate headings
-    const bottomMargin = 80
-    const rootMargin = `${topMargin}px 0% -${bottomMargin}% 0%`
+    const bottomMargin = -60
+    const rootMargin = `${topMargin}px 0% ${bottomMargin}% 0%`
     const observer = new IntersectionObserver(callback, {
       rootMargin,
     })
@@ -50,7 +50,54 @@ export const useIntersectionObserver = (getIndexFromId, setActiveIndex) => {
     return () => observer.disconnect()
   }, [getIndexFromId, setActiveIndex])
 }
+// TODO: move `miniOffset` and `topMargin` and `miniWindowWidth` to config
+const miniWindowWidth = 1024
 
+export const isMini = () => {
+  return window.innerWidth < miniWindowWidth
+}
+
+export const onHeadingClick = (heading) => {
+  return (e) => {
+    const isClosed = document.getElementsByClassName('tocClosed').length
+    if (isMini() && isClosed) return
+    e.preventDefault()
+
+    const element = document.querySelector(heading.url)
+
+    //  https://stackoverflow.com/questions/24665602/scrollintoview-scrolls-just-too-far
+    if (isMini()) {
+      const blockPosition = 'end' // 'center'
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: blockPosition,
+        })
+      }
+      return
+    }
+
+    // TODO this miniOffset does not works as it changes for every page
+    // const image = document.getElementsByClassName('page_image')
+    // const miniOffset = image.length ? image[0].clientHeight / 2 + 180 : 115
+    // const miniOffset = 430 // sannio
+    const miniOffset = 120 // casa
+    // const miniOffset = 70 // apice
+    // const miniOffset = 300 // benevento
+    // -30 is used for compensate topMargin
+    const offset =
+      window.pageYOffset + topMargin - (isMini() ? miniOffset : -30)
+    const elTop = element.getBoundingClientRect().top
+
+    // console.log(element.id, elTop)
+    // console.log('topMargin', topMargin - (isMini() ? miniOffset : 0))
+    // console.log('pageYOffset', window.pageYOffset)
+    // console.log('offset', offset)
+    // console.log('top', elTop + offset)
+
+    window.scrollTo({ top: elTop + offset, behavior: 'smooth' })
+  }
+}
 export const useHeadingsData = () => {
   const [headings, setHeadings] = useState([])
   const [nestedHeadings, setNestedHeadings] = useState([])

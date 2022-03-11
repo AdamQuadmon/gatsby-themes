@@ -19,18 +19,11 @@ import { BsCaretRightFill } from 'react-icons/bs'
 import { BsDot } from 'react-icons/bs'
 
 import {
-  topMargin,
+  isMini,
+  onHeadingClick,
   useIntersectionObserver,
   useHeadingsData,
 } from '../../hooks/use-intersectionObserver'
-
-// TODO: move `miniOffset` and `topMargin` and `miniWindowWidth` to config
-const miniOffset = -170
-const miniWindowWidth = 1024
-
-const isMini = () => {
-  return window.innerWidth < miniWindowWidth
-}
 
 const TableOfContents = ({ tableOfContents, variant }) => {
   const styles = useStyleConfig('Toc', { variant })
@@ -45,6 +38,7 @@ const TableOfContents = ({ tableOfContents, variant }) => {
     if (!isMini()) return
     if (!isOpen) e.preventDefault()
     onToggle(e)
+    console.log(isOpen)
   }
 
   return (
@@ -93,18 +87,9 @@ const HeadingLink = ({ heading, activeIndex, children }) => {
   const Icon = isActive ? BsCaretRightFill : BsDot
   const className = isActive ? 'active_toc' : null
 
-  const onHeadingClick = (e) => {
-    e.preventDefault()
-    const offset = window.pageYOffset + topMargin + (isMini() ? miniOffset : 0)
-    const element = document.querySelector(heading.url)
-    const y = element.getBoundingClientRect().top + offset
-
-    window.scrollTo({ top: y, behavior: 'smooth' })
-  }
-
   return (
     <ListItem className={className}>
-      <Link size="sm" href={heading.url} onClick={onHeadingClick}>
+      <Link size="sm" href={heading.url} onClick={onHeadingClick(heading)}>
         <ListIcon as={Icon} size="sm" />
         {heading.title}
       </Link>

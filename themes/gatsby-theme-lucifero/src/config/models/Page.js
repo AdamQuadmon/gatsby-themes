@@ -164,6 +164,7 @@ const getPage = (options) => {
                 query: {
                   filter: {
                     topic: { eq: source.topic },
+                    language: { eq: source.language },
                     order: { eq: 1 },
                   },
                 },
@@ -173,7 +174,10 @@ const getPage = (options) => {
               const imagePath = getImagePath(source, ogImage)
               return await context.nodeModel.findOne({
                 query: {
-                  filter: { imagePath: { eq: imagePath } },
+                  filter: {
+                    imagePath: { eq: imagePath },
+                    language: { eq: source.language },
+                  },
                 },
                 type: 'ImageCsv',
               })

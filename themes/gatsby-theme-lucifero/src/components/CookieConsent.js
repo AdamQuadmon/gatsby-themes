@@ -12,8 +12,8 @@ import {
   Text,
   useStyleConfig,
 } from '@chakra-ui/react'
-import { Trans } from 'gatsby-plugin-react-i18next'
-import { LinkTranslated } from './Link'
+import { Trans, useTranslation } from 'gatsby-plugin-react-i18next'
+import { Link } from './Link'
 
 function isBrowser() {
   return typeof window !== 'undefined'
@@ -44,6 +44,8 @@ function useStickyState(defaultValue, key) {
 const CookieConsent = ({ variant }) => {
   const styles = useStyleConfig('CookieConsent', { variant })
   const location = useLocation()
+  const { t } = useTranslation()
+
   if (isBrowser()) {
     initializeAndTrack(location)
   }
@@ -84,9 +86,9 @@ const CookieConsent = ({ variant }) => {
               </Heading>
               <Text>
                 <Trans>cookieText</Trans>{' '}
-                <LinkTranslated to="/cookies">
+                <Link to={t('linkCookies')}>
                   <Trans>cookieLink</Trans>
-                </LinkTranslated>
+                </Link>
                 .
               </Text>
             </Box>

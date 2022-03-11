@@ -16,6 +16,7 @@ const Link = forwardRef(({ variant, ...rest }, ref) => {
   )
 })
 
+// TODO: this works only for root page as we are using translated slug in pages
 const LinkTranslated = forwardRef((props, ref) => {
   return <ChakraTranslatedLink innerRef={ref} {...props} />
 })

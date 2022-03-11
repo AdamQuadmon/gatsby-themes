@@ -11,7 +11,7 @@ const PageContent = ({ page, variant, ...rest }) => {
 
   return (
     <Box __css={styles} {...rest}>
-      <Heading as="h1" size="4xl" lineHeight="1.2">
+      <Heading as="h1" size="3xl" lineHeight="1.2">
         {headline}
       </Heading>
       <Flex direction="column" gap={4}>

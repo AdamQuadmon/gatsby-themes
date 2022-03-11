@@ -2,10 +2,10 @@ export const hero = {
   Hero: {
     baseStyle: ({ colorMode }) => ({
       bg: colorMode === 'dark' ? 'gray.700' : 'gray.50',
-
       textAlign: 'center',
       align: 'center',
       // pt: { base: 4, md: 8 },
+      pb: 8,
       h1: {
         pt: { base: 2 },
         pb: { base: 2, md: 4, lg: 8 },

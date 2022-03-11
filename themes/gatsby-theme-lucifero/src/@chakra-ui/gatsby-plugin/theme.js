@@ -28,9 +28,9 @@ const theme = {
         },
       },
       blockquote: {
-        background: colorMode === 'dark' ? 'gray.900' : 'gray.100',
+        background: colorMode === 'dark' ? 'gray.700' : 'gray.100',
         borderRight: '10px solid',
-        borderRightColor: colorMode === 'dark' ? 'gray.700' : 'gray.300',
+        borderRightColor: colorMode === 'dark' ? 'gray.500' : 'gray.300',
         ml: 0,
         mt: 10,
         mb: 5,
@@ -38,7 +38,7 @@ const theme = {
         quotes: `"“" "”"`,
         '&::before': {
           fontFamily: 'heading',
-          color: colorMode === 'dark' ? 'gray.700' : 'gray.300',
+          color: colorMode === 'dark' ? 'gray.500' : 'gray.300',
           content: 'open-quote',
           fontSize: '15em',
           lineHeight: '0.7em',

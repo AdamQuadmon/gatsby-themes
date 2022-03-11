@@ -13,7 +13,7 @@ export const image = {
       },
       '.swiper-slide-thumb-active': {
         border: '5px solid',
-        borderColor: 'dark' ? 'colors.gray.400' : 'colors.gray.600',
+        borderColor: colorMode === 'dark' ? 'gray.300' : 'gray.600',
       },
       '.thumb_container': {
         w: '100%',

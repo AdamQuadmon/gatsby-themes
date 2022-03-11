@@ -47,6 +47,7 @@ const getAlbumCsv = () => {
             query: {
               filter: {
                 topic: { eq: source.topic },
+                language: { eq: source.language },
                 order: { eq: 1 },
               },
             },
@@ -61,6 +62,7 @@ const getAlbumCsv = () => {
             query: {
               filter: {
                 topic: { eq: source.topic },
+                language: { eq: source.language },
               },
             },
             type: 'ImageCsv',

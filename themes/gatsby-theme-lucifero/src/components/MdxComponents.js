@@ -57,6 +57,7 @@ export const baseComponents = {
   Image,
   Swipe,
   Link,
+  LinkExternal,
   Places,
 }
 export const mdxComponents = { ...baseComponents, ...customComponents }

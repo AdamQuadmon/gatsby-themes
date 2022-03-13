@@ -5,7 +5,7 @@ export const text = {
       mdx: {
         my: 2,
         textIndent: 8,
-        fontSize: 'lg',
+        fontSize: 'md',
       },
     },
   },

@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.6
+
+### Patch Changes
+
+- Fix ogImage and mobile styles
+
 ## 2.0.5
 
 ### Patch Changes

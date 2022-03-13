@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.0.8
+
+### Patch Changes
+
+- Fix text, list, heading and blockquote font size
+
+## 2.0.7
+
+### Patch Changes
+
+- Mobile small fixes + update deps
+
 ## 2.0.6
 
 ### Patch Changes

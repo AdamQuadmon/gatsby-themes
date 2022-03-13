@@ -40,13 +40,13 @@ const theme = {
           fontFamily: 'heading',
           color: colorMode === 'dark' ? 'gray.500' : 'gray.300',
           content: 'open-quote',
-          fontSize: { base: '7em', lg: '15em' },
+          fontSize: { base: '7em', md: '15em' },
           lineHeight: '0.7em',
           position: 'absolute',
         },
         'p.chakra-text': {
-          ml: { base: 14, lg: 28 },
-          fontSize: { base: '1em', lg: 'inerith' },
+          ml: { base: 14, md: 28 },
+          fontSize: { base: 'md', md: 'xl', lg: '2xl' },
           textIndent: 0,
         },
         cite: {

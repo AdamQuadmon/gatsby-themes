@@ -4,7 +4,9 @@ export const list = {
       container: {
         pl: 4,
       },
-      item: {},
+      item: {
+        fontSize: { base: 'lg', md: '2xl', lg: 'xl' },
+      },
     },
   },
 }

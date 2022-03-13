@@ -43,12 +43,11 @@ const Footer = ({
             <SocialButtons socials={socials} />
           </Stack>
         </Flex>
-        <Flex>
+        <Flex className="second_row">
           <Box className="first_column">
-            <Text className="subtitle">{legalName}</Text>
-            <Text>{streetAddress}</Text>
-            <Text className="address2">{addressPlace}</Text>
-            <Text>
+            <Text className="subtitle">
+              {legalName}
+              <br />
               <Text as="span" className="vat_label">
                 <Trans>vat</Trans>{' '}
               </Text>
@@ -56,6 +55,9 @@ const Footer = ({
                 {vatID}
               </Text>
             </Text>
+
+            <Text>{streetAddress}</Text>
+            <Text className="address2">{addressPlace}</Text>
           </Box>
           <Stack className="second_column">
             {navItems.map((navItem) => (

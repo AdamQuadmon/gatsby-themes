@@ -7,7 +7,7 @@ export const footer = {
       '.first_row': {
         span: {
           display: { base: 'none', md: 'flex' },
-          pr: 4,
+          pr: { base: 0, lg: 4 },
           fontSize: { base: 'xl' },
         },
         '.lang_selector': {
@@ -15,8 +15,9 @@ export const footer = {
         },
       },
       '.first_column': {
-        ml: 6,
-        w: { base: '220px', sm: '300px' },
+        ml: { base: 1, lg: 6 },
+        pr: { base: 2, lg: 0 },
+        w: { base: '64%', sm: '80%' },
         '.subtitle': {
           fontSize: 'sm',
           mb: 4,
@@ -32,6 +33,17 @@ export const footer = {
         '.copyright': {
           fontSize: 'xs',
         },
+      },
+      '.second_column': {
+        w: { base: '35%', lg: '19%' },
+        // pl: { base: 4, lg: 0 },
+        textAlign: { base: 'right', lg: 'left' },
+        // ml: { base: 2, lg: 0 },
+        borderLeft: '1px solid',
+        borderLeftColor: colorMode === 'dark' ? 'gray.100' : 'gray.400',
+        // a: {
+        //   ml: 'auto',
+        // },
       },
     }),
   },

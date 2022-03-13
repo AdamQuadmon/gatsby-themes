@@ -5,7 +5,7 @@ export const cards = {
         textAlign: 'center',
         align: 'center',
         mx: 'auto',
-        fontSize: '5xl',
+        fontSize: { base: '4xl', sm: '5xl' },
         my: { base: 4, md: 10 },
       },
       '.cards_box': {
@@ -39,9 +39,10 @@ export const cards = {
           },
         },
         '.card_title': {
-          h: { base: '90px', md: '60px', lg: '80px' },
+          h: { base: '90px', lg: '80px' },
+          pt: { base: 1, lg: 0 },
           fontSize: { base: '4xl', md: '2xl', lg: '3xl' },
-          lineHeight: { base: 1.2, lg: 1.33 },
+          lineHeight: 1.33,
         },
         '.card_content': {
           h: {

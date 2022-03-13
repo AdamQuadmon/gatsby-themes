@@ -4,7 +4,7 @@ export const services = {
       color: colorMode === 'dark' ? 'gray.200' : 'gray.700',
       mb: 4,
       h2: {
-        fontSize: '5xl',
+        fontSize: { base: '4xl', md: '5xl' },
         mt: { base: 4, md: 10 },
       },
       '.section': {

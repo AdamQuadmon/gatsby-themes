@@ -93,10 +93,10 @@ export const getImageParams = (props) => {
 }
 
 const getBaseParams = (props) => {
-  const { image, addCaption } = props
+  const { image, addCaption, file } = props
   const imageParams = ['description', 'name', 'headline']
   let imageAlt = pickFirst(image, imageParams)
-  let alt = props.alt || imageAlt
+  let alt = props.alt || imageAlt || file
   let caption = props.caption || (addCaption && (imageAlt || props.alt))
   let data = {
     alt,
@@ -111,7 +111,7 @@ const getSizeParams = (props) => {
   let { image } = props
   let params = getSizePropsParams(props)
   if (!params.aspectRatio) {
-    if (image.width && !params.width && !params.height) {
+    if (image && image.width && !params.width && !params.height) {
       addParams(image, params, [
         { s: 'width', d: 'sourceWidth' },
         { s: 'height', d: 'sourceHeight' },
@@ -165,15 +165,6 @@ export const getSrc = (props) => {
 
   if (!file) {
     return null
-  }
-
-  if (!folder) {
-    const fileParts = file.split('/')
-
-    if (fileParts > 1) {
-      folder = fileParts[0]
-      file = fileParts[1]
-    }
   }
 
   const path = folder ? `/${folder}/${file}` : file

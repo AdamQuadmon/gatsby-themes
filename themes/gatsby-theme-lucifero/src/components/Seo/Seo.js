@@ -4,6 +4,7 @@ import React from 'react'
 import { Helmet } from 'gatsby-plugin-react-i18next'
 
 import SchemaOrg from './SchemaOrg'
+import { addOgImageSettings } from '../Image'
 
 const Seo = ({ site, page, crumbs }) => {
   const link = getLink(site, page)
@@ -58,11 +59,10 @@ const getBaseMeta = (page) => {
   ]
 
   if (image) {
-    // TODO: improve passing ImageCsv data
     metaTags.concat([
       {
         name: `image`,
-        content: image,
+        content: addOgImageSettings(image),
       },
     ])
   }
@@ -107,6 +107,7 @@ const getBaseMeta = (page) => {
 }
 const getTwitterMeta = (page) => {
   const { headline, author, description, image } = page
+  console.log(addOgImageSettings(image))
   const metaTags = [
     {
       property: `twitter:description`,
@@ -122,17 +123,16 @@ const getTwitterMeta = (page) => {
       content: author,
     },
   ].concat(
-    // TODO: improve passing ImageCsv data
     image
       ? [
           {
             property: `twitter:image`,
-            content: image,
+            content: addOgImageSettings(image),
           },
 
           {
             property: 'twitter:image:alt',
-            content: description,
+            content: image.description || description,
           },
           {
             property: `twitter:card`,
@@ -184,12 +184,11 @@ const getOgMeta = (site, page) => {
       content: language,
     },
   ]
-  // TODO: improve passing ImageCsv data
   if (image) {
     metaTags.concat([
       {
         property: `og:image`,
-        content: image,
+        content: addOgImageSettings(image),
       },
       {
         property: 'og:image:width',
@@ -201,7 +200,7 @@ const getOgMeta = (site, page) => {
       },
       {
         property: 'og:image:alt',
-        content: description,
+        content: image.description || description,
       },
     ])
   }

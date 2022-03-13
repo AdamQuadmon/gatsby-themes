@@ -14,11 +14,12 @@ const Cards = ({
   columns,
   spacing,
   titleAs,
+  hideCarousel,
   variant,
   ...rest
 }) => {
   const styles = useStyleConfig('Cards', { variant })
-  const carouselSchema = getCarouselSchema(nodes, title)
+  const carouselSchema = hideCarousel ? null : getCarouselSchema(nodes, title)
   const subTitleAs = titleAs === 'h2' ? 'h3' : 'h4'
   return (
     <Box className="cards" __css={styles} {...rest}>
@@ -28,7 +29,7 @@ const Cards = ({
         </Heading>
       )}
       <Flex className="cards_box">
-        <SchemaContainer schema={carouselSchema} />
+        {carouselSchema && <SchemaContainer schema={carouselSchema} />}
         {nodes.map(({ node }) => (
           <CardBox key={node.slug} node={node} titleAs={subTitleAs} />
         ))}

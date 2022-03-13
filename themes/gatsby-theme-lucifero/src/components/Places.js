@@ -37,6 +37,7 @@ const PlacesSection = ({ section, nearby, showTitle, ...rest }) => {
       title={title}
       nodes={nearby[section]}
       variation="set"
+      hideCarousel={showTitle}
       {...rest}
     />
   )

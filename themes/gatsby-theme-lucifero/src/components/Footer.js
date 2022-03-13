@@ -48,16 +48,19 @@ const Footer = ({
             <Text className="subtitle">
               {legalName}
               <br />
+            </Text>
+            <Box className="vat">
               <Text as="span" className="vat_label">
                 <Trans>vat</Trans>{' '}
               </Text>
               <Text as="span" className="vat_value">
                 {vatID}
               </Text>
-            </Text>
-
-            <Text>{streetAddress}</Text>
-            <Text className="address2">{addressPlace}</Text>
+            </Box>
+            <Box className="address">
+              <Text className="address1">{streetAddress}</Text>
+              <Text className="address2">{addressPlace}</Text>
+            </Box>
           </Box>
           <Stack className="second_column">
             {navItems.map((navItem) => (

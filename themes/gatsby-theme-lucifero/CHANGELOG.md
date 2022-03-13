@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.9
+
+### Patch Changes
+
+- Fix footer mobile and Schema
+
 ## 2.0.8
 
 ### Patch Changes

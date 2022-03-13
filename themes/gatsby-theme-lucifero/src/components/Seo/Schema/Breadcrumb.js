@@ -4,38 +4,36 @@ export const getBreadcrumbSchema = (siteUrl, crumbs) => {
     return null
   }
 
-  const schema = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      // name,
-      // description,
-      itemListElement: crumbs.map((crumb, index) => {
-        let { pathname, crumbLabel } = crumb
-        if (pathname.length > 2 && pathname[pathname.length - 1] === '/') {
-          pathname = pathname.slice(0, -1)
-        }
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    // name,
+    // description,
+    itemListElement: crumbs.map((crumb, index) => {
+      let { pathname, crumbLabel } = crumb
+      if (pathname.length > 2 && pathname[pathname.length - 1] === '/') {
+        pathname = pathname.slice(0, -1)
+      }
 
-        const url = `${siteUrl}${pathname}`
-        // TODO home crumbLabel is a Component
-        // maybe better to check for String
-        const name = pathname === '/' ? 'Home' : crumbLabel
+      const url = `${siteUrl}${pathname}`
+      // TODO home crumbLabel is a Component
+      // maybe better to check for String
+      const name = pathname === '/' ? 'Home' : crumbLabel
 
-        return {
-          '@context': 'https://schema.org',
-          '@type': 'ListItem',
-          position: index,
-          // name,
-          // item: url,
-          item: {
-            '@id': url,
-            name,
-            // image,
-          },
-        }
-      }),
-    },
-  ]
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'ListItem',
+        position: index,
+        // name,
+        // item: url,
+        item: {
+          '@id': url,
+          name,
+          // image,
+        },
+      }
+    }),
+  }
 
   return schema
 }

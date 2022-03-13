@@ -15,19 +15,21 @@ export const footer = {
         },
       },
       '.first_column': {
+        w: { base: '64%', sm: '80%', lg: '60%' },
         ml: { base: 1, lg: 6 },
         pr: { base: 2, lg: 0 },
-        w: { base: '64%', sm: '80%' },
         '.subtitle': {
-          fontSize: 'sm',
+          fontSize: { base: 'sm', md: 'md', lg: 'xl' },
           mb: 4,
+        },
+        '.address': {
+          fontSize: { base: 'xs', md: 'sm', lg: 'lg' },
         },
         '.address2': {
-          fontSize: 'xs',
           mb: 4,
         },
-        '.vat_label': {
-          fontSize: 'xs',
+        '.vat': {
+          fontSize: { base: 'xs', md: 'sm', lg: 'lg' },
         },
         '.vat_value': {},
         '.copyright': {
@@ -35,11 +37,13 @@ export const footer = {
         },
       },
       '.second_column': {
-        w: { base: '35%', lg: '19%' },
+        pr: { base: 0, lg: 8 },
+        w: { base: '35%', sm: '19%', lg: '40%' },
+        fontSize: { base: 'sm', lg: 'lg' },
         // pl: { base: 4, lg: 0 },
-        textAlign: { base: 'right', lg: 'left' },
+        textAlign: 'right',
         // ml: { base: 2, lg: 0 },
-        borderLeft: '1px solid',
+        borderLeft: { base: '1px solid', md: 'none' },
         borderLeftColor: colorMode === 'dark' ? 'gray.100' : 'gray.400',
         // a: {
         //   ml: 'auto',

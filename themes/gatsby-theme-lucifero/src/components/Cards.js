@@ -18,7 +18,7 @@ const Cards = ({
   ...rest
 }) => {
   const styles = useStyleConfig('Cards', { variant })
-  const carouselSchema = getCarouselSchema(nodes)
+  const carouselSchema = getCarouselSchema(nodes, title)
   const subTitleAs = titleAs === 'h2' ? 'h3' : 'h4'
   return (
     <Box className="cards" __css={styles} {...rest}>

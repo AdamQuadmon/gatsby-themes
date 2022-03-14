@@ -12,9 +12,9 @@ const Seo = ({ site, page, crumbs }) => {
     .concat(getOgMeta(site, page))
     .concat(getTwitterMeta(page))
 
-  const { headline } = page
+  const { headline, type } = page
 
-  const titleTemplate = site.website.titleTemplate
+  const titleTemplate = 'home' === type ? null : site.website.titleTemplate
 
   return (
     <>
@@ -37,13 +37,13 @@ const getLink = (site, page) => {
   } = site
   const { url } = page
 
-  const link = [
+  let link = [
     { rel: 'shortcut icon', type: 'image/png', href: icon },
     // { rel: "icon", type: "image/png", sizes: "16x16", href: favicon16x16 },
     // { rel: "icon", type: "image/png", sizes: "32x32", href: favicon32x32 },
   ]
   if (url) {
-    link.concat([{ rel: 'canonical', href: url }])
+    link = link.concat([{ rel: 'canonical', href: url }])
   }
   return link
 }
@@ -51,7 +51,7 @@ const getLink = (site, page) => {
 const getBaseMeta = (page) => {
   const { tags, author, datePublished, dateModified, description, image } = page
 
-  const metaTags = [
+  let metaTags = [
     {
       name: `description`,
       content: description,
@@ -59,7 +59,7 @@ const getBaseMeta = (page) => {
   ]
 
   if (image) {
-    metaTags.concat([
+    metaTags = metaTags.concat([
       {
         name: `image`,
         content: addOgImageSettings(image),
@@ -68,7 +68,7 @@ const getBaseMeta = (page) => {
   }
 
   if (datePublished) {
-    metaTags.concat([
+    metaTags = metaTags.concat([
       {
         name: 'article:published_time',
         content: datePublished,
@@ -77,7 +77,7 @@ const getBaseMeta = (page) => {
   }
 
   if (dateModified) {
-    metaTags.concat([
+    metaTags = metaTags.concat([
       {
         name: 'article:modified_time',
         content: dateModified,
@@ -86,7 +86,7 @@ const getBaseMeta = (page) => {
   }
 
   if (author) {
-    metaTags.concat([
+    metaTags = metaTags.concat([
       {
         name: 'article:author',
         content: author,
@@ -95,7 +95,7 @@ const getBaseMeta = (page) => {
   }
 
   if (tags.length > 0) {
-    metaTags.concat([
+    metaTags = metaTags.concat([
       {
         name: 'keywords',
         content: tags.join(', '),
@@ -155,9 +155,9 @@ const getOgMeta = (site, page) => {
   // - use types: https://ogp.me/#types
   // - mind that not all tipes are suited for Google Structured Data
   // - use this to render diferent schemas
-  const ogType = type === 'website' ? type : 'article'
+  const ogType = ['home', 'web'].includes(type) ? 'website' : 'article'
 
-  const metaTags = [
+  let metaTags = [
     {
       property: `og:url`,
       content: url,
@@ -184,7 +184,7 @@ const getOgMeta = (site, page) => {
     },
   ]
   if (image) {
-    metaTags.concat([
+    metaTags = metaTags.concat([
       {
         property: `og:image`,
         content: addOgImageSettings(image),

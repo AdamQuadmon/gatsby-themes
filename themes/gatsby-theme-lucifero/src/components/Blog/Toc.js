@@ -38,7 +38,6 @@ const TableOfContents = ({ tableOfContents, variant }) => {
     if (!isMini()) return
     if (!isOpen) e.preventDefault()
     onToggle(e)
-    console.log(isOpen)
   }
 
   return (

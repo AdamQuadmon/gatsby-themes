@@ -22,7 +22,7 @@ const options = {
   fontFamily: 'impact',
   fontSizes: [60, 120],
   fontStyle: 'normal',
-  fontWeight: 'normal',
+  fontWeight: 400,
   padding: 1,
   rotations: 3,
   rotationAngles: [0, 90],

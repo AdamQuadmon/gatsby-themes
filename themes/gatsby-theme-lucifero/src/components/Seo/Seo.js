@@ -107,7 +107,6 @@ const getBaseMeta = (page) => {
 }
 const getTwitterMeta = (page) => {
   const { headline, author, description, image } = page
-  console.log(addOgImageSettings(image))
   const metaTags = [
     {
       property: `twitter:description`,

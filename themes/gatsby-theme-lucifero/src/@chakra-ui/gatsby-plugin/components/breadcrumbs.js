@@ -18,7 +18,7 @@ export const breadcrumbs = {
       // Applied to each breadcrumb 'crumbs' (<li>)
       'a.breadcrumb__link': {
         fontSize: 'xs',
-        fontWeight: 'black',
+        fontWeight: 800,
         _hover: {
           color: colorMode === 'dark' ? 'gray.600' : 'gray.400',
         },
@@ -30,7 +30,7 @@ export const breadcrumbs = {
       // Applied to the breadcrumb separators (<span>)
       '.breadcrumb__separator': {
         fontSize: 'xs',
-        fontWeight: 'bold',
+        fontWeight: 600,
       },
     }),
   },

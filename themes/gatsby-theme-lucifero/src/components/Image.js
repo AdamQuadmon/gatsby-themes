@@ -89,6 +89,7 @@ export default Image
 
 const addOgImageSettings = (image) => {
   if (image.contentUrl) image = image.contentUrl
+  if (image.indexOf('?') > -1) return image
   return `${image}?w=1200&h=630&fit=crop&crop=edges&auto=compress,format`
 }
 

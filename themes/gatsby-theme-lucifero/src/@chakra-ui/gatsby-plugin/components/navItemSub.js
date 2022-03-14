@@ -11,7 +11,7 @@ export const navItemSub = {
       '.item_header': {
         textTransform: 'uppercase',
         // fontFamily: 'heading',
-        fontWeight: 700,
+        fontWeight: 600,
         color: colorMode === 'dark' ? 'gray.200' : 'gray.700',
         px: 2,
         display: 'block',

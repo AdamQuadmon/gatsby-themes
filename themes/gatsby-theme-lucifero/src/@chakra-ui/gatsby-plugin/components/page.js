@@ -2,7 +2,7 @@ export const page = {
   Page: {
     baseStyle: {
       pb: 4,
-      fontWeight: 'light',
+      fontWeight: 400,
     },
     variants: {
       blog: {},

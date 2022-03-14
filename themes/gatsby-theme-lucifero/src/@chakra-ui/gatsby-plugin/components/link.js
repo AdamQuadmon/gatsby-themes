@@ -4,7 +4,7 @@ export const link = {
       inactive: ({ colorMode }) => ({
         color: colorMode === 'dark' ? 'gray.800' : 'gray.400',
         fontSize: 'xs',
-        fontWeight: 'black',
+        fontWeight: 800,
         textTransform: 'uppercase',
         _hover: {
           textDecoration: 'none',
@@ -13,7 +13,7 @@ export const link = {
       }),
       imageLink: {
         fontSize: 'xs',
-        fontWeight: 'black',
+        fontWeight: 800,
         textTransform: 'uppercase',
       },
       mdx: ({ colorMode }) => ({

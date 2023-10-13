@@ -107,7 +107,7 @@
     "directory": "themes/gatsby-theme-lucifero"
   },
   "engines": {
-    "node": ">=v14.19"
+    "node": ">=18.18.2"
   },
   "devDependencies": {
     "eslint": "^8.11.0",

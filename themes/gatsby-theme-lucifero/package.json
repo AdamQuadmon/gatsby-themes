@@ -110,7 +110,7 @@
     "node": ">=v14.19"
   },
   "devDependencies": {
-    "eslint": "^8.11.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-react": "^7.29.3"

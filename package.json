@@ -32,6 +32,6 @@
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.3",
-    "@changesets/cli": "^2.21.1"
+    "@changesets/cli": "^2.27.9"
   }
 }
